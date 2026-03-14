@@ -1,9 +1,11 @@
 #ifndef PROCESS_H
 #define PROCESS_H
 
+/**
+ *  Structure de process, plus les prototypes communs à toutes les algos
+ */
+
 /* Définition des états possibles  */
-
-
 typedef enum {
     ETAT_NOUVEAU,        // Processus créé mais pas encore arrivé
     ETAT_PRET,           // En file des prêts
@@ -17,9 +19,8 @@ typedef enum {
 
 
 typedef struct {
-
     int pid;                        // Identifiant du processus
-    int temps_arrivee;              // Instant d’arrivée dans le système
+    int temps_arrivee;              // Instant ou le processus arrive dans le système
 
     int *bursts;                    // Tableau alternant CPU / I/O
     int nb_bursts;                  // Nombre total de bursts
@@ -32,6 +33,7 @@ typedef struct {
 
     /* Indicateurs de performance */
 
+    int first_run;                  // 0 = jamais exécuté, 1 = déjà exécuté
     int temps_debut_execution;      // Premier instant d’exécution CPU
     int temps_fin_execution;        // Instant de terminaison
 

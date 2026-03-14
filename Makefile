@@ -6,13 +6,13 @@ INC_DIR = include
 CC= gcc 		# Compilateur C
 CFLAGS= -Wall -ansi -I$(INC_DIR)	# Les options de compilations
 LDFLAGS= -Wall -ansi		# Les options de linkage
-#EXEC= main					# Les noms des executables à générer
+EXEC= main					# Les noms des executables à générer
 
 # Tous les fichiers .c automatiquement
 SRC = $(wildcard $(SRC_DIR)/*.c)
 
 # Fichiers objets (.o)
-OBJ = $(SRC:%.c=$(OBJ_DIR)/%.o)
+OBJ = $(SRC:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
 # Création du dossier obj s'il n'existe pas
 $(OBJ_DIR):
