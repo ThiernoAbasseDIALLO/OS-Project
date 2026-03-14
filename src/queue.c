@@ -2,70 +2,70 @@
 #include <stdio.h>
 #include "queue.h"
 
-/*
- * Création de la file des prêts
- */
-file_t* creer_file(int capacite)
-{
-    file_t *f = malloc(sizeof(file_t));
-    if (!f) {
-        perror("Erreur allocation file");
-        exit(EXIT_FAILURE);
-    }
-
-    f->elements = malloc(sizeof(processus_t*) * capacite);
-    if (!f->elements) {
-        perror("Erreur allocation elements file");
-        exit(EXIT_FAILURE);
-    }
-
-    f->capacite = capacite;
-    f->taille = 0;
-
-    return f;
+bool estVideL(Liste l) {
+    return l==NULL;
 }
 
+Liste allocMem() {
+    Liste l;
+    l = (Liste)malloc(sizeof(struct cellule));
 
-/*
- * Ajout d’un processus en fin de file
- */
-void enfiler(file_t *f, processus_t *p)
-{
-    if (f->taille >= f->capacite) {
-        fprintf(stderr, "Erreur: file pleine\n");
-        exit(EXIT_FAILURE);
+    if (l==NULL) {
+        printf("Erreur d'allocation\n");
+    }else {
+        l->elements = NULL;
+        l->suivant = NULL;
     }
 
-    f->elements[f->taille++] = p;
+    return l;
 }
 
-
-/*
- * Suppression d’un processus à un indice donné
- */
-processus_t* defiler(file_t *f, int indice)
-{
-    if (indice < 0 || indice >= f->taille)
-        return NULL;
-
-    processus_t *p = f->elements[indice];
-
-    for (int i = indice; i < f->taille - 1; i++)
-        f->elements[i] = f->elements[i + 1];
-
-    f->taille--;
-
-    return p;
+void libMem(Liste *l) {
+    if (estVideL(*l)) {
+        free(l);
+    }
 }
 
+Liste initL() {
+    return NULL;
+}
 
-/*
- * Libération mémoire
- */
-void liberer_file(file_t *f)
-{
-    if (!f) return;
+bool estVideF(File f) {
+    return estVideL(f.tete) && estVideL(f.queue);
+}
 
-    free(f->elements);
-    free(f);
+void initF(File *f) {
+    f->tete = initL();
+    f->queue = initL();
+}
+
+void enfiler(File *f, processus_t *p) {
+    Liste cel = allocMem();
+    cel->elements = p;
+    cel->suivant = NULL;
+    if (estVideF(*f))
+        f->tete = cel;
+    else
+        f->queue->suivant = cel;
+    f->queue = cel;
+}
+
+void defiler(File *f) {
+    if (!estVideF(*f)) {
+        Liste cel = f->tete;
+        if (f->tete = f->queue)
+            f->tete = f->queue = NULL;
+        else
+            f->tete = f->tete->suivant;
+
+        libMem(&cel);
+    }
+}
+
+processus_t* sommetF(File f) {
+    if (!estVideF(f)) {
+        return f.tete->elements;
+    }
+
+    return NULL;
 }
