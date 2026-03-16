@@ -3,7 +3,7 @@
 
 static processus_t *selectionner_processus(processus_t *processus, int n, int t);
 
-void run_sjrf(processus_t *processus, int n) {
+void run_sjrf(processus_t *processus, int n, resultats_t *resultats) {
 	int t = 0;
 	int termines = 0;
 	int temps_non_occupation = 0;
@@ -85,6 +85,9 @@ void run_sjrf(processus_t *processus, int n) {
 
 		t += 1;
 	}
+
+	calcul_metrique(processus, n);
+	*resultats = calcul_resultats(processus, n, t, temps_non_occupation);
 }
 
 /**
