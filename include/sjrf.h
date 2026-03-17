@@ -14,6 +14,6 @@
  * @param processus Tableau des processus à ordonnancer.
  * @param n         Nombre de processus.
  */
-void run_sjrf(processus_t *processus, int n);
+void run_sjrf(processus_t *processus, int n, resultats_t *r);
 
 #endif /* SJRF_H */

@@ -45,11 +45,32 @@ typedef struct {
 
 } processus_t;
 
+typedef struct {
+    float moyenne_attente;
+    float moyenne_reponse;
+    float moyenne_restitution;
+    float taux_occupation;
+} resultats_t;
+
+resultats_t init_resultats();
 
 
 /* Initialisation d’un processus   */
 
 
 void initialiser_processus(processus_t *p);
+
+/**
+ * @brief La fonction calcule le temps moyen des processus en attente,
+ * en additionnant tous les temps d'attente des processus.
+ * @param p Tableau de processus en entrée
+ * @param n Nombre total de processus en entrée
+ * @return Un entier qui est le temps moyen des processus en attente.
+ */
+float temps_attente_moyenne(processus_t *p, int n);
+
+void calcul_metrique(processus_t *p, int n);
+
+resultats_t calcul_resultats(processus_t *p, int n, int temps_total, int temps_n_occupation);
 
 #endif

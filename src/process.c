@@ -30,3 +30,49 @@ void initialiser_processus(processus_t *p)
 
     p->dernier_entree_pret = 0;
 }
+
+
+float temps_attente_moyenne(processus_t *p, int n) {
+    float mean = 0;
+    for (int i = 0; i < n; i++) {
+        mean += p[i].temps_attente;
+    }
+
+    mean /= n;
+    return mean;
+}
+
+void calcul_metrique(processus_t *p, int n) {
+    for (int i = 0; i < n; i++) {
+        p[i].temps_restitution = p[i].temps_fin_execution -
+            p[i].temps_arrivee;
+    }
+}
+
+resultats_t calcul_resultats(processus_t *p, int n, int temps_total, int temps_n_occupation) {
+    resultats_t resultats = init_resultats();
+
+    resultats.moyenne_attente = temps_attente_moyenne(p, n);
+    float mean_restitution = 0;
+    float mean_reponse = 0;
+    for (int i = 0; i < n; i++) {
+        mean_restitution += p[i].temps_restitution;
+        mean_reponse += p[i].temps_reponse;
+    }
+    mean_restitution /= n;
+    mean_reponse /= n;
+    resultats.moyenne_restitution = mean_restitution;
+    resultats.moyenne_reponse = mean_reponse;
+    resultats.taux_occupation = (float) (temps_total - temps_n_occupation)/temps_total;
+
+    return resultats;
+}
+
+resultats_t init_resultats() {
+    resultats_t resultats;
+    resultats.moyenne_attente = 0;
+    resultats.moyenne_reponse = 0;
+    resultats.moyenne_restitution = 0;
+    resultats.taux_occupation = 0;
+    return resultats;
+}
