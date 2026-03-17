@@ -3,18 +3,25 @@ SRC_DIR = src
 OBJ_DIR = obj
 INC_DIR = include
 
-CC= gcc 		# Compilateur C
-CFLAGS= -Wall -ansi -I$(INC_DIR)	# Les options de compilations
-LDFLAGS= -Wall -ansi		# Les options de linkage
-EXEC= main					# Les noms des executables à générer
+CC      = gcc
+# -std=c99 obligatoire (for/int, //, stdbool.h)
+# fifo.c et sjf.c sont EXCLUS : leurs fonctions sont déjà dans scheduler.c
+CFLAGS  = -Wall -std=c99 -I$(INC_DIR)
+EXEC    = simulateur
 
-# Tous les fichiers .c automatiquement
-SRC = $(wildcard $(SRC_DIR)/*.c)
+# Sources : TOUS les .c SAUF fifo.c et sjf.c (déjà dans scheduler.c)
+SRC = $(SRC_DIR)/process.c \
+      $(SRC_DIR)/queue.c \
+      $(SRC_DIR)/csv.c \
+      $(SRC_DIR)/scheduler.c \
+      $(SRC_DIR)/simulateur.c \
+      $(SRC_DIR)/sjrf.c \
+      $(SRC_DIR)/rr.c \
+      $(SRC_DIR)/main.c
 
-# Fichiers objets (.o)
 OBJ = $(SRC:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
-# Création du dossier obj s'il n'existe pas
+# Création du dossier obj si nécessaire
 $(OBJ_DIR):
 	mkdir -p $(OBJ_DIR)
 
@@ -22,11 +29,11 @@ all: $(OBJ_DIR) $(EXEC)
 
 $(EXEC): $(OBJ)
 	$(CC) $(OBJ) -o $(EXEC)
+	@echo ">>> Binaire produit : $(EXEC)"
 
-# Compilation des .c en .o vers obj/
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
-# Nettoyage
 clean:
 	rm -rf $(OBJ_DIR) $(EXEC)
+	@echo ">>> Nettoyage effectué"

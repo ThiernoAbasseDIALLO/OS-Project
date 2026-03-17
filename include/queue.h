@@ -1,75 +1,66 @@
+/**
+ * @file queue.h
+ * @brief File des processus prêts basée sur un tableau dynamique.
+ *
+ * Cette implémentation expose une `file_t` (tableau de pointeurs) qui
+ * permet de retirer un élément à un indice quelconque, nécessaire pour
+ * les algorithmes SJF/SJRF qui ne servent pas forcément la tête de file.
+ *
+ * Participation : Auteur1 (33%), Auteur2 (33%), Auteur3 (33%)
+ */
+
 #ifndef QUEUE_H
 #define QUEUE_H
 
 #include "process.h"
 #include <stdbool.h>
 
-
-typedef struct cellule{
-    processus_t *elements;  // Pointeur vers le processus stocké dans la cellule
-    struct cellule *suivant;
-}*Liste;
-
 /**
- * Soit de cette structure tête et queue pour nous faciliter les opértions d'enfiler et de défiler.
+ * @brief File des processus prêts (tableau de pointeurs).
  */
 typedef struct {
-    Liste tete;
-    Liste queue;
-}File;
+    processus_t **elements; /**< Tableau de pointeurs vers les processus */
+    int taille;             /**< Nombre d'éléments actuellement dans la file */
+    int capacite;           /**< Capacité maximale allouée */
+} file_t;
 
 /**
- * @brief Permet de tester si une Liste est vide ou non.
- * @param l Une liste en entrée
- * @return Vrai si la liste est vide sinon faux
+ * @brief Alloue et initialise une file vide.
+ * @param capacite Nombre maximal de processus que la file peut contenir.
+ * @return Pointeur vers la file allouée.
  */
-bool estVideL(Liste l);
+file_t *creer_file(int capacite);
 
 /**
- *  @brief Fait l'allocation mémoire pour une nouvelle cellule.
- * @return Retourne un pointeur vers une cellule (Liste).
+ * @brief Libère la mémoire d'une file.
+ * @param f Pointeur vers la file à libérer.
  */
-Liste allocMem();
-
-void libMem(Liste *l);
+void liberer_file(file_t *f);
 
 /**
- * @brief Initialise une Liste à NULL
- * @return Une liste vide.
+ * @brief Teste si la file est vide.
+ * @param f Pointeur vers la file.
+ * @return true si vide, false sinon.
  */
-Liste initL();
+bool estVide(const file_t *f);
 
 /**
- * @brief Permet de tester si la file est vide ou pas.
- * @param f Une File en entrée.
- * @return Vrai si la file est vide sinon faux.
+ * @brief Ajoute un processus en fin de file.
+ * @param f Pointeur vers la file.
+ * @param p Pointeur vers le processus à ajouter.
  */
-bool estVideF(File f);
+void enfiler(file_t *f, processus_t *p);
 
 /**
- * @brief Permet d'initialiser une File.
- * @param f Un pointeur vers une File.
+ * @brief Retire le processus à l'indice donné et décale les suivants.
+ *
+ * Indice 0 correspond à la tête de file (FIFO).
+ * Un indice quelconque est nécessaire pour SJF/SJRF.
+ *
+ * @param f      Pointeur vers la file.
+ * @param indice Position du processus à retirer (0 = tête).
+ * @return Pointeur vers le processus retiré, NULL si indice invalide.
  */
-void initF(File *f);
+processus_t *defiler(file_t *f, int indice);
 
-/**
- * @brief Permet d'ajouter en queue un nouveau processus.
- * @param f Une file f en entrée et sortie.
- * @param p Un tableau de processus.
- */
-void enfiler(File *f, processus_t *p);
-
-/**
- * @brief Permet de supprimer un processus déjà traité, qui est en tête.
- * @param f Une file en entrée et sortie.
- */
-void defiler(File *f);
-
-/**
- * @brief Permet d'avoir le premier processus celui qui est en tête de la file.
- * @param f Une File f.
- * @return Retourne le premier processus de la file.
- */
-processus_t* sommetF(File f);
-
-#endif
+#endif /* QUEUE_H */
