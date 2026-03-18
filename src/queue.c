@@ -1,76 +1,71 @@
-/**
- * @file queue.c
- * @brief Implémentation de la file des processus prêts (tableau dynamique).
- *
- * Participation : Auteur1 (33%), Auteur2 (33%), Auteur3 (33%)
- */
-
 #include <stdlib.h>
 #include <stdio.h>
 #include "queue.h"
 
-/**
- * @brief Alloue et initialise une file vide de capacité donnée.
- */
-file_t *creer_file(int capacite)
-{
-    file_t *f = malloc(sizeof(file_t));
-    if (!f) { perror("malloc file_t"); exit(1); }
-
-    f->elements = malloc(sizeof(processus_t *) * capacite);
-    if (!f->elements) { perror("malloc elements"); exit(1); }
-
-    f->taille   = 0;
-    f->capacite = capacite;
-    return f;
+bool estVideL(Liste l) {
+    return l==NULL;
 }
 
-/**
- * @brief Libère la mémoire d'une file (pas les processus eux-mêmes).
- */
-void liberer_file(file_t *f)
-{
-    if (!f) return;
-    free(f->elements);
-    free(f);
-}
+Liste allocMem() {
+    Liste l;
+    l = (Liste)malloc(sizeof(struct cellule));
 
-/**
- * @brief Retourne true si la file ne contient aucun processus.
- */
-bool estVide(const file_t *f)
-{
-    return f == NULL || f->taille == 0;
-}
-
-/**
- * @brief Ajoute un processus en fin de file.
- */
-void enfiler(file_t *f, processus_t *p)
-{
-    if (f->taille >= f->capacite) {
-        fprintf(stderr, "enfiler : file pleine (capacite=%d)\n", f->capacite);
-        return;
+    if (l==NULL) {
+        printf("Erreur d'allocation\n");
+    }else {
+        l->elements = NULL;
+        l->suivant = NULL;
     }
-    f->elements[f->taille++] = p;
+
+    return l;
 }
 
-/**
- * @brief Retire le processus à l'indice donné, décale les suivants vers la gauche.
- *
- * - defiler(f, 0) → comportement FIFO classique (retire la tête).
- * - defiler(f, i) → retire un élément quelconque (utile pour SJF/SJRF).
- */
-processus_t *defiler(file_t *f, int indice)
-{
-    if (!f || indice < 0 || indice >= f->taille) return NULL;
+void libMem(Liste *l) {
+    if (estVideL(*l)) {
+        free(l);
+    }
+}
 
-    processus_t *p = f->elements[indice];
+Liste initL() {
+    return NULL;
+}
 
-    /* Décalage vers la gauche pour combler le trou */
-    for (int i = indice; i < f->taille - 1; i++)
-        f->elements[i] = f->elements[i + 1];
+bool estVideF(File f) {
+    return estVideL(f.tete) && estVideL(f.queue);
+}
 
-    f->taille--;
-    return p;
+void initF(File *f) {
+    f->tete = initL();
+    f->queue = initL();
+}
+
+void enfiler(File *f, processus_t *p) {
+    Liste cel = allocMem();
+    cel->elements = p;
+    cel->suivant = NULL;
+    if (estVideF(*f))
+        f->tete = cel;
+    else
+        f->queue->suivant = cel;
+    f->queue = cel;
+}
+
+void defiler(File *f) {
+    if (!estVideF(*f)) {
+        Liste cel = f->tete;
+        if (f->tete = f->queue)
+            f->tete = f->queue = NULL;
+        else
+            f->tete = f->tete->suivant;
+
+        libMem(&cel);
+    }
+}
+
+processus_t* sommetF(File f) {
+    if (!estVideF(f)) {
+        return f.tete->elements;
+    }
+
+    return NULL;
 }
