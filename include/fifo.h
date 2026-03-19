@@ -1,11 +1,10 @@
 /**
  * @file fifo.h
- * @brief Algorithme d'ordonnancement FIFO (First In, First Out)
+ * @brief Algorithme d'ordonnancement FIFO (First In, First Out).
  *
- * L'ordonnancement FIFO (aussi appelé FCFS - First Come, First Served)
- * exécute les processus dans l'ordre de leur arrivée dans la file des prêts.
- * C'est un algorithme non-préemptif : un processus garde le CPU jusqu'à
- * la fin de son burst CPU courant.
+ * Le premier processus arrivé est le premier servi. Non-préemptif.
+ * Boucle tick par tick identique à sjrf.c.
+ * Utilise la File de queue.h pour la file des prêts.
  *
  * Participation : Auteur1 (33%), Auteur2 (33%), Auteur3 (33%)
  */
@@ -16,27 +15,17 @@
 #include "process.h"
 
 /**
- * @brief Sélectionne le prochain processus à exécuter selon la politique FIFO.
+ * @brief Exécute l'algorithme FIFO tick par tick.
  *
- * Retourne le premier processus de la file des prêts (index 0),
- * c'est-à-dire celui qui attend depuis le plus longtemps.
+ * Calcule tous les indicateurs de performance (temps_attente,
+ * temps_reponse, temps_restitution, taux_occupation) et les
+ * stocke dans resultats.
+ * Pas d'affichage ni d'export — géré dans main.c.
  *
- * @param file_prets  Tableau de pointeurs vers les processus prêts.
- * @param taille      Nombre de processus dans la file.
- * @return Pointeur vers le processus sélectionné, ou NULL si la file est vide.
+ * @param processus Tableau des processus à ordonnancer.
+ * @param n         Nombre de processus.
+ * @param resultats Pointeur vers la structure de résultats à remplir.
  */
-processus_t *ordonnanceur_fifo(processus_t **file_prets, int taille);
-
-/**
- * @brief Lance la simulation complète avec l'algorithme FIFO.
- *
- * Fait avancer un horloge globale, gère les arrivées, les E/S parallélisées,
- * calcule les indicateurs (attente, réponse, restitution) et exporte les
- * résultats dans un fichier CSV "resultats_fifo.csv".
- *
- * @param liste Tableau de processus à simuler (modifié en place).
- * @param n     Nombre de processus.
- */
-void simuler_fifo(processus_t *liste, int n);
+void run_fifo(processus_t *processus, int n, resultats_t *resultats);
 
 #endif /* FIFO_H */

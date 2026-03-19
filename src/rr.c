@@ -1,373 +1,174 @@
 /**
  * @file rr.c
- * @brief Implémentation de l'algorithme d'ordonnancement Round Robin (RR).
+ * @brief Logique de l'algorithme d'ordonnancement Round Robin (RR).
  *
- * Principe du Round Robin :
- *   Chaque processus prêt reçoit le CPU pour une tranche de temps fixe
- *   (le quantum). Si son burst CPU n'est pas terminé à l'issue du quantum,
- *   il est interrompu et replacé EN FIN de file des prêts. Le processus
- *   suivant en tête de file est alors élu.
+ * Stratégie : chaque processus reçoit le CPU pour un quantum fixe.
+ * Si son burst n'est pas terminé à l'issue du quantum, il est
+ * interrompu et replacé EN FIN de file des prêts (préemptif).
+ * Les E/S sont parallélisées.
  *
- * Gestion des E/S :
- *   Quand un processus termine son burst CPU avant épuisement du quantum,
- *   s'il lui reste des bursts, il passe en E/S (ETAT_EN_ATTENTE). Les E/S
- *   se déroulent en parallèle. Quand elles se terminent, le processus
- *   rejoint LA FIN de la file des prêts (comme s'il venait d'arriver).
- *
- * Gestion du quantum résiduel :
- *   Le quantum repart à zéro à chaque fois qu'un nouveau processus prend
- *   le CPU (y compris si c'est le même processus qui reprend après un retour
- *   d'E/S — il reçoit un quantum complet).
- *
- * La simulation avance par événements :
- *   Delta = min(quantum_restant, prochain_fin_E/S, prochain_arrivee)
- *   ce qui évite de tourner ms par ms tout en restant exact.
+ * Utilise la File de queue.h pour gérer la file des prêts.
  *
  * Participation : Auteur1 (33%), Auteur2 (33%), Auteur3 (33%)
  */
 
-#include <stdio.h>
 #include <stdlib.h>
-#include <limits.h>
 #include "rr.h"
-#include "csv.h"
+#include "process.h"
+#include "queue.h"
 
-/* -----------------------------------------------------------------------
- * File circulaire FIFO (tableau dynamique) — interne à rr.c
- * --------------------------------------------------------------------- */
+
+/* --------------------------------
+ * Fonction exportée : run_rr
+ * ---------------------------------*/
 
 /**
- * @brief File FIFO pour le Round Robin.
+ * @brief Exécute l'algorithme Round Robin tick par tick.
  *
- * Les processus sont enfilés en queue et défilés en tête.
- * L'ordre dans la file reflète l'ordre d'arrivée/retour dans la file des
- * prêts, ce qui est fondamental pour la politique RR.
- */
-typedef struct {
-    processus_t **elements;
-    int tete;       /**< Indice du premier élément (à défiler) */
-    int queue;      /**< Indice du prochain emplacement libre (à enfiler) */
-    int taille;     /**< Nombre d'éléments actuellement dans la file */
-    int capacite;   /**< Capacité totale du tableau circulaire */
-} file_rr_t;
-
-/**
- * @brief Crée une file circulaire de capacité donnée.
- */
-static file_rr_t *creer_file_rr(int capacite)
-{
-    /* +1 pour distinguer file pleine / file vide dans le tableau circulaire */
-    int cap = capacite + 1;
-    file_rr_t *f = malloc(sizeof(file_rr_t));
-    if (!f) { perror("malloc file_rr"); exit(1); }
-    f->elements = malloc(sizeof(processus_t *) * cap);
-    if (!f->elements) { perror("malloc elements rr"); exit(1); }
-    f->tete     = 0;
-    f->queue    = 0;
-    f->taille   = 0;
-    f->capacite = cap;
-    return f;
-}
-
-/**
- * @brief Libère la mémoire d'une file RR.
- */
-static void liberer_file_rr(file_rr_t *f)
-{
-    free(f->elements);
-    free(f);
-}
-
-/**
- * @brief Retourne 1 si la file est vide.
- */
-static int file_rr_vide(const file_rr_t *f)
-{
-    return f->taille == 0;
-}
-
-/**
- * @brief Ajoute un processus en queue (fin de file).
- */
-static void enfiler_rr(file_rr_t *f, processus_t *p)
-{
-    if (f->taille >= f->capacite - 1) {
-        fprintf(stderr, "enfiler_rr : file pleine\n");
-        return;
-    }
-    f->elements[f->queue] = p;
-    f->queue = (f->queue + 1) % f->capacite;
-    f->taille++;
-}
-
-/**
- * @brief Retire et retourne le processus en tête de file.
- */
-static processus_t *defiler_rr(file_rr_t *f)
-{
-    if (file_rr_vide(f)) return NULL;
-    processus_t *p = f->elements[f->tete];
-    f->tete = (f->tete + 1) % f->capacite;
-    f->taille--;
-    return p;
-}
-
-/* -----------------------------------------------------------------------
- * Calcul du prochain événement
- * --------------------------------------------------------------------- */
-
-/**
- * @brief Calcule le delta jusqu'au prochain événement pertinent.
+ * run_rr() :
+ *  1. Repasse EN_EXECUTION → PRET (préparation du tick).
+ *  2. Enfile les processus qui arrivent à t.
+ *  3. Décrémente les E/S ; si terminées → enfile en fin ou TERMINE.
+ *  4. Si CPU libre → prend la tête de file, réinitialise quantum_restant.
+ *     Premier accès → enregistre temps_reponse.
+ *     Décrémente temps_cpu_restant ET quantum_restant.
+ *     Si burst fini → E/S suivante ou TERMINE.
+ *     Si quantum épuisé avant fin burst → remet en FIN de file (préemption).
+ *  5. Incrémente temps_attente des processus encore PRET.
+ *  6. t += 1.
  *
- * On prend le minimum entre :
- *   - le quantum restant (fin de tranche du processus en cours)
- *   - la fin de chaque E/S en cours (parallélisées)
- *   - la prochaine arrivée de processus (pour ne pas rater d'arrivée)
+ *   - Sélection = toujours la tête de file (FIFO circulaire).
+ *   - Préemption : quand quantum_restant == 0, le processus retourne
+ *     en FIN de file via enfiler() et reçoit un nouveau quantum
+ *     au prochain tour.
  *
- * @param liste           Tableau complet des processus.
- * @param n               Nombre total de processus.
- * @param en_execution    Processus sur le CPU (peut être NULL).
- * @param quantum_restant Temps restant dans le quantum courant.
- * @param temps_courant   Temps actuel de la simulation.
- * @return Delta minimal en ms.
+ * @param processus     Tableau des processus à ordonnancer.
+ * @param n             Nombre de processus.
+ * @param quantum       Durée du quantum en ms (doit être > 0).
+ * @param resultats     Pointeur vers la structure de résultats à remplir.
  */
-static int prochain_evenement_rr(processus_t *liste, int n,
-                                  processus_t *en_execution,
-                                  int quantum_restant,
-                                  int temps_courant)
+void run_rr(processus_t *processus, int n, int quantum, resultats_t *resultats)
 {
-    int delta = INT_MAX;
-
-    /* Fin du burst CPU courant (peut être < quantum_restant) */
-    if (en_execution && en_execution->temps_cpu_restant > 0) {
-        int fin_cpu = en_execution->temps_cpu_restant;
-        int fin_quantum = quantum_restant;
-        /* On s'arrête au plus tôt : fin CPU ou fin quantum */
-        delta = (fin_cpu < fin_quantum) ? fin_cpu : fin_quantum;
-    } else if (en_execution == NULL) {
-        /* CPU idle : on attend la prochaine fin E/S ou arrivée */
-    }
-
-    /* Fin d'une E/S parallèle */
-    for (int i = 0; i < n; i++) {
-        if (liste[i].etat == ETAT_EN_ATTENTE &&
-            liste[i].temps_io_restant > 0 &&
-            liste[i].temps_io_restant < delta)
-        {
-            delta = liste[i].temps_io_restant;
-        }
-    }
-
-    /* Prochaine arrivée (pour ne pas la rater si le CPU est idle) */
-    for (int i = 0; i < n; i++) {
-        if (liste[i].etat == ETAT_NOUVEAU) {
-            int attente = liste[i].temps_arrivee - temps_courant;
-            if (attente > 0 && attente < delta)
-                delta = attente;
-        }
-    }
-
-    return delta;
-}
-
-/* ---------------------------
- * Affichage et export
- * ---------------------------- */
-
-/**
- * @brief Affiche les résultats dans le terminal et exporte le CSV.
- */
-static void afficher_et_exporter_rr(processus_t *liste, int n,
-                                     int temps_total, int temps_cpu_occupe,
-                                     int quantum)
-{
-    double s_att = 0, s_rep = 0, s_res = 0;
-
-    printf("\n------- RESULTATS RR (quantum=%d ms) -------\n", quantum);
-    printf("PID | Arrivee | Attente | Reponse | Restitution\n");
-    printf("----+---------+---------+---------+------------\n");
-
-    for (int i = 0; i < n; i++) {
-        printf("%3d | %7d | %7d | %7d | %11d\n",
-               liste[i].pid,
-               liste[i].temps_arrivee,
-               liste[i].temps_attente,
-               liste[i].temps_reponse,
-               liste[i].temps_restitution);
-        s_att += liste[i].temps_attente;
-        s_rep += liste[i].temps_reponse;
-        s_res += liste[i].temps_restitution;
-    }
-
-    printf("----+---------+---------+---------+------------\n");
-    printf("MOY | %7s | %7.2f | %7.2f | %11.2f\n",
-           "-", s_att / n, s_rep / n, s_res / n);
-    printf("Taux utilisation CPU : %.2f%%\n",
-           temps_total > 0 ? 100.0 * temps_cpu_occupe / temps_total : 0.0);
-    printf("-----------------------------------------------------------\n\n");
-
-    /* Nom de fichier incluant le quantum pour pouvoir comparer */
-    char nom_csv[64];
-    snprintf(nom_csv, sizeof(nom_csv), "resultats_rr_q%d.csv", quantum);
-    exporter_csv(nom_csv, liste, n, temps_total, temps_cpu_occupe);
-    printf("Resultats exportes dans %s\n", nom_csv);
-}
-
-/* ------------------------------------
- * Boucle de simulation Round Robin
- * ------------------------------------ */
-
-/**
- * @brief Simule l'ordonnancement Round Robin (préemptif, par quantum).
- *
- * Boucle orientée événements (pas d'avance ms par ms) :
- *
- *  1. Faire passer en PRET les processus arrivés (NOUVEAU -> PRET).
- *     Les remettre en queue de la file RR.
- *  2. Remettre en file les processus dont les E/S viennent de se terminer.
- *  3. Si le CPU est libre, défiler le prochain processus (tête de file RR)
- *     et lui attribuer un quantum complet.
- *     Enregistrer le temps de réponse (premier accès seulement).
- *  4. Calculer le delta (min quantum_restant, fin E/S, prochaine arrivée).
- *  5. Avancer le temps, décompter CPU, E/S.
- *  6. Gérer la fin de tranche (expiration quantum ou fin de burst CPU) :
- *     - Expiration quantum : remettre le processus EN FIN de file des prêts.
- *     - Fin burst CPU avant quantum : passer en E/S ou TERMINE.
- *  7. Comptabiliser le temps d'attente des processus prêts non élus.
- *
- * @param liste   Tableau des processus (modifié en place).
- * @param n       Nombre de processus.
- * @param quantum Durée du quantum (ms).
- */
-void simuler_rr(processus_t *liste, int n, int quantum)
-{
-    if (quantum <= 0) {
-        fprintf(stderr, "simuler_rr : quantum doit etre > 0\n");
-        return;
-    }
-
-    int temps_courant    = 0;
-    int nb_termines      = 0;
-    int temps_cpu_occupe = 0;
-    int quantum_restant  = 0;  /* Quantum restant pour le processus en cours */
+    int t                    = 0;
+    int termines             = 0;
+    int temps_non_occupation = 0;
+    int quantum_restant      = 0;
 
     processus_t *en_execution = NULL;
-    file_rr_t   *file         = creer_file_rr(n * 4); /* x4 : un processus peut
-                                                          repasser plusieurs fois */
 
-    while (nb_termines < n) {
+    File file_prets;
+    initF(&file_prets);
 
-        /* --- Étape 1 : arrivées --- */
+    while (termines < n) {
+
+        /* ── Étape 1 : repasser EN_EXECUTION → PRET ── */
+        /*
+         * En RR, si le quantum n'est pas épuisé et que le burst n'est
+         * pas terminé, le processus reprend le CPU au tick suivant.
+         * L'étape 4 gère la préemption (quantum == 0) séparément.
+         */
+        for (int m = 0; m < n; m++) {
+            if (processus[m].etat == ETAT_EN_EXECUTION)
+                processus[m].etat = ETAT_PRET;
+        }
+
+        /* ── Étape 2 : nouvelles arrivées → enfiler en fin ── */
         for (int i = 0; i < n; i++) {
-            if (liste[i].etat == ETAT_NOUVEAU &&
-                liste[i].temps_arrivee <= temps_courant)
-            {
-                liste[i].etat = ETAT_PRET;
-                liste[i].dernier_entree_pret = temps_courant;
-                enfiler_rr(file, &liste[i]);
+            if (processus[i].temps_arrivee == t) {
+                processus[i].etat = ETAT_PRET;
+                enfiler(&file_prets, &processus[i]);
             }
         }
 
-        /* --- Étape 2 : retour en file après fin d'E/S --- */
-        for (int i = 0; i < n; i++) {
-            if (liste[i].etat == ETAT_EN_ATTENTE &&
-                liste[i].temps_io_restant == 0)
-            {
-                liste[i].index_burst_courant++;
-
-                if (liste[i].index_burst_courant < liste[i].nb_bursts) {
-                    liste[i].temps_cpu_restant =
-                        liste[i].bursts[liste[i].index_burst_courant];
-                    liste[i].etat = ETAT_PRET;
-                    liste[i].dernier_entree_pret = temps_courant;
-                    enfiler_rr(file, &liste[i]); /* En fin de file RR */
-                } else {
-                    /* Dernier burst était une E/S */
-                    liste[i].etat               = ETAT_TERMINE;
-                    liste[i].temps_fin_execution = temps_courant;
-                    liste[i].temps_restitution   =
-                        temps_courant - liste[i].temps_arrivee;
-                    nb_termines++;
+        /* ── Étape 3 : décrémenter les E/S en cours ── */
+        for (int j = 0; j < n; j++) {
+            if (processus[j].etat == ETAT_EN_ATTENTE) {
+                processus[j].temps_io_restant--;
+                if (processus[j].temps_io_restant == 0) {
+                    int index = ++processus[j].index_burst_courant;
+                    if (index < processus[j].nb_bursts) {
+                        /* Burst suivant = CPU → retour en FIN de file */
+                        processus[j].temps_cpu_restant =
+                            processus[j].bursts[index];
+                        processus[j].etat = ETAT_PRET;
+                        enfiler(&file_prets, &processus[j]);
+                    } else {
+                        /* Dernier burst était une E/S → terminé */
+                        processus[j].temps_fin_execution = t;
+                        processus[j].etat = ETAT_TERMINE;
+                        termines++;
+                    }
                 }
             }
         }
 
-        /* --- Étape 3 : attribution du CPU si libre --- */
-        if (en_execution == NULL && !file_rr_vide(file)) {
-            en_execution = defiler_rr(file);
-            en_execution->etat = ETAT_EN_EXECUTION;
-            quantum_restant = quantum; /* Nouveau quantum complet */
+        /* ── Étape 4 : sélection RR et exécution ── */
 
-            /* Temps d'attente passé dans la file */
-            en_execution->temps_attente +=
-                temps_courant - en_execution->dernier_entree_pret;
+        /*
+         * Si le quantum est épuisé au tick précédent, le processus
+         * a déjà été remis en FIN de file à l'étape 4 du tick précédent.
+         * On prend donc la nouvelle tête de file.
+         */
+        if (en_execution == NULL && !estVideF(file_prets)) {
+            en_execution   = sommetF(file_prets);
+            defiler(&file_prets);
+            quantum_restant = quantum;  /* Nouveau quantum complet */
 
-            /* Temps de réponse : uniquement lors du tout premier accès CPU */
-            if (en_execution->temps_debut_execution == -1) {
-                en_execution->temps_debut_execution = temps_courant;
-                en_execution->temps_reponse =
-                    temps_courant - en_execution->temps_arrivee;
+            /* Premier accès CPU → enregistrer temps de réponse */
+            if (en_execution->first_run == 0) {
+                en_execution->temps_reponse         = t;
+                en_execution->temps_debut_execution = t;
+                en_execution->first_run             = 1;
             }
         }
 
-        /* --- Étape 4 : calcul du delta --- */
-        int delta = prochain_evenement_rr(liste, n, en_execution,
-                                          quantum_restant, temps_courant);
-        if (delta == INT_MAX) break; /* Blocage (ne devrait pas arriver) */
-
-        temps_courant += delta;
-
-        /* --- Étape 5 : décompte CPU et E/S --- */
-        if (en_execution) {
-            en_execution->temps_cpu_restant -= delta;
-            quantum_restant                 -= delta;
-            temps_cpu_occupe                += delta;
-        }
-
-        for (int i = 0; i < n; i++) {
-            if (liste[i].etat == ETAT_EN_ATTENTE)
-                liste[i].temps_io_restant -= delta;
-        }
-
-        /* --- Étape 6 : fin de tranche ou fin de burst CPU --- */
-        if (en_execution) {
+        if (en_execution == NULL) {
+            /* CPU idle */
+            temps_non_occupation++;
+        } else {
+            en_execution->etat = ETAT_EN_EXECUTION;
+            en_execution->temps_cpu_restant--;
+            quantum_restant--;
 
             if (en_execution->temps_cpu_restant == 0) {
-                /*
-                 * Le processus a terminé son burst CPU avant (ou en même
-                 * temps que) la fin du quantum.
-                 */
+                /* Burst CPU terminé avant ou en même temps que le quantum */
                 en_execution->index_burst_courant++;
 
-                if (en_execution->index_burst_courant >= en_execution->nb_bursts) {
-                    /* Processus entièrement terminé */
-                    en_execution->etat               = ETAT_TERMINE;
-                    en_execution->temps_fin_execution = temps_courant;
-                    en_execution->temps_restitution   =
-                        temps_courant - en_execution->temps_arrivee;
-                    nb_termines++;
+                if (en_execution->index_burst_courant == en_execution->nb_bursts) {
+                    /* Plus de burst → terminé */
+                    en_execution->temps_fin_execution = t + 1;
+                    en_execution->etat = ETAT_TERMINE;
+                    termines++;
                 } else {
-                    /* Passage en E/S */
+                    /* Burst suivant = E/S */
                     en_execution->temps_io_restant =
                         en_execution->bursts[en_execution->index_burst_courant];
                     en_execution->etat = ETAT_EN_ATTENTE;
                 }
-
-                en_execution = NULL;
+                en_execution    = NULL;
+                quantum_restant = 0;
 
             } else if (quantum_restant == 0) {
                 /*
-                 * Expiration du quantum : le processus est interrompu.
-                 * Il rejoint la FIN de la file des prêts.
+                 * Quantum épuisé, burst non terminé → PRÉEMPTION.
+                 * Le processus retourne en FIN de file des prêts.
+                 * Il recevra un nouveau quantum complet au prochain tour.
                  */
                 en_execution->etat = ETAT_PRET;
-                en_execution->dernier_entree_pret = temps_courant;
-                enfiler_rr(file, en_execution); /* En fin de file RR */
+                enfiler(&file_prets, en_execution);
                 en_execution = NULL;
             }
         }
+
+        /* ── Étape 5 : accumuler l'attente des processus PRET ── */
+        for (int l = 0; l < n; l++) {
+            if (processus[l].etat == ETAT_PRET)
+                processus[l].temps_attente++;
+        }
+
+        t++;
     }
 
-    afficher_et_exporter_rr(liste, n, temps_courant, temps_cpu_occupe, quantum);
-    liberer_file_rr(file);
+    calcul_metrique(processus, n);
+    *resultats = calcul_resultats(processus, n, t, temps_non_occupation);
 }
