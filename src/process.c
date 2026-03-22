@@ -26,6 +26,7 @@ void initialiser_processus(processus_t *p)
     p->etat = ETAT_NOUVEAU;
 
     /* Indicateurs de performance */
+    p->first_run = 0;
     p->temps_debut_execution = -1;   
     p->temps_fin_execution = 0;
 
@@ -93,6 +94,8 @@ resultats_t init_resultats() {
 }
 
 processus_t *lireFichier(char* file, int *n) {
+    printf("ouverture fichier : %s\n", file);
+
     char buffer[256];
     FILE *f = fopen(file, "r");
 
@@ -101,13 +104,21 @@ processus_t *lireFichier(char* file, int *n) {
         exit(-1);
     }
 
+    // printf("fichier ouvert\n");
+
     fgets(buffer, sizeof(buffer), f);
+    // printf("premiere ligne lue : %s", buffer);
+
     *n = strtol(buffer, NULL, 10);
+    // printf("n = %d\n", *n);
 
     processus_t* p = allocProcessus(*n);
+    // printf("allocation ok\n");
 
     for (int i = 0; i < *n; i++) {
+        // printf("lecture processus %d\n", i);
         fgets(buffer, sizeof(buffer), f);
+        // printf("ligne : %s", buffer);
         p[i].bursts = malloc(MAX_BURSTS * sizeof(int));
 
         char *ptr = buffer;
@@ -121,11 +132,17 @@ processus_t *lireFichier(char* file, int *n) {
                 p[i].bursts[cpt-1] = strtol(ptr, &fin, 10);
             }
 
+            if (fin == ptr) break;
+
             cpt++;
             ptr = fin;
         }
 
         p[i].nb_bursts = cpt - 1;
+        // printf("Processus %d : temps_arrivee=%d nb_bursts=%d\n", i, p[i].temps_arrivee, p[i].nb_bursts);
+        // for (int j = 0; j < p[i].nb_bursts; j++) {
+        //     printf("  burst[%d] = %d\n", j, p[i].bursts[j]);
+        // }
         initialiser_processus(&p[i]);
     }
 

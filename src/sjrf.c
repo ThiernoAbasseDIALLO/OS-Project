@@ -4,11 +4,19 @@
 static processus_t *selectionner_processus(processus_t *processus, int n, int t);
 
 void run_sjrf(processus_t *processus, int n, resultats_t *resultats) {
+	// printf("debut run_sjrf n=%d\n", n);
 	int t = 0;
 	int termines = 0;
 	int temps_non_occupation = 0;
 
+	// printf("apres declarations t=%d termines=%d\n", t, termines);
 	while (termines < n) {
+		// printf("t=%d etat0=%d etat1=%d\n", t, processus[0].etat, processus[1].etat);
+		printf("t=%d | P1: etat=%d cpu_restant=%d io_restant=%d index=%d | P2: etat=%d cpu_restant=%d io_restant=%d index=%d\n",
+		t,
+		processus[0].etat, processus[0].temps_cpu_restant, processus[0].temps_io_restant, processus[0].index_burst_courant,
+		processus[1].etat, processus[1].temps_cpu_restant, processus[1].temps_io_restant, processus[1].index_burst_courant);
+		// break;
 		/*
 		 * Cette boucle permet de repasser les etats des processus en éxecution en prêt à chaque tour.
 		 */
@@ -16,13 +24,14 @@ void run_sjrf(processus_t *processus, int n, resultats_t *resultats) {
 			if (processus[m].etat == ETAT_EN_EXECUTION)
 				processus[m].etat = ETAT_PRET;
 		}
-
+		// printf("Apres mis a jour des etats a t=%d", t);
 		/*
 		 * Cela permet à chaque t temps d'arrivée de mettre l'état des processus en prêt, qui permettra par la suite de
 		 * sélectionner le plus court temps de processus restant.
 		 */
 		for (int i = 0; i < n; i++) {
-			if (processus[i].temps_arrivee == t)
+			// printf("processus[%d] etat=%d temps_arrivee=%d\n", i, processus[i].etat, processus[i].temps_arrivee);
+			if (processus[i].temps_arrivee <= t && processus[i].etat == ETAT_NOUVEAU)
 				processus[i].etat = ETAT_PRET;
 		}
 
@@ -35,7 +44,7 @@ void run_sjrf(processus_t *processus, int n, resultats_t *resultats) {
 				if (processus[j].temps_io_restant == 0) {
 					int index = ++processus[j].index_burst_courant;
 					processus[j].temps_cpu_restant = processus[j].bursts[index];
-					processus[j].etat = ETAT_PRET;
+					processus[j].etat = ETAT_NOUVEAU;
 				}
 			}
 		}
@@ -54,7 +63,7 @@ void run_sjrf(processus_t *processus, int n, resultats_t *resultats) {
 			temps_non_occupation++;
 		}else {
 			if (courant->first_run == 0) {
-				courant->temps_reponse = t;
+				courant->temps_reponse = t - courant->temps_arrivee;;
 				courant->temps_debut_execution = t;
 				courant->first_run = 1;
 			}
@@ -100,7 +109,7 @@ void run_sjrf(processus_t *processus, int n, resultats_t *resultats) {
 static processus_t *selectionner_processus(processus_t *processus, int n, int t) {
 	processus_t *process = NULL;
     for (int i=0; i<n; i++) {
-		if (processus[i].temps_arrivee<=t && processus[i].etat != ETAT_TERMINE &&  processus[i].etat != ETAT_EN_ATTENTE) {
+		if (processus[i].etat == ETAT_PRET) {
 			if (process == NULL || processus[i].temps_cpu_restant < process->temps_cpu_restant ) {
 				process = &processus[i];
 			}
