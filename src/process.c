@@ -1,5 +1,10 @@
 #include "process.h"
 
+#include <stdlib.h>
+#include <stdio.h>
+
+#define MAX_BURSTS 20
+
 /*
  * Initialisation complète d’un processus.
  * Cette fonction doit être appelée après le chargement
@@ -31,6 +36,16 @@ void initialiser_processus(processus_t *p)
     p->dernier_entree_pret = 0;
 }
 
+processus_t *allocProcessus(int n) {
+    processus_t *p = (processus_t *) malloc(n*sizeof(processus_t));
+
+    if (p == NULL) {
+        fprintf(stderr, "Erreur d'allocation mémoire\n");
+        exit(1);
+    }
+
+    return p;
+}
 
 float temps_attente_moyenne(processus_t *p, int n) {
     float mean = 0;
@@ -75,4 +90,45 @@ resultats_t init_resultats() {
     resultats.moyenne_restitution = 0;
     resultats.taux_occupation = 0;
     return resultats;
+}
+
+processus_t *lireFichier(char* file, int *n) {
+    char buffer[256];
+    FILE *f = fopen(file, "r");
+
+    if (!f) {
+        perror("Erreur d'ouvrir le fichier");
+        exit(-1);
+    }
+
+    fgets(buffer, sizeof(buffer), f);
+    *n = strtol(buffer, NULL, 10);
+
+    processus_t* p = allocProcessus(*n);
+
+    for (int i = 0; i < *n; i++) {
+        fgets(buffer, sizeof(buffer), f);
+        p[i].bursts = malloc(MAX_BURSTS * sizeof(int));
+
+        char *ptr = buffer;
+        char *fin;
+        int cpt = 0;
+
+        while (*ptr != '\n' && *ptr != '\0') {
+            if (cpt == 0) {
+                p[i].temps_arrivee = strtol(ptr, &fin, 10);
+            }else {
+                p[i].bursts[cpt-1] = strtol(ptr, &fin, 10);
+            }
+
+            cpt++;
+            ptr = fin;
+        }
+
+        p[i].nb_bursts = cpt - 1;
+        initialiser_processus(&p[i]);
+    }
+
+    fclose(f);
+    return p;
 }

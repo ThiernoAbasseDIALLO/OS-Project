@@ -14,10 +14,6 @@ typedef enum {
     ETAT_TERMINE         // Exécution terminée
 } etat_processus_t;
 
-
-/* Structure représentant un processus */
-
-
 typedef struct {
     int pid;                        // Identifiant du processus
     int temps_arrivee;              // Instant ou le processus arrive dans le système
@@ -54,11 +50,9 @@ typedef struct {
 
 resultats_t init_resultats();
 
-
-/* Initialisation d’un processus   */
-
-
 void initialiser_processus(processus_t *p);
+
+processus_t *allocProcessus(int n);
 
 /**
  * @brief La fonction calcule le temps moyen des processus en attente,
@@ -72,5 +66,7 @@ float temps_attente_moyenne(processus_t *p, int n);
 void calcul_metrique(processus_t *p, int n);
 
 resultats_t calcul_resultats(processus_t *p, int n, int temps_total, int temps_n_occupation);
+
+processus_t *lireFichier(char* nom, int *n);
 
 #endif
