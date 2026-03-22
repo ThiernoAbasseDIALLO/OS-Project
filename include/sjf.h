@@ -2,17 +2,9 @@
  * @file sjf.h
  * @brief Algorithme d'ordonnancement SJF (Shortest Job First), non-préemptif.
  *
- * Le SJF choisit, parmi tous les processus prêts, celui dont le burst CPU
- * courant est le plus court. En cas d'égalité, le premier arrivé est
- * favorisé (tie-breaking FIFO).
- *
- * C'est un algorithme non-préemptif : une fois lancé, le processus
- * s'exécute jusqu'à la fin de son burst CPU, même si un processus plus
- * court arrive entre-temps (contrairement à SJRF/SRTF).
- *
- * Le SJF est optimal pour minimiser le temps d'attente moyen
- * dans un contexte de processus tous disponibles à t=0.
- *
+ * Parmi tous les processus prêts, on exécute celui dont le burst CPU
+ * courant est le plus court. Non-préemptif. Les E/S sont parallélisées.
+ * Utilise la File de queue.h pour la file des prêts.
  * Participation : Auteur1 (33%), Auteur2 (33%), Auteur3 (33%)
  */
 
@@ -22,30 +14,17 @@
 #include "process.h"
 
 /**
- * @brief Sélectionne le processus au burst CPU le plus court (SJF).
+ * @brief Exécute l'algorithme SJF non-préemptif tick par tick.
  *
- * Parcourt la file des prêts et retourne le processus dont
- * `temps_cpu_restant` est minimal. En cas d'égalité, le processus
- * à l'indice le plus bas (arrivé en premier dans la file) est choisi.
+ * Calcule tous les indicateurs de performance (temps_attente,
+ * temps_reponse, temps_restitution, taux_occupation) et les
+ * stocke dans resultats.
+ * Pas d'affichage ni d'export — géré dans main.c.
  *
- * @param file_prets  Tableau de pointeurs vers les processus prêts.
- * @param taille      Nombre de processus dans la file.
- * @return Pointeur vers le processus sélectionné, ou NULL si la file est vide.
+ * @param processus Tableau des processus à ordonnancer.
+ * @param n         Nombre de processus.
+ * @param resultats Pointeur vers la structure de résultats à remplir.
  */
-processus_t *ordonnanceur_sjf(processus_t **file_prets, int taille);
-
-/**
- * @brief Lance la simulation complète avec l'algorithme SJF non-préemptif.
- *
- * Boucle événementielle identique à FIFO mais la sélection du prochain
- * processus à exécuter se fait via `ordonnanceur_sjf` au lieu de prendre
- * simplement la tête de file.
- *
- * Les résultats sont exportés dans "resultats_sjf.csv".
- *
- * @param liste Tableau de processus à simuler (modifié en place).
- * @param n     Nombre de processus.
- */
-void simuler_sjf(processus_t *liste, int n);
+void run_sjf(processus_t *processus, int n, resultats_t *resultats);
 
 #endif /* SJF_H */

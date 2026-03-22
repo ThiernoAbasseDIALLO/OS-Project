@@ -1,21 +1,11 @@
 /**
  * @file rr.h
- * @brief Algorithme d'ordonnancement RR (Round Robin).
+ * @brief Algorithme d'ordonnancement Round Robin (RR), préemptif.
  *
- * Le Round Robin est un algorithme PRÉEMPTIF basé sur un quantum de temps :
- *   - Chaque processus reçoit le CPU pour au maximum `quantum` ms.
- *   - À l'expiration du quantum, le processus est interrompu et remis en
- *     fin de file des prêts (politique FIFO circulaire).
- *   - Un processus qui termine son burst CPU avant la fin du quantum
- *     libère le CPU immédiatement.
- *   - Les E/S sont parallélisées : un processus en attente d'E/S ne
- *     consomme pas de quantum ; quand ses E/S se terminent, il rejoint
- *     la fin de la file des prêts.
- *
- * Le quantum doit être passé en argument à `simuler_rr`.
- * Un quantum de 1 ms est équivalent au SJRF avec égalité de burst ;
- * un quantum très grand tend vers FIFO.
- *
+ * Chaque processus reçoit le CPU pour un quantum fixe.
+ * À l'expiration du quantum, il est remis en FIN de file des prêts.
+ * Les E/S sont parallélisées.
+ * Utilise la File de queue.h pour la file des prêts.
  * Participation : Auteur1 (33%), Auteur2 (33%), Auteur3 (33%)
  */
 
@@ -25,12 +15,17 @@
 #include "process.h"
 
 /**
- * @brief Simule l'ordonnancement Round Robin.
+ * @brief Exécute l'algorithme Round Robin tick par tick.
  *
- * @param liste  Tableau des processus à ordonnancer (modifié en place).
- * @param n      Nombre de processus.
- * @param quantum Durée maximale du quantum de temps (en ms, > 0).
+ * Calcule tous les indicateurs de performance (temps_attente,
+ * temps_reponse, temps_restitution, taux_occupation) et les
+ * stocke dans resultats.
+ *
+ * @param processus Tableau des processus à ordonnancer.
+ * @param n         Nombre de processus.
+ * @param quantum   Durée du quantum en ms (doit être > 0).
+ * @param resultats Pointeur vers la structure de résultats à remplir.
  */
-void simuler_rr(processus_t *liste, int n, int quantum);
+void run_rr(processus_t *processus, int n, int quantum, resultats_t *resultats);
 
 #endif /* RR_H */
