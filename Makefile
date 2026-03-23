@@ -9,15 +9,15 @@ CC      = gcc
 CFLAGS  = -Wall -std=c99 -I$(INC_DIR)
 EXEC    = simulateur
 
-# Sources : TOUS les .c SAUF fifo.c et sjf.c (déjà dans scheduler.c)
-SRC = $(SRC_DIR)/process.c \
-      $(SRC_DIR)/queue.c \
-      $(SRC_DIR)/csv.c \
-      $(SRC_DIR)/scheduler.c \
-      $(SRC_DIR)/simulateur.c \
-      $(SRC_DIR)/sjrf.c \
-      $(SRC_DIR)/rr.c \
-      $(SRC_DIR)/main.c
+# Tous les fichiers .c automatiquement
+#SRC = $(SRC_DIR)/process.c \
+#      $(SRC_DIR)/queue.c \
+#      $(SRC_DIR)/csv.c \
+#      $(SRC_DIR)/scheduler.c \
+#      $(SRC_DIR)/sjrf.c \
+#      $(SRC_DIR)/rr.c \
+#      $(SRC_DIR)/main.c
+SRC = $(wildcard $(SRC_DIR)/*.c)
 
 OBJ = $(SRC:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
