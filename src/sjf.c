@@ -6,10 +6,12 @@
  * le burst CPU courant est le plus court. Non-préemptif.
  * Les E/S sont parallélisées.
  *
- * la sélection se fait directement sur le tableau processus[], en cherchant le plus
- * petit temps_cpu_restant parmi les prêts.
+ * La variable courant est persistante : une fois sélectionné, le
+ * processus garde le CPU jusqu'à la fin de son burst, même si un
+ * processus plus court arrive entre-temps.
+ * C'est ce qui différencie SJF (non-préemptif) de SJRF (préemptif).
+ * Pas d'affichage ni d'export CSV — géré dans main.c.
  *
- * Participation : Auteur1 (33%), Auteur2 (33%), Auteur3 (33%)
  */
 
 #include <stdlib.h>
@@ -25,10 +27,13 @@
 /**
  * @brief Sélectionne le processus au plus court burst CPU restant.
  *
- * Parcourt directement le tableau processus[] — identique à le
+ * Parcourt directement le tableau processus[].
  * Critère : plus petit temps_cpu_restant parmi les processus dont
  * temps_arrivee <= t, non terminés, non en attente E/S.
- * En cas d'égalité, l'indice le plus bas est retenu .
+ * En cas d'égalité, l'indice le plus bas est retenu.
+ *
+ * Appelée UNIQUEMENT quand courant == NULL (CPU libre).
+ * Jamais appelée en cours de burst → non-préemptif garanti.
  *
  * @param processus Tableau de tous les processus.
  * @param n         Nombre de processus.
@@ -58,27 +63,21 @@ static processus_t *selectionner_processus(processus_t *processus, int n, int t)
 
 /* -------------------------------
  * Fonction exportée : run_sjf
- * -------------------------------- */
+ * ------------------------------- */
 
 /**
  * @brief Exécute l'algorithme SJF non-préemptif tick par tick.
  *
- * run_sjf() :
- *  1. Repasse EN_EXECUTION → PRET.
- *  2. Active les processus arrivant à t.
- *  3. Décrémente les E/S ; si terminées → PRET ou TERMINE.
- *  4. Sélectionne le processus SJF (plus petit temps_cpu_restant).
- *     CPU idle → temps_non_occupation++.
- *     Sinon : enregistre temps_reponse au premier accès,
- *             décrémente temps_cpu_restant,
- *             si burst fini → E/S suivante ou TERMINE.
- *  5. Incrémente temps_attente des processus PRET non élus.
+ *  1. Nouvelles arrivées → ETAT_PRET si temps_arrivee == t.
+ *  2. Décrémenter les E/S ; si terminées → ETAT_PRET ou TERMINE.
+ *  3. Si courant == NULL (CPU libre) → selectionner_processus().
+ *     La sélection n'a lieu QUE si le CPU est libre.
+ *     Un processus en cours de burst ne peut pas être interrompu.
+ *  4. Exécuter courant : premier accès → temps_reponse,
+ *     décrémenter temps_cpu_restant,
+ *     si burst fini → E/S suivante ou TERMINE, courant = NULL.
+ *  5. Accumuler temps_attente des processus PRET non élus.
  *  6. t += 1.
- *
- * Un processus EN_EXECUTION sera repassé PRET à l'étape 1
- * mais re-sélectionné à l'étape 4 tant qu'aucun plus court n'arrive.
- *
- * critère = temps_cpu_restant.
  *
  * @param processus Tableau des processus à ordonnancer.
  * @param n         Nombre de processus.
@@ -89,22 +88,17 @@ void run_sjf(processus_t *processus, int n, resultats_t *resultats)
     int t                    = 0;
     int termines             = 0;
     int temps_non_occupation = 0;
+    processus_t *courant     = NULL;  /* Persistant : garde le CPU jusqu'à fin burst */
 
     while (termines < n) {
 
-        /* ── Étape 1 : repasser EN_EXECUTION → PRET ── */
-        for (int m = 0; m < n; m++) {
-            if (processus[m].etat == ETAT_EN_EXECUTION)
-                processus[m].etat = ETAT_PRET;
-        }
-
-        /* ── Étape 2 : nouvelles arrivées ── */
+        /* ── Étape 1 : nouvelles arrivées ── */
         for (int i = 0; i < n; i++) {
             if (processus[i].temps_arrivee == t)
                 processus[i].etat = ETAT_PRET;
         }
 
-        /* ── Étape 3 : décrémenter les E/S en cours ── */
+        /* ── Étape 2 : décrémenter les E/S en cours ── */
         for (int j = 0; j < n; j++) {
             if (processus[j].etat == ETAT_EN_ATTENTE) {
                 processus[j].temps_io_restant--;
@@ -125,10 +119,18 @@ void run_sjf(processus_t *processus, int n, resultats_t *resultats)
             }
         }
 
-        /* ── Étape 4 : sélection SJF et exécution ── */
-        processus_t *courant = selectionner_processus(processus, n, t);
+        /* ── Étape 3 : sélection SJF uniquement si CPU libre ── */
+        /*
+         * On ne sélectionne un nouveau processus QUE
+         * si courant == NULL. Si un processus plus court arrive pendant
+         * l'exécution de courant, il devra attendre la fin du burst.
+         */
+        if (courant == NULL)
+            courant = selectionner_processus(processus, n, t);
 
+        /* ── Étape 4 : exécuter le processus sur le CPU ── */
         if (courant == NULL) {
+            /* CPU idle : aucun processus prêt */
             temps_non_occupation++;
         } else {
             /* Premier accès CPU → enregistrer temps de réponse */
@@ -145,7 +147,7 @@ void run_sjf(processus_t *processus, int n, resultats_t *resultats)
                 courant->index_burst_courant++;
 
                 if (courant->index_burst_courant == courant->nb_bursts) {
-                    /* Plus de burst → terminé */
+                    /* Plus de burst → processus terminé */
                     courant->temps_fin_execution = t + 1;
                     courant->etat = ETAT_TERMINE;
                     termines++;
@@ -155,6 +157,8 @@ void run_sjf(processus_t *processus, int n, resultats_t *resultats)
                         courant->bursts[courant->index_burst_courant];
                     courant->etat = ETAT_EN_ATTENTE;
                 }
+                /* CPU libéré → prochain tick cherchera le plus court */
+                courant = NULL;
             }
         }
 
