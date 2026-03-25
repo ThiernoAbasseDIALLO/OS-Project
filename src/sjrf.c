@@ -63,7 +63,7 @@ void run_sjrf(processus_t *processus, int n, resultats_t *resultats) {
 			temps_non_occupation++;
 		}else {
 			if (courant->first_run == 0) {
-				courant->temps_reponse = t - courant->temps_arrivee;;
+				courant->temps_reponse = t - courant->temps_arrivee;
 				courant->temps_debut_execution = t;
 				courant->first_run = 1;
 			}
