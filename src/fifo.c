@@ -15,8 +15,9 @@
 
 #include <stdlib.h>
 #include "fifo.h"
-#include "process.h"
+#include "../include/process.h"
 #include "queue.h"
+#include <stdio.h>
 
 
 /* ============================================================
@@ -50,7 +51,10 @@ void run_fifo(processus_t *processus, int n, resultats_t *resultats)
     initF(&f);
 
     while (termines < n) {
-
+        printf("t=%d | P1: etat=%d cpu_restant=%d io_restant=%d index=%d | P2: etat=%d cpu_restant=%d io_restant=%d index=%d\n",
+        t,
+        processus[0].etat, processus[0].temps_cpu_restant, processus[0].temps_io_restant, processus[0].index_burst_courant,
+        processus[1].etat, processus[1].temps_cpu_restant, processus[1].temps_io_restant, processus[1].index_burst_courant);
         /* ── Étape 1 : nouvelles arrivées → enfiler ── */
         /*
          * t croît de 1 en 1 : les processus sont enfilés dans l'ordre
@@ -58,7 +62,7 @@ void run_fifo(processus_t *processus, int n, resultats_t *resultats)
          * le premier arrivé — sommetF() suffit pour la sélection FIFO.
          */
         for (int i = 0; i < n; i++) {
-            if (processus[i].temps_arrivee == t) {
+            if (processus[i].temps_arrivee <= t && processus[i].etat == ETAT_NOUVEAU) {
                 processus[i].etat = ETAT_PRET;
                 enfiler(&f, &processus[i]);
             }
@@ -75,10 +79,10 @@ void run_fifo(processus_t *processus, int n, resultats_t *resultats)
                         processus[j].temps_cpu_restant =
                             processus[j].bursts[index];
                         processus[j].etat = ETAT_NOUVEAU;
-                        enfiler(&f, &processus[j]);
+                        // enfiler(&f, &processus[j]);
                     } else {
                         /* Dernier burst était une E/S → terminé */
-                        processus[j].temps_fin_execution = t;
+                        processus[j].temps_fin_execution = t+1;
                         processus[j].etat = ETAT_TERMINE;
                         termines++;
                     }
@@ -106,7 +110,7 @@ void run_fifo(processus_t *processus, int n, resultats_t *resultats)
         } else {
             /* Premier accès CPU → enregistrer temps de réponse */
             if (courant->first_run == 0) {
-                courant->temps_reponse         = t;
+                courant->temps_reponse         = t - courant->temps_arrivee;;
                 courant->temps_debut_execution = t;
                 courant->first_run             = 1;
             }
@@ -139,7 +143,7 @@ void run_fifo(processus_t *processus, int n, resultats_t *resultats)
                 processus[l].temps_attente++;
         }
 
-        t++;
+        t += 1;
     }
 
     calcul_metrique(processus, n);
