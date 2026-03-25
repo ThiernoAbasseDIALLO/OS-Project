@@ -27,6 +27,7 @@
 #include "simulateur.h"
 #include "sjrf.h"
 #include "rr.h"
+#include "fifo.h"
 
 #define MAX_BURSTS    20
 #define MAX_PROCESSES 64
@@ -115,7 +116,7 @@ int main(int argc, char *argv[])
     resultats_t r = init_resultats();
 
     if (strcmp(algo, "fifo") == 0) {
-        // simuler(liste, n, ordonnanceur_fifo, "fifo");
+        run_fifo(p, n, &r);
 
     } else if (strcmp(algo, "sjf") == 0) {
         // simuler(liste, n, ordonnanceur_sjf, "sjf");
