@@ -51,10 +51,10 @@ void run_fifo(processus_t *processus, int n, resultats_t *resultats)
     initF(&f);
 
     while (termines < n) {
-        printf("t=%d | P1: etat=%d cpu_restant=%d io_restant=%d index=%d | P2: etat=%d cpu_restant=%d io_restant=%d index=%d\n",
-        t,
-        processus[0].etat, processus[0].temps_cpu_restant, processus[0].temps_io_restant, processus[0].index_burst_courant,
-        processus[1].etat, processus[1].temps_cpu_restant, processus[1].temps_io_restant, processus[1].index_burst_courant);
+        // printf("t=%d | P1: etat=%d cpu_restant=%d io_restant=%d index=%d | P2: etat=%d cpu_restant=%d io_restant=%d index=%d\n",
+        // t,
+        // processus[0].etat, processus[0].temps_cpu_restant, processus[0].temps_io_restant, processus[0].index_burst_courant,
+        // processus[1].etat, processus[1].temps_cpu_restant, processus[1].temps_io_restant, processus[1].index_burst_courant);
         /* ── Étape 1 : nouvelles arrivées → enfiler ── */
         /*
          * t croît de 1 en 1 : les processus sont enfilés dans l'ordre
@@ -110,7 +110,7 @@ void run_fifo(processus_t *processus, int n, resultats_t *resultats)
         } else {
             /* Premier accès CPU → enregistrer temps de réponse */
             if (courant->first_run == 0) {
-                courant->temps_reponse         = t - courant->temps_arrivee;;
+                courant->temps_reponse         = t - courant->temps_arrivee;
                 courant->temps_debut_execution = t;
                 courant->first_run             = 1;
             }

@@ -15,9 +15,9 @@
  */
 
 #include <stdlib.h>
-#include "sjf.h"
-#include "process.h"
-#include "queue.h"
+#include "../include/sjf.h"
+#include "../include/process.h"
+#include <stdio.h>
 
 
 /* ----------------------------------
@@ -45,9 +45,7 @@ static processus_t *selectionner_processus(processus_t *processus, int n, int t)
     processus_t *elu = NULL;
 
     for (int i = 0; i < n; i++) {
-        if (processus[i].temps_arrivee <= t &&
-            processus[i].etat != ETAT_TERMINE &&
-            processus[i].etat != ETAT_EN_ATTENTE)
+        if (processus[i].temps_arrivee <= t && processus[i].etat == ETAT_PRET)
         {
             if (elu == NULL ||
                 processus[i].temps_cpu_restant < elu->temps_cpu_restant)
@@ -91,10 +89,14 @@ void run_sjf(processus_t *processus, int n, resultats_t *resultats)
     processus_t *courant     = NULL;  /* Persistant : garde le CPU jusqu'à fin burst */
 
     while (termines < n) {
+        printf("t=%d | P1: etat=%d cpu_restant=%d io_restant=%d index=%d | P2: etat=%d cpu_restant=%d io_restant=%d index=%d\n",
+        t,
+        processus[0].etat, processus[0].temps_cpu_restant, processus[0].temps_io_restant, processus[0].index_burst_courant,
+        processus[1].etat, processus[1].temps_cpu_restant, processus[1].temps_io_restant, processus[1].index_burst_courant);
 
         /* ── Étape 1 : nouvelles arrivées ── */
         for (int i = 0; i < n; i++) {
-            if (processus[i].temps_arrivee == t)
+            if (processus[i].temps_arrivee <= t && processus[i].etat == ETAT_NOUVEAU)
                 processus[i].etat = ETAT_PRET;
         }
 
@@ -108,10 +110,10 @@ void run_sjf(processus_t *processus, int n, resultats_t *resultats)
                         /* Burst suivant = CPU */
                         processus[j].temps_cpu_restant =
                             processus[j].bursts[index];
-                        processus[j].etat = ETAT_PRET;
+                        processus[j].etat = ETAT_NOUVEAU;
                     } else {
                         /* Dernier burst était une E/S → terminé */
-                        processus[j].temps_fin_execution = t;
+                        processus[j].temps_fin_execution = t + 1;
                         processus[j].etat = ETAT_TERMINE;
                         termines++;
                     }
@@ -135,7 +137,7 @@ void run_sjf(processus_t *processus, int n, resultats_t *resultats)
         } else {
             /* Premier accès CPU → enregistrer temps de réponse */
             if (courant->first_run == 0) {
-                courant->temps_reponse         = t;
+                courant->temps_reponse         = t - courant->temps_arrivee;
                 courant->temps_debut_execution = t;
                 courant->first_run             = 1;
             }
@@ -148,7 +150,7 @@ void run_sjf(processus_t *processus, int n, resultats_t *resultats)
 
                 if (courant->index_burst_courant == courant->nb_bursts) {
                     /* Plus de burst → processus terminé */
-                    courant->temps_fin_execution = t + 1;
+                    courant->temps_fin_execution = t+1;
                     courant->etat = ETAT_TERMINE;
                     termines++;
                 } else {
@@ -168,7 +170,7 @@ void run_sjf(processus_t *processus, int n, resultats_t *resultats)
                 processus[l].temps_attente++;
         }
 
-        t++;
+        t += 1;
     }
 
     calcul_metrique(processus, n);
