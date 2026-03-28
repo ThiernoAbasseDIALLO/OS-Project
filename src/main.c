@@ -28,6 +28,8 @@
 #include "sjrf.h"
 #include "rr.h"
 #include "fifo.h"
+#include "sjf.h"
+#include "output.h"
 
 #define MAX_BURSTS    20
 #define MAX_PROCESSES 64
@@ -119,7 +121,7 @@ int main(int argc, char *argv[])
         run_fifo(p, n, &r);
 
     } else if (strcmp(algo, "sjf") == 0) {
-        // simuler(liste, n, ordonnanceur_sjf, "sjf");
+        run_sjf(p, n, &r);
 
     } else if (strcmp(algo, "sjrf") == 0) {
         run_sjrf(p, n, &r);
@@ -157,5 +159,7 @@ int main(int argc, char *argv[])
     printf("Temps moyenne de reponse : %f\n", r.moyenne_reponse);
     printf("Taux d'occupation du cpu : %f\n", r.taux_occupation);
 
+
+    exporter_csv(algo, r);
     return 0;
 }
