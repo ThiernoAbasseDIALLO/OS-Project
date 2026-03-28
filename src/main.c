@@ -148,18 +148,8 @@ int main(int argc, char *argv[])
         return 1;
     }
 
-    for (int i = 0; i < n; i++) {
-        printf("P%d : fin=%d attente=%d reponse=%d restitution=%d\n",
-            i, p[i].temps_fin_execution, p[i].temps_attente,
-            p[i].temps_reponse, p[i].temps_restitution);
-    }
+    afficher_resultats(p, n, r);
 
-    printf("Temps moyenne d'attente : %f\n", r.moyenne_attente);
-    printf("Temps moyenne de restitution : %f\n", r.moyenne_restitution);
-    printf("Temps moyenne de reponse : %f\n", r.moyenne_reponse);
-    printf("Taux d'occupation du cpu : %f\n", r.taux_occupation);
-
-
-    exporter_csv(algo, r);
+    // exporter_csv(algo, r);
     return 0;
 }

@@ -53,7 +53,7 @@ void enfiler(File *f, processus_t *p) {
 void defiler(File *f) {
     if (!estVideF(*f)) {
         Liste cel = f->tete;
-        if (f->tete = f->queue)
+        if (f->tete == f->queue)
             f->tete = f->queue = NULL;
         else
             f->tete = f->tete->suivant;

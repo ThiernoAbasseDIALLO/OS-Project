@@ -37,7 +37,7 @@ void exporter_csv(const char *nom_algo, resultats_t r) {
     }
 
     /* Ecriture de l'en-tête du fichier CSV */
-    n = snprintf(buf, SIZE, "Indicateur, Valeur\n");
+    n = snprintf(buf, SIZE, "Indicateur, Valeur en (ms)\n");
     if (write(desc, buf, n) == -1) {
         perror("Erreur d'écriture");
         close(desc);
@@ -73,4 +73,19 @@ void exporter_csv(const char *nom_algo, resultats_t r) {
 
     close(desc);
     printf("Exportation des résultats réussi, %s\n", filename);
+}
+
+void afficher_resultats(processus_t *p, int n, resultats_t r) {
+    printf("pid, t_arr, t_att, t_rep, t_rest, t_fin\n");
+
+    for (int i = 0; i < n; i++) {
+        printf("%d, %d, %d, %d, %d, %d\n",
+            (i+1), p[i].temps_arrivee , p[i].temps_attente,
+            p[i].temps_reponse, p[i].temps_restitution, p[i].temps_fin_execution);
+    }
+
+    printf("Moy_att , %.2f\n", r.moyenne_attente);
+    printf("Moy_rest , %.2f\n", r.moyenne_restitution);
+    printf("Moy_rep , %.2f\n", r.moyenne_reponse);
+    printf("T_occ , %.2f\n", r.taux_occupation);
 }

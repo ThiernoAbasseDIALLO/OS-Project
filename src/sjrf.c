@@ -12,10 +12,10 @@ void run_sjrf(processus_t *processus, int n, resultats_t *resultats) {
 	// printf("apres declarations t=%d termines=%d\n", t, termines);
 	while (termines < n) {
 		// printf("t=%d etat0=%d etat1=%d\n", t, processus[0].etat, processus[1].etat);
-		printf("t=%d | P1: etat=%d cpu_restant=%d io_restant=%d index=%d | P2: etat=%d cpu_restant=%d io_restant=%d index=%d\n",
-		t,
-		processus[0].etat, processus[0].temps_cpu_restant, processus[0].temps_io_restant, processus[0].index_burst_courant,
-		processus[1].etat, processus[1].temps_cpu_restant, processus[1].temps_io_restant, processus[1].index_burst_courant);
+		// printf("t=%d | P1: etat=%d cpu_restant=%d io_restant=%d index=%d | P2: etat=%d cpu_restant=%d io_restant=%d index=%d\n",
+		// t,
+		// processus[0].etat, processus[0].temps_cpu_restant, processus[0].temps_io_restant, processus[0].index_burst_courant,
+		// processus[1].etat, processus[1].temps_cpu_restant, processus[1].temps_io_restant, processus[1].index_burst_courant);
 		// break;
 		/*
 		 * Cette boucle permet de repasser les etats des processus en éxecution en prêt à chaque tour.
