@@ -89,10 +89,10 @@ void run_sjf(processus_t *processus, int n, resultats_t *resultats)
     processus_t *courant     = NULL;  /* Persistant : garde le CPU jusqu'à fin burst */
 
     while (termines < n) {
-        printf("t=%d | P1: etat=%d cpu_restant=%d io_restant=%d index=%d | P2: etat=%d cpu_restant=%d io_restant=%d index=%d\n",
-        t,
-        processus[0].etat, processus[0].temps_cpu_restant, processus[0].temps_io_restant, processus[0].index_burst_courant,
-        processus[1].etat, processus[1].temps_cpu_restant, processus[1].temps_io_restant, processus[1].index_burst_courant);
+        // printf("t=%d | P1: etat=%d cpu_restant=%d io_restant=%d index=%d | P2: etat=%d cpu_restant=%d io_restant=%d index=%d\n",
+        // t,
+        // processus[0].etat, processus[0].temps_cpu_restant, processus[0].temps_io_restant, processus[0].index_burst_courant,
+        // processus[1].etat, processus[1].temps_cpu_restant, processus[1].temps_io_restant, processus[1].index_burst_courant);
 
         /* ── Étape 1 : nouvelles arrivées ── */
         for (int i = 0; i < n; i++) {
