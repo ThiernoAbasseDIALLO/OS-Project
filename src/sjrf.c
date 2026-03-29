@@ -1,9 +1,10 @@
 #include <stdio.h>
 #include "../include/sjrf.h"
+#include "output.h"
 
 static processus_t *selectionner_processus(processus_t *processus, int n, int t);
 
-void run_sjrf(processus_t *processus, int n, resultats_t *resultats) {
+void run_sjrf(processus_t *processus, int n, resultats_t *resultats, etat_processus_t **gantt) {
 	// printf("debut run_sjrf n=%d\n", n);
 	int t = 0;
 	int termines = 0;
@@ -42,6 +43,7 @@ void run_sjrf(processus_t *processus, int n, resultats_t *resultats) {
 			if (processus[j].etat == ETAT_EN_ATTENTE) {
 				processus[j].temps_io_restant--;
 				if (processus[j].temps_io_restant == 0) {
+					gantt[j][t] = ETAT_EN_ATTENTE;
 					int index = ++processus[j].index_burst_courant;
 					processus[j].temps_cpu_restant = processus[j].bursts[index];
 					processus[j].etat = ETAT_NOUVEAU;
@@ -61,6 +63,7 @@ void run_sjrf(processus_t *processus, int n, resultats_t *resultats) {
 		processus_t *courant = selectionner_processus(processus, n, t);
 		if (courant == NULL) {
 			temps_non_occupation++;
+			remplir_gantt(gantt, processus, n, t);
 		}else {
 			if (courant->first_run == 0) {
 				courant->temps_reponse = t - courant->temps_arrivee;
@@ -70,6 +73,7 @@ void run_sjrf(processus_t *processus, int n, resultats_t *resultats) {
 
 			courant->etat = ETAT_EN_EXECUTION;
 			courant->temps_cpu_restant--;
+			remplir_gantt(gantt, processus, n, t);
 
 			if (courant->temps_cpu_restant == 0) {
 				courant->index_burst_courant++;

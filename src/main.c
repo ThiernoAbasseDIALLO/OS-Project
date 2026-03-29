@@ -30,9 +30,11 @@
 #include "fifo.h"
 #include "sjf.h"
 #include "output.h"
+#include "matrice.h"
 
 #define MAX_BURSTS    20
 #define MAX_PROCESSES 64
+#define MAX_TEMPS 100
 
 // /**
 //  * @brief Charge les processus depuis un fichier texte.
@@ -112,19 +114,21 @@ int main(int argc, char *argv[])
     int n;
     printf("avant lireFichier\n");
     processus_t* p = lireFichier(fichier, &n);
+    etat_processus_t **gantt = allocMat(n, MAX_TEMPS);
+    initMat(MAX_TEMPS, n, gantt);
 
     printf("=== Simulation : %d processus, algorithme %s ===\n\n", n, algo);
 
     resultats_t r = init_resultats();
 
     if (strcmp(algo, "fifo") == 0) {
-        run_fifo(p, n, &r);
+        run_fifo(p, n, &r, gantt);
 
     } else if (strcmp(algo, "sjf") == 0) {
         run_sjf(p, n, &r);
 
     } else if (strcmp(algo, "sjrf") == 0) {
-        run_sjrf(p, n, &r);
+        run_sjrf(p, n, &r, gantt);
 
     } else if (strcmp(algo, "rr") == 0) {
         if (argc < 4) {
@@ -149,6 +153,8 @@ int main(int argc, char *argv[])
     }
 
     afficher_resultats(p, n, r);
+    afficher_gantt(gantt, p, n, 19);
+    gantt = libMat(n, gantt);
 
     // exporter_csv(algo, r);
     return 0;

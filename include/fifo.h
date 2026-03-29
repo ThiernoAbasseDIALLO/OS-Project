@@ -25,7 +25,8 @@
  * @param processus Tableau des processus à ordonnancer.
  * @param n         Nombre de processus.
  * @param resultats Pointeur vers la structure de résultats à remplir.
+ * @param gantt
  */
-void run_fifo(processus_t *processus, int n, resultats_t *resultats);
+void run_fifo(processus_t *processus, int n, resultats_t *resultats, etat_processus_t** gantt);
 
 #endif /* FIFO_H */

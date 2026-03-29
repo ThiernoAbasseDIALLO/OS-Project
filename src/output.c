@@ -89,3 +89,50 @@ void afficher_resultats(processus_t *p, int n, resultats_t r) {
     printf("Moy_rep , %.2f\n", r.moyenne_reponse);
     printf("T_occ , %.2f\n", r.taux_occupation);
 }
+
+void remplir_gantt(etat_processus_t **gantt, processus_t *processus, int n, int t) {
+    for (int i=0; i<n; i++) {
+        if (gantt[i][t] == ETAT_NOUVEAU)
+            gantt[i][t] = processus[i].etat;
+    }
+}
+
+void afficher_gantt(etat_processus_t **gantt, processus_t *processus,int n, int t_max) {
+    printf("Temps\t");
+    for (int t=0; t<t_max; t++) {
+        printf("%d\t", t);
+    }
+
+    for (int i=0; i<n; i++) {
+        printf("\nP%d\t", (i+1));
+        for (int t=0; t<t_max; t++) {
+            switch (gantt[i][t]) {
+                case ETAT_EN_EXECUTION:
+                    printf("%s\t", "UC");
+                    break;
+                case ETAT_EN_ATTENTE:
+                    printf("%s\t", "ES");
+                    break;
+                case ETAT_PRET:
+                    printf("%s\t", "W");
+                    break;
+                default:
+                    printf(" \t");
+                    break;                    
+            }
+        }
+    }
+
+    printf("\nCPU\t");
+    for (int t=0; t<t_max; t++) {
+        int cpu_occupe = 0;
+        for (int i = 0; i < n; i++) {
+            if (gantt[i][t] == ETAT_EN_EXECUTION) {
+                cpu_occupe = 1;
+                break;
+            }
+        }
+        printf("%s\t", cpu_occupe ? "###" : "   ");
+    }
+    printf("\n");
+}

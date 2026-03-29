@@ -1,8 +1,9 @@
 #include "matrice.h"
+#include <stdlib.h>
 
 etat_processus_t** allocMat(int nbLig, int nbCol){
 	etat_processus_t** mat;
-	mat = (TElement**)malloc(nbLig*sizeof(TElement*));
+	mat = (etat_processus_t**)malloc(nbLig*sizeof(etat_processus_t*));
 	
 	if(mat == NULL)
 		perror("Probleme d'allocation");
@@ -30,7 +31,7 @@ void initMat(int nbCol, int nbLig, etat_processus_t** mat) {
 
 	for (int i=0; i<nbLig; i++) {
 		for (int j=0; j<nbCol; j++) {
-			mat[i][j] = 0;
+			mat[i][j] = ETAT_NOUVEAU;
 		}
 	}
 }
