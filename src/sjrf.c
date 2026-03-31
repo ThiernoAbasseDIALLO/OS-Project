@@ -101,6 +101,7 @@ void run_sjrf(processus_t *processus, int n, resultats_t *resultats, etat_proces
 
 	calcul_metrique(processus, n);
 	*resultats = calcul_resultats(processus, n, t, temps_non_occupation);
+	resultats->t_max = t;
 }
 
 /**

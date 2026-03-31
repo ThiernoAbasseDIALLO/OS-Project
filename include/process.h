@@ -46,6 +46,7 @@ typedef struct {
     float moyenne_reponse;
     float moyenne_restitution;
     float taux_occupation;
+    int t_max;
 } resultats_t;
 
 resultats_t init_resultats();

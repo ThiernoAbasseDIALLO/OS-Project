@@ -90,6 +90,7 @@ resultats_t init_resultats() {
     resultats.moyenne_reponse = 0;
     resultats.moyenne_restitution = 0;
     resultats.taux_occupation = 0;
+    resultats.t_max = 0;
     return resultats;
 }
 

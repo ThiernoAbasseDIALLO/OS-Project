@@ -175,4 +175,5 @@ void run_sjf(processus_t *processus, int n, resultats_t *resultats)
 
     calcul_metrique(processus, n);
     *resultats = calcul_resultats(processus, n, t, temps_non_occupation);
+    resultats->t_max = t;
 }

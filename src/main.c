@@ -153,7 +153,7 @@ int main(int argc, char *argv[])
     }
 
     afficher_resultats(p, n, r);
-    afficher_gantt(gantt, p, n, 19);
+    afficher_gantt(gantt, p, n, r.t_max);
     gantt = libMat(n, gantt);
 
     // exporter_csv(algo, r);
