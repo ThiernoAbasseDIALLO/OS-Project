@@ -17,7 +17,7 @@
 #include <stdlib.h>
 #include "../include/sjf.h"
 #include "../include/process.h"
-#include <stdio.h>
+#include "../include/output.h"
 
 
 /* ----------------------------------
@@ -81,8 +81,7 @@ static processus_t *selectionner_processus(processus_t *processus, int n, int t)
  * @param n         Nombre de processus.
  * @param resultats Pointeur vers la structure de résultats à remplir.
  */
-void run_sjf(processus_t *processus, int n, resultats_t *resultats)
-{
+void run_sjf(processus_t *processus, int n, resultats_t *resultats, etat_processus_t** gantt){
     int t                    = 0;
     int termines             = 0;
     int temps_non_occupation = 0;
@@ -105,6 +104,7 @@ void run_sjf(processus_t *processus, int n, resultats_t *resultats)
             if (processus[j].etat == ETAT_EN_ATTENTE) {
                 processus[j].temps_io_restant--;
                 if (processus[j].temps_io_restant == 0) {
+                    gantt[j][t] = ETAT_EN_ATTENTE;
                     int index = ++processus[j].index_burst_courant;
                     if (index < processus[j].nb_bursts) {
                         /* Burst suivant = CPU */
@@ -134,6 +134,7 @@ void run_sjf(processus_t *processus, int n, resultats_t *resultats)
         if (courant == NULL) {
             /* CPU idle : aucun processus prêt */
             temps_non_occupation++;
+            remplir_gantt(gantt, processus, n, t);
         } else {
             /* Premier accès CPU → enregistrer temps de réponse */
             if (courant->first_run == 0) {
@@ -144,6 +145,7 @@ void run_sjf(processus_t *processus, int n, resultats_t *resultats)
 
             courant->etat = ETAT_EN_EXECUTION;
             courant->temps_cpu_restant--;
+            remplir_gantt(gantt, processus, n, t);
 
             if (courant->temps_cpu_restant == 0) {
                 courant->index_burst_courant++;

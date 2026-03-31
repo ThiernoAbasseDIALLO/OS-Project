@@ -25,6 +25,6 @@
  * @param n         Nombre de processus.
  * @param resultats Pointeur vers la structure de résultats à remplir.
  */
-void run_sjf(processus_t *processus, int n, resultats_t *resultats);
+void run_sjf(processus_t *processus, int n, resultats_t *resultats, etat_processus_t **gantt);
 
 #endif /* SJF_H */

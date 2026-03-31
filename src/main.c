@@ -125,7 +125,7 @@ int main(int argc, char *argv[])
         run_fifo(p, n, &r, gantt);
 
     } else if (strcmp(algo, "sjf") == 0) {
-        run_sjf(p, n, &r);
+        run_sjf(p, n, &r, gantt);
 
     } else if (strcmp(algo, "sjrf") == 0) {
         run_sjrf(p, n, &r, gantt);
