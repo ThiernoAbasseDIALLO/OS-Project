@@ -1,3 +1,10 @@
+/**
+ * @file output.c
+ * @brief Fonctions d'affichage et d'exportation des données de simulation.
+ *
+ * Participation : 33% pour les 3 auteurs (DIALLO, DOSSO, MAREGA).
+ */
+
 #include <stdio.h>
 #include "output.h"
 #include <sys/types.h>
@@ -21,50 +28,49 @@ void exporter_csv(const char *nom_algo, resultats_t r) {
     time_t t;
     char date[20];
 
+    /* Génération d'un timestamp pour éviter d'écraser les fichiers précédents */
     t = time(NULL);
     struct tm *tm_info = localtime(&t);
-
     strftime(date, sizeof(date), "%y%m%d_%H%M", tm_info);
 
     /* Creer le nom du fichier */
     snprintf(filename, sizeof(filename), "resultats_%s_%s.csv", nom_algo, date);
 
-    /* Ouverture du fichier */
+    /* Création du fichier avec l'appel système open */
+    // O_EXCL assure que le fichier ne sera pas écrasé s'il existe déjà
     desc = open(filename, O_WRONLY | O_CREAT | O_EXCL, 644);
     if (desc == -1) {
         perror("Ouverture du fichier de destination impossible");
         close(desc);
     }
 
-    /* Ecriture de l'en-tête du fichier CSV */
+    /* 3. Écriture des données formatées par blocs via write */
+    // En-tête
     n = snprintf(buf, SIZE, "Indicateur, Valeur en (ms)\n");
     if (write(desc, buf, n) == -1) {
         perror("Erreur d'écriture");
         close(desc);
     }
 
-    /* Temps moyen d'attente */
+    // Données (Attente, Réponse, Restitution, Occupation)
     n = snprintf(buf, SIZE, "Temps moyen d'attente, %.2f\n", r.moyenne_attente);
     if (write(desc, buf, n) == -1) {
         perror("Erreur d'écriture");
         close(desc);
     }
 
-    /* Temps de reponse moyen */
     n = snprintf(buf, SIZE, "Temps de réponse moyen, %.2f\n", r.moyenne_reponse);
     if (write(desc, buf, n) == -1) {
         perror("Erreur d'écriture");
         close(desc);
     }
 
-    /* Temps de restitution moyen */
     n = snprintf(buf, SIZE, "Temps de restitution moyen, %.2f\n", r.moyenne_restitution);
     if (write(desc, buf, n) == -1) {
         perror("Erreur d'écriture");
         close(desc);
     }
 
-    /* Temps d'occupation CPU */
     n = snprintf(buf, SIZE, "Temps d'occupation CPU, %.2f\n", r.taux_occupation);
     if (write(desc, buf, n) == -1) {
         perror("Erreur d'écriture");
@@ -76,6 +82,8 @@ void exporter_csv(const char *nom_algo, resultats_t r) {
 }
 
 void afficher_resultats(processus_t *p, int n, resultats_t r) {
+    /* Affichage console simple formaté en colonnes */
+    printf("\n--- RESULTATS DE LA SIMULATION ---\n");
     printf("pid, t_arr, t_att, t_rep, t_rest, t_fin\n");
 
     for (int i = 0; i < n; i++) {
@@ -84,6 +92,8 @@ void afficher_resultats(processus_t *p, int n, resultats_t r) {
             p[i].temps_reponse, p[i].temps_restitution, p[i].temps_fin_execution);
     }
 
+    printf("----------------------------------\n");
+
     printf("Moy_att , %.2f\n", r.moyenne_attente);
     printf("Moy_rest , %.2f\n", r.moyenne_restitution);
     printf("Moy_rep , %.2f\n", r.moyenne_reponse);
@@ -91,6 +101,7 @@ void afficher_resultats(processus_t *p, int n, resultats_t r) {
 }
 
 void remplir_gantt(etat_processus_t **gantt, processus_t *processus, int n, int t) {
+    /* Capture l'état de chaque processus pour le tick 't' */
     for (int i=0; i<n; i++) {
         if (gantt[i][t] == ETAT_NOUVEAU)
             gantt[i][t] = processus[i].etat;
@@ -98,6 +109,7 @@ void remplir_gantt(etat_processus_t **gantt, processus_t *processus, int n, int 
 }
 
 void afficher_gantt(etat_processus_t **gantt, processus_t *processus,int n, int t_max) {
+    /* Affichage visuel : UC = CPU, ES = Entrée/Sortie, W = Wait (Prêt) */
     printf("Temps\t");
     for (int t=0; t<t_max; t++) {
         printf("%d\t", t);
