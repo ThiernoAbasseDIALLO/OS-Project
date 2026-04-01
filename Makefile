@@ -9,6 +9,8 @@ CC      = gcc
 CFLAGS  = -Wall -std=c99 -I$(INC_DIR)
 EXEC    = simulateur
 
+all: $(OBJ_DIR) $(EXEC)
+
 # Tous les fichiers .c automatiquement
 #SRC = $(SRC_DIR)/process.c \
 #      $(SRC_DIR)/queue.c \
@@ -24,8 +26,6 @@ OBJ = $(SRC:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 # Création du dossier obj si nécessaire
 $(OBJ_DIR):
 	mkdir -p $(OBJ_DIR)
-
-all: $(OBJ_DIR) $(EXEC)
 
 $(EXEC): $(OBJ)
 	$(CC) $(OBJ) -o $(EXEC)
@@ -54,3 +54,4 @@ install:
 
 uninstall:
 	rm -f /usr/local/bin/$(EXEC) $(HOME)/bin/$(EXEC)
+	@echo ">>> Desinstallation bien reussi!!";
