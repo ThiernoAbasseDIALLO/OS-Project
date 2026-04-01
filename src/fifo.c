@@ -1,16 +1,17 @@
 /**
  * @file fifo.c
- * @brief Logique de l'algorithme d'ordonnancement FIFO (FCFS).
+ * @brief Logique de l'algorithme d'ordonnancement First-Come, First-Served (FCFS).
  *
  * Stratégie : le processus qui arrive le premier est le premier servi.
  * Non-préemptif. Les E/S sont parallélisées.
  *
- * Même structure tick par tick que sjrf.c.
+ * @sa queue.h
  * Utilise la File de queue.h (initF, enfiler, defiler, sommetF, estVideF).
  * La variable courant est persistante : si le processus n'a pas fini
  * son burst, il garde le CPU au tick suivant sans repasser par la file.
  * Pas d'affichage ni d'export CSV — géré dans main.c.
  *
+ * Participation : 33% pour les 3 auteurs (DIALLO, DOSSO, MAREGA).
  */
 
 #include <stdlib.h>
@@ -20,27 +21,6 @@
 #include "../include/output.h"
 
 
-/* -------------------------------
- * Fonction exportée : run_fifo
- * --------------------------------- */
-
-/**
- * @brief Exécute l'algorithme FIFO tick par tick.
- *
- *  1. Nouvelles arrivées → enfiler dans la File.
- *  2. Décrémenter les E/S ; si terminées → enfile en queue ou TERMINE.
- *  3. Si courant == NULL (CPU libre) → sommetF() + defiler().
- *  4. Exécuter courant : premier accès → temps_reponse,
- *     décrémenter temps_cpu_restant,
- *     si burst fini → E/S suivante ou TERMINE, courant = NULL.
- *  5. Accumuler temps_attente des processus PRET non élus.
- *  6. t += 1.
- *
- * @param processus Tableau des processus à ordonnancer.
- * @param n         Nombre de processus.
- * @param resultats Pointeur vers la structure de résultats à remplir.
- * @param gantt
- */
 void run_fifo(processus_t *processus, int n, resultats_t *resultats, etat_processus_t** gantt)
 {
     int t                    = 0;
