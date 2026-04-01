@@ -37,3 +37,20 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 clean:
 	rm -rf $(OBJ_DIR) $(EXEC)
 	@echo ">>> Nettoyage effectué"
+
+doc:
+	doxygen Doxyfile
+	@echo ">>> Documentation generee dans doc/html"
+
+install:
+	@if [ -w /usr/local/bin ]; then \
+        cp simulateur /usr/local/bin; \
+        echo ">>> Installé dans /usr/local/bin"; \
+    else \
+        mkdir -p $(HOME)/bin; \
+        cp simulateur $(HOME)/bin; \
+        echo ">>> Installé dans $(HOME)/bin"; \
+	fi
+
+uninstall:
+	rm -f /usr/local/bin/$(EXEC) $(HOME)/bin/$(EXEC)
