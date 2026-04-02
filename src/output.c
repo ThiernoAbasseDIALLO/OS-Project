@@ -38,7 +38,7 @@ void exporter_csv(const char *nom_algo, resultats_t r) {
 
     /* Création du fichier avec l'appel système open */
     // O_EXCL assure que le fichier ne sera pas écrasé s'il existe déjà
-    desc = open(filename, O_WRONLY | O_CREAT | O_EXCL, 644);
+    desc = open(filename, O_WRONLY | O_CREAT | O_EXCL, 0644);
     if (desc == -1) {
         perror("Ouverture du fichier de destination impossible");
         close(desc);
