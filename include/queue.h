@@ -4,34 +4,43 @@
 #include "process.h"
 #include <stdbool.h>
 
-
+/**
+ * @brief Structure d'une Cellule de la file.
+ * @details Chaque cellule contient un pointeur vers un processus et
+ * un pointeur vers la cellule suivante dans la chaîne.
+ */
 typedef struct cellule{
-    processus_t *elements;  // Pointeur vers le processus stocké dans la cellule
-    struct cellule *suivant;
+    processus_t *elements;      /**< Le processus stocké dans cette cellule */
+    struct cellule *suivant;    /**< Pointeur vers la cellule suivante */
 }*Liste;
 
 /**
- * Soit de cette structure tête et queue pour nous faciliter les opértions d'enfiler et de défiler.
+ * @brief Structure de contrôle de la File.
+ * @details Utilise deux pointeurs (tete et queue) pour permettre un
+ * enfilement et un défilement en temps constant O(1).
  */
 typedef struct {
     Liste tete;
     Liste queue;
 }File;
 
+/* --- Fonctions de gestion de la mémoire --- */
+
+/**
+ * @brief Fait l'allocation mémoire pour une nouvelle cellule.
+ * @return Retourne un pointeur vers une cellule (Liste).
+ */
+Liste allocMem();
+
+void libMem(Liste *l);
+
+/* --- Fonctions de manipulation de la file --- */
 /**
  * @brief Permet de tester si une Liste est vide ou non.
  * @param l Une liste en entrée
  * @return Vrai si la liste est vide sinon faux
  */
 bool estVideL(Liste l);
-
-/**
- *  @brief Fait l'allocation mémoire pour une nouvelle cellule.
- * @return Retourne un pointeur vers une cellule (Liste).
- */
-Liste allocMem();
-
-void libMem(Liste *l);
 
 /**
  * @brief Initialise une Liste à NULL
@@ -68,7 +77,7 @@ void defiler(File *f);
 /**
  * @brief Permet d'avoir le premier processus celui qui est en tête de la file.
  * @param f Une File f.
- * @return Retourne le premier processus de la file.
+ * @return Processus le premier processus de la file.
  */
 processus_t* sommetF(File f);
 

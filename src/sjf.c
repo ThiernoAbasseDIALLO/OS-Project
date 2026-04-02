@@ -12,17 +12,13 @@
  * C'est ce qui différencie SJF (non-préemptif) de SJRF (préemptif).
  * Pas d'affichage ni d'export CSV — géré dans main.c.
  *
+ * Participation : 33% pour les 3 auteurs (DIALLO, DOSSO, MAREGA).
  */
 
 #include <stdlib.h>
 #include "../include/sjf.h"
 #include "../include/process.h"
 #include "../include/output.h"
-
-
-/* ----------------------------------
- * Fonction interne : sélection SJF
- * ---------------------------------- */
 
 /**
  * @brief Sélectionne le processus au plus court burst CPU restant.
@@ -57,11 +53,6 @@ static processus_t *selectionner_processus(processus_t *processus, int n, int t)
 
     return elu;
 }
-
-
-/* -------------------------------
- * Fonction exportée : run_sjf
- * ------------------------------- */
 
 /**
  * @brief Exécute l'algorithme SJF non-préemptif tick par tick.
