@@ -75,10 +75,7 @@ resultats_t calcul_resultats(processus_t *p, int n, int temps_total, int temps_n
         res.moyenne_reponse = mean_reponse / n;
     }
 
-    res.moyenne_restitution = mean_restitution;
-    res.moyenne_reponse = mean_reponse;
-
-    /* Formule du taux d'occupation : (Temps total - Temps IDLE) / Temps total */
+    /* Formule du taux d'occupation : (Temps total - Temps de non-occupation) / Temps total */
     if (temps_total > 0) {
         res.taux_occupation = (float)(temps_total - temps_n_occupation) / temps_total;
     }

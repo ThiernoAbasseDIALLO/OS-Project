@@ -23,8 +23,6 @@
 #include <string.h>
 
 #include "process.h"
-#include "scheduler.h"
-#include "simulateur.h"
 #include "sjrf.h"
 #include "rr.h"
 #include "fifo.h"
@@ -36,57 +34,6 @@
 #define MAX_PROCESSES 64
 #define MAX_TEMPS 100
 
-// /**
-//  * @brief Charge les processus depuis un fichier texte.
-//  * @param chemin     Chemin du fichier source.
-//  * @param liste      Tableau de sortie (taille MAX_PROCESSES).
-//  * @param bursts_tmp Stockage temporaire des bursts lus.
-//  * @return Nombre de processus charges, -1 en cas d'erreur.
-//  */
-// static int charger_processus(const char *chemin,
-//                               processus_t *liste,
-//                               int bursts_tmp[][MAX_BURSTS])
-// {
-//     FILE *f = fopen(chemin, "r");
-//     if (!f) { perror("Erreur ouverture fichier"); return -1; }
-//
-//     int n = 0;
-//     char ligne[256];
-//
-//     while (fgets(ligne, sizeof(ligne), f) && n < MAX_PROCESSES) {
-//         if (ligne[0] == '#' || strlen(ligne) < 2) continue;
-//
-//         char *token = strtok(ligne, " \t\n");
-//         if (!token) continue;
-//         liste[n].pid = atoi(token);
-//
-//         token = strtok(NULL, " \t\n");
-//         if (!token) continue;
-//         liste[n].temps_arrivee = atoi(token);
-//
-//         int nb = 0;
-//         while ((token = strtok(NULL, " \t\n")) && nb < MAX_BURSTS)
-//             bursts_tmp[n][nb++] = atoi(token);
-//
-//         if (nb == 0) {
-//             fprintf(stderr, "Processus %d sans burst, ignore.\n", liste[n].pid);
-//             continue;
-//         }
-//
-//         liste[n].bursts    = malloc(sizeof(int) * nb);
-//         if (!liste[n].bursts) { perror("malloc bursts"); fclose(f); return -1; }
-//         liste[n].nb_bursts = nb;
-//         for (int i = 0; i < nb; i++)
-//             liste[n].bursts[i] = bursts_tmp[n][i];
-//
-//         initialiser_processus(&liste[n]);
-//         n++;
-//     }
-//
-//     fclose(f);
-//     return n;
-// }
-//
 /** @brief Affiche l'aide d'utilisation. */
 static void afficher_aide(const char *prog)
 {
@@ -134,16 +81,17 @@ int main(int argc, char *argv[])
         if (argc < 4) {
             fprintf(stderr, "RR : le quantum est obligatoire. Ex: rr 4\n");
             afficher_aide(argv[0]);
-            // for (int i = 0; i < n; i++) free(liste[i].bursts);
             return 1;
         }
+
         int quantum = atoi(argv[3]);
+
         if (quantum <= 0) {
             fprintf(stderr, "RR : le quantum doit etre un entier > 0.\n");
-            // for (int i = 0; i < n; i++) free(liste[i].bursts);
             return 1;
         }
-        // simuler_rr(liste, n, quantum);
+
+        run_rr(p, n, quantum, &r, gantt);
 
     } else {
         fprintf(stderr, "Algorithme inconnu : '%s'\n\n", algo);

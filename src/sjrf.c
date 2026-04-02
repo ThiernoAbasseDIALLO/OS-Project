@@ -1,3 +1,12 @@
+/**
+ * @file sjrf.c
+ * @brief Logique de l'algorithme d'ordonnancement Shortest Job Remaining First (SJRF).
+ * * Stratégie : Préemptif. À chaque tick, le processus ayant le temps de burst
+ * CPU restant le plus court est sélectionné.
+ *
+ * Participation : 33% pour les 3 auteurs (DIALLO, DOSSO, MAREGA).
+ */
+
 #include <stdio.h>
 #include "../include/sjrf.h"
 #include "output.h"

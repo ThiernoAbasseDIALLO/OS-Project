@@ -13,6 +13,7 @@
  * @param processus Tableau des processus à ordonnancer.
  * @param n         Nombre de processus.
  * @param resultats Pointeur vers la structure de résultats à remplir.
+ * @param gantt     Matrice d'états pour la visualisation du diagramme de Gantt
  */
 void run_sjf(processus_t *processus, int n, resultats_t *resultats, etat_processus_t **gantt);
 

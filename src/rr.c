@@ -9,166 +9,152 @@
  *
  * Utilise la File de queue.h pour gérer la file des prêts.
  *
- * Participation : Auteur1 (33%), Auteur2 (33%), Auteur3 (33%)
+ * Participation : 33% pour les 3 auteurs (DIALLO, DOSSO, MAREGA).
  */
 
 #include <stdlib.h>
 #include "rr.h"
+
+#include "output.h"
 #include "process.h"
 #include "queue.h"
 
+void run_rr(processus_t *processus, int n, int quantum, resultats_t *resultats, etat_processus_t **gantt){
+    int temps                    = 0;
+    int nb_termines              = 0;
+    int temps_cpu_inactif        = 0;
+    int quantum_restant          = 0;
 
-/* --------------------------------
- * Fonction exportée : run_rr
- * ---------------------------------*/
-
-/**
- * @brief Exécute l'algorithme Round Robin tick par tick.
- *
- * run_rr() :
- *  1. Repasse EN_EXECUTION → PRET (préparation du tick).
- *  2. Enfile les processus qui arrivent à t.
- *  3. Décrémente les E/S ; si terminées → enfile en fin ou TERMINE.
- *  4. Si CPU libre → prend la tête de file, réinitialise quantum_restant.
- *     Premier accès → enregistre temps_reponse.
- *     Décrémente temps_cpu_restant ET quantum_restant.
- *     Si burst fini → E/S suivante ou TERMINE.
- *     Si quantum épuisé avant fin burst → remet en FIN de file (préemption).
- *  5. Incrémente temps_attente des processus encore PRET.
- *  6. t += 1.
- *
- *   - Sélection = toujours la tête de file (FIFO circulaire).
- *   - Préemption : quand quantum_restant == 0, le processus retourne
- *     en FIN de file via enfiler() et reçoit un nouveau quantum
- *     au prochain tour.
- *
- * @param processus     Tableau des processus à ordonnancer.
- * @param n             Nombre de processus.
- * @param quantum       Durée du quantum en ms (doit être > 0).
- * @param resultats     Pointeur vers la structure de résultats à remplir.
- */
-void run_rr(processus_t *processus, int n, int quantum, resultats_t *resultats)
-{
-    int t                    = 0;
-    int termines             = 0;
-    int temps_non_occupation = 0;
-    int quantum_restant      = 0;
-
-    processus_t *en_execution = NULL;
+    processus_t *processus_en_execution         = NULL;
+    processus_t *processus_ayant_tourne_ce_tick = NULL;
+    processus_t *processus_preempte = NULL;
 
     File file_prets;
     initF(&file_prets);
 
-    while (termines < n) {
-
-        /* ── Étape 1 : repasser EN_EXECUTION → PRET ── */
-        /*
-         * En RR, si le quantum n'est pas épuisé et que le burst n'est
-         * pas terminé, le processus reprend le CPU au tick suivant.
-         * L'étape 4 gère la préemption (quantum == 0) séparément.
-         */
-        for (int m = 0; m < n; m++) {
-            if (processus[m].etat == ETAT_EN_EXECUTION)
-                processus[m].etat = ETAT_PRET;
-        }
-
-        /* ── Étape 2 : nouvelles arrivées → enfiler en fin ── */
+    while (nb_termines < n) {
+        /* Étape 1 : arrivées */
         for (int i = 0; i < n; i++) {
-            if (processus[i].temps_arrivee == t) {
+            if (processus[i].temps_arrivee == temps) {
                 processus[i].etat = ETAT_PRET;
+                processus[i].dernier_entree_pret = temps - 1;
                 enfiler(&file_prets, &processus[i]);
             }
         }
 
-        /* ── Étape 3 : décrémenter les E/S en cours ── */
+        /* Si un processus a été préempté au tick d'avant, c'est ici qu'on le remet
+            en file, APRES les arrivées ou selon une logique de priorité précise. */
+        if (processus_preempte != NULL) {
+            enfiler(&file_prets, processus_preempte);
+            processus_preempte = NULL;
+        }
+
+        /* Étape 2 : avancement des E/S */
         for (int j = 0; j < n; j++) {
             if (processus[j].etat == ETAT_EN_ATTENTE) {
                 processus[j].temps_io_restant--;
                 if (processus[j].temps_io_restant == 0) {
+                    gantt[j][temps] = ETAT_EN_ATTENTE;      /* dernier tick E/S */
                     int index = ++processus[j].index_burst_courant;
                     if (index < processus[j].nb_bursts) {
-                        /* Burst suivant = CPU → retour en FIN de file */
                         processus[j].temps_cpu_restant =
                             processus[j].bursts[index];
                         processus[j].etat = ETAT_PRET;
-                        enfiler(&file_prets, &processus[j]);
+                        processus[j].dernier_entree_pret = temps;
+                        enfiler(&file_prets, &processus[j]);   /* queue.c */
                     } else {
-                        /* Dernier burst était une E/S → terminé */
-                        processus[j].temps_fin_execution = t;
+                        processus[j].temps_fin_execution = temps + 1;
                         processus[j].etat = ETAT_TERMINE;
-                        termines++;
+                        nb_termines++;
                     }
                 }
             }
         }
 
-        /* ── Étape 4 : sélection RR et exécution ── */
+        /* Étape 3 : sélection CPU */
+        if (processus_en_execution == NULL && !estVideF(file_prets)) {
+            /*
+             * On cherche le premier candidat dont dernier_entree_pret < temps.
+             * Problème : queue.c n'a pas de "peek sans dépiler puis enfiler à nouveau"
+             * natif. On dépile, teste, et si le candidat n'est pas éligible
+             * on le ré-enfile immédiatement (même comportement qu'avant).
+             */
+            int essais = 0;
+            /* Compter la taille : on parcourt au plus n éléments */
+            /* (queue.c ne stocke pas la taille — on borne à n) */
+            while (essais < n && !estVideF(file_prets)) {
+                processus_t *candidat = sommetF(file_prets);
+                defiler(&file_prets);
+                if (candidat == NULL) break;
 
-        /*
-         * Si le quantum est épuisé au tick précédent, le processus
-         * a déjà été remis en FIN de file à l'étape 4 du tick précédent.
-         * On prend donc la nouvelle tête de file.
-         */
-        if (en_execution == NULL && !estVideF(file_prets)) {
-            en_execution   = sommetF(file_prets);
-            defiler(&file_prets);
-            quantum_restant = quantum;  /* Nouveau quantum complet */
+                if (candidat->dernier_entree_pret < temps) {
+                    processus_en_execution = candidat;
+                    break;
+                }
+                enfiler(&file_prets, candidat);   /* pas éligible, remet en queue */
+                essais++;
+            }
 
-            /* Premier accès CPU → enregistrer temps de réponse */
-            if (en_execution->first_run == 0) {
-                en_execution->temps_reponse         = t;
-                en_execution->temps_debut_execution = t;
-                en_execution->first_run             = 1;
+            if (processus_en_execution != NULL) {
+                quantum_restant = quantum;
+                if (processus_en_execution->first_run == 0) {
+                    processus_en_execution->temps_reponse = temps - processus_en_execution->temps_arrivee;
+                    processus_en_execution->temps_debut_execution = temps;
+                    processus_en_execution->first_run = 1;
+                }
             }
         }
 
-        if (en_execution == NULL) {
-            /* CPU idle */
-            temps_non_occupation++;
+        /* Étape 4 : tick CPU */
+        if (processus_en_execution == NULL) {
+            temps_cpu_inactif++;
+            remplir_gantt(gantt, processus, n, temps);
         } else {
-            en_execution->etat = ETAT_EN_EXECUTION;
-            en_execution->temps_cpu_restant--;
+            processus_ayant_tourne_ce_tick = processus_en_execution;
+            processus_en_execution->etat = ETAT_EN_EXECUTION;
+            processus_en_execution->temps_cpu_restant--;
             quantum_restant--;
 
-            if (en_execution->temps_cpu_restant == 0) {
-                /* Burst CPU terminé avant ou en même temps que le quantum */
-                en_execution->index_burst_courant++;
+            remplir_gantt(gantt, processus, n, temps);
 
-                if (en_execution->index_burst_courant == en_execution->nb_bursts) {
-                    /* Plus de burst → terminé */
-                    en_execution->temps_fin_execution = t + 1;
-                    en_execution->etat = ETAT_TERMINE;
-                    termines++;
+            if (processus_en_execution->temps_cpu_restant == 0) {
+                processus_en_execution->index_burst_courant++;
+                if (processus_en_execution->index_burst_courant ==
+                        processus_en_execution->nb_bursts) {
+                    processus_en_execution->temps_fin_execution = temps + 1;
+                    processus_en_execution->etat = ETAT_TERMINE;
+                    nb_termines++;
                 } else {
-                    /* Burst suivant = E/S */
-                    en_execution->temps_io_restant =
-                        en_execution->bursts[en_execution->index_burst_courant];
-                    en_execution->etat = ETAT_EN_ATTENTE;
+                    processus_en_execution->temps_io_restant =
+                        processus_en_execution->bursts[
+                            processus_en_execution->index_burst_courant];
+                    processus_en_execution->etat = ETAT_EN_ATTENTE;
                 }
-                en_execution    = NULL;
+                processus_en_execution = NULL;
                 quantum_restant = 0;
 
             } else if (quantum_restant == 0) {
-                /*
-                 * Quantum épuisé, burst non terminé → PRÉEMPTION.
-                 * Le processus retourne en FIN de file des prêts.
-                 * Il recevra un nouveau quantum complet au prochain tour.
-                 */
-                en_execution->etat = ETAT_PRET;
-                enfiler(&file_prets, en_execution);
-                en_execution = NULL;
+                /* Préemption : sera remise en file au tick suivant */
+                processus_en_execution->etat = ETAT_PRET;
+                processus_en_execution->dernier_entree_pret = temps;
+                processus_preempte = processus_en_execution;
+                processus_en_execution = NULL;
             }
         }
 
-        /* ── Étape 5 : accumuler l'attente des processus PRET ── */
+        /* Étape 5 : accumulation temps_attente */
         for (int l = 0; l < n; l++) {
-            if (processus[l].etat == ETAT_PRET)
+            if (processus[l].etat != ETAT_PRET) continue;
+            if (&processus[l] == processus_ayant_tourne_ce_tick) continue;
+            if (temps > processus[l].dernier_entree_pret)
                 processus[l].temps_attente++;
         }
 
-        t++;
+        processus_ayant_tourne_ce_tick = NULL;
+        temps++;
     }
 
     calcul_metrique(processus, n);
-    *resultats = calcul_resultats(processus, n, t, temps_non_occupation);
+    *resultats = calcul_resultats(processus, n, temps, temps_cpu_inactif);
+    resultats->t_max = temps;
 }

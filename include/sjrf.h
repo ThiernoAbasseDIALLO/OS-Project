@@ -13,6 +13,7 @@
  * @brief Simule l'ordonnancement SJRF (préemptif, unité de temps = 1 ms).
  * @param processus Tableau des processus à ordonnancer.
  * @param n         Nombre de processus.
+ * @param gantt     Matrice d'états pour la visualisation du diagramme de Gantt
  */
 void run_sjrf(processus_t *processus, int n, resultats_t *r, etat_processus_t **gantt);
 
