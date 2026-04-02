@@ -1,0 +1,61 @@
+\hypertarget{fifo_8c}{}\doxysection{Référence du fichier src/fifo.c}
+\label{fifo_8c}\index{src/fifo.c@{src/fifo.c}}
+
+
+Logique de l\textquotesingle{}algorithme d\textquotesingle{}ordonnancement First-\/\+Come, First-\/\+Served (FCFS).  
+
+
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}../include/fifo.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../include/process.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}queue.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../include/output.\+h\char`\"{}}\newline
+\doxysubsection*{Fonctions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{fifo_8c_adb3a0a3f93a619e08d63ae16e6e188ea}{run\+\_\+fifo}} (\mbox{\hyperlink{structprocessus__t}{processus\+\_\+t}} $\ast$processus, int n, \mbox{\hyperlink{structresultats__t}{resultats\+\_\+t}} $\ast$resultats, \mbox{\hyperlink{process_8h_ab53bfa5447e88893bb0d4485a27cdc5c}{etat\+\_\+processus\+\_\+t}} $\ast$$\ast$gantt)
+\begin{DoxyCompactList}\small\item\em Exécute l\textquotesingle{}algorithme FIFO tick par tick. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Description détaillée}
+Logique de l\textquotesingle{}algorithme d\textquotesingle{}ordonnancement First-\/\+Come, First-\/\+Served (FCFS). 
+
+Stratégie \+: le processus qui arrive le premier est le premier servi. Non-\/préemptif. Les E/S sont parallélisées.
+
+\begin{DoxySeeAlso}{Voir également}
+\mbox{\hyperlink{queue_8h_source}{queue.\+h}} Utilise la \mbox{\hyperlink{structFile}{File}} de \mbox{\hyperlink{queue_8h_source}{queue.\+h}} (\mbox{\hyperlink{queue_8c_a0da6d5dd40dd6d1c8003266ec3358e6d}{initF}}, \mbox{\hyperlink{queue_8c_a68d9161d4ed351409cf2d00c291effeb}{enfiler}}, \mbox{\hyperlink{queue_8c_a27be4e4836ed0b21de4c57a4f7a066bc}{defiler}}, \mbox{\hyperlink{queue_8c_a5f289aa69f4b71332047cb8b1fd4369c}{sommetF}}, \mbox{\hyperlink{queue_8c_a20f706c03633cbefef57e76b3912dede}{est\+VideF}}). La variable courant est persistante \+: si le processus n\textquotesingle{}a pas fini son burst, il garde le CPU au tick suivant sans repasser par la file. Pas d\textquotesingle{}affichage ni d\textquotesingle{}export CSV — géré dans \mbox{\hyperlink{main_8c}{main.\+c}}.
+\end{DoxySeeAlso}
+Participation \+: 33\% pour les 3 auteurs (DIALLO, DOSSO, MAREGA). 
+
+\doxysubsection{Documentation des fonctions}
+\mbox{\Hypertarget{fifo_8c_adb3a0a3f93a619e08d63ae16e6e188ea}\label{fifo_8c_adb3a0a3f93a619e08d63ae16e6e188ea}} 
+\index{fifo.c@{fifo.c}!run\_fifo@{run\_fifo}}
+\index{run\_fifo@{run\_fifo}!fifo.c@{fifo.c}}
+\doxysubsubsection{\texorpdfstring{run\_fifo()}{run\_fifo()}}
+{\footnotesize\ttfamily void run\+\_\+fifo (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structprocessus__t}{processus\+\_\+t}} $\ast$}]{processus,  }\item[{int}]{n,  }\item[{\mbox{\hyperlink{structresultats__t}{resultats\+\_\+t}} $\ast$}]{resultats,  }\item[{\mbox{\hyperlink{process_8h_ab53bfa5447e88893bb0d4485a27cdc5c}{etat\+\_\+processus\+\_\+t}} $\ast$$\ast$}]{gantt }\end{DoxyParamCaption})}
+
+
+
+Exécute l\textquotesingle{}algorithme FIFO tick par tick. 
+
+
+\begin{DoxyItemize}
+\item Le simulateur suit les étapes suivantes à chaque unité de temps \+:
+\item \# {\bfseries{Arrivées}} \+: Les nouveaux processus sont placés en fin de file.
+\item \# {\bfseries{E/S}} \+: Mise à jour des processus en attente ; retour en file si un burst CPU suit.
+\item \# {\bfseries{Élection}} \+: Si le CPU est libre, le processus en tête de file est élu.
+\item \# {\bfseries{Exécution}} \+: Décrémentation du temps CPU et mise à jour du diagramme de Gantt.
+\item \# {\bfseries{Statistiques}} \+: Incrémentation du temps d\textquotesingle{}attente pour les processus en file.
+\end{DoxyItemize}
+
+
+\begin{DoxyParams}[1]{Paramètres}
+\mbox{\texttt{ in,out}}  & {\em processus} & Tableau des processus à ordonnancer. \\
+\hline
+\mbox{\texttt{ in}}  & {\em n} & Nombre de processus total dans le tableau. \\
+\hline
+\mbox{\texttt{ out}}  & {\em resultats} & Pointeur vers la structure stockant les métriques finales (taux d\textquotesingle{}occupation, etc.). \\
+\hline
+\mbox{\texttt{ out}}  & {\em gantt} & Matrice d\textquotesingle{}états pour la visualisation du diagramme de Gantt \\
+\hline
+\end{DoxyParams}

@@ -1,0 +1,192 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.9.1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Simulateur d&#39;Ordonnancement CPU: Référence du fichier src/fifo.c</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+  $(document).ready(function() { init_search(); });
+/* @license-end */
+</script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">Simulateur d&#39;Ordonnancement CPU
+   &#160;<span id="projectnumber">1.0</span>
+   </div>
+   <div id="projectbrief">Simulation des algorithmes FIFO, SJF, SJRF et Round Robin</div>
+  </td>
+   <td>        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <img id="MSearchSelect" src="search/mag_sel.svg"
+               onmouseover="return searchBox.OnSearchSelectShow()"
+               onmouseout="return searchBox.OnSearchSelectHide()"
+               alt=""/>
+          <input type="text" id="MSearchField" value="Recherche" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><img id="MSearchCloseImg" border="0" src="search/close.svg" alt=""/></a>
+          </span>
+        </div>
+</td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Généré par Doxygen 1.9.1 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+var searchBox = new SearchBox("searchBox", "search",false,'Recherche','.html');
+/* @license-end */
+</script>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(document).ready(function(){initNavTree('fifo_8c.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#func-members">Fonctions</a>  </div>
+  <div class="headertitle">
+<div class="title">Référence du fichier fifo.c</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>Logique de l'algorithme d'ordonnancement First-Come, First-Served (FCFS).  
+<a href="#details">Plus de détails...</a></p>
+<div class="textblock"><code>#include &lt;stdlib.h&gt;</code><br />
+<code>#include &quot;../include/fifo.h&quot;</code><br />
+<code>#include &quot;<a class="el" href="process_8h_source.html">../include/process.h</a>&quot;</code><br />
+<code>#include &quot;queue.h&quot;</code><br />
+<code>#include &quot;../include/output.h&quot;</code><br />
+</div><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Fonctions</h2></td></tr>
+<tr class="memitem:adb3a0a3f93a619e08d63ae16e6e188ea"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fifo_8c.html#adb3a0a3f93a619e08d63ae16e6e188ea">run_fifo</a> (<a class="el" href="structprocessus__t.html">processus_t</a> *processus, int n, <a class="el" href="structresultats__t.html">resultats_t</a> *resultats, <a class="el" href="process_8h.html#ab53bfa5447e88893bb0d4485a27cdc5c">etat_processus_t</a> **gantt)</td></tr>
+<tr class="memdesc:adb3a0a3f93a619e08d63ae16e6e188ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Exécute l'algorithme FIFO tick par tick.  <a href="fifo_8c.html#adb3a0a3f93a619e08d63ae16e6e188ea">Plus de détails...</a><br /></td></tr>
+<tr class="separator:adb3a0a3f93a619e08d63ae16e6e188ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Description détaillée</h2>
+<div class="textblock"><p>Logique de l'algorithme d'ordonnancement First-Come, First-Served (FCFS). </p>
+<p>Stratégie : le processus qui arrive le premier est le premier servi. Non-préemptif. Les E/S sont parallélisées.</p>
+<dl class="section see"><dt>Voir également</dt><dd><a class="el" href="queue_8h_source.html">queue.h</a> Utilise la <a class="el" href="structFile.html" title="Structure de contrôle de la File.">File</a> de <a class="el" href="queue_8h_source.html">queue.h</a> (<a class="el" href="queue_8c.html#a0da6d5dd40dd6d1c8003266ec3358e6d" title="Permet d&#39;initialiser une File.">initF</a>, <a class="el" href="queue_8c.html#a68d9161d4ed351409cf2d00c291effeb" title="Permet d&#39;ajouter en queue un nouveau processus.">enfiler</a>, <a class="el" href="queue_8c.html#a27be4e4836ed0b21de4c57a4f7a066bc" title="Permet de supprimer un processus déjà traité, qui est en tête.">defiler</a>, <a class="el" href="queue_8c.html#a5f289aa69f4b71332047cb8b1fd4369c" title="Permet d&#39;avoir le premier processus celui qui est en tête de la file.">sommetF</a>, <a class="el" href="queue_8c.html#a20f706c03633cbefef57e76b3912dede" title="Permet de tester si la file est vide ou pas.">estVideF</a>). La variable courant est persistante : si le processus n'a pas fini son burst, il garde le CPU au tick suivant sans repasser par la file. Pas d'affichage ni d'export CSV — géré dans <a class="el" href="main_8c.html" title="Point d&#39;entree du simulateur d&#39;ordonnancement de processus.">main.c</a>.</dd></dl>
+<p>Participation : 33% pour les 3 auteurs (DIALLO, DOSSO, MAREGA). </p>
+</div><h2 class="groupheader">Documentation des fonctions</h2>
+<a id="adb3a0a3f93a619e08d63ae16e6e188ea"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adb3a0a3f93a619e08d63ae16e6e188ea">&#9670;&nbsp;</a></span>run_fifo()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void run_fifo </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structprocessus__t.html">processus_t</a> *&#160;</td>
+          <td class="paramname"><em>processus</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>n</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structresultats__t.html">resultats_t</a> *&#160;</td>
+          <td class="paramname"><em>resultats</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="process_8h.html#ab53bfa5447e88893bb0d4485a27cdc5c">etat_processus_t</a> **&#160;</td>
+          <td class="paramname"><em>gantt</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Exécute l'algorithme FIFO tick par tick. </p>
+<ul>
+<li>Le simulateur suit les étapes suivantes à chaque unité de temps :</li>
+<li># <b>Arrivées</b> : Les nouveaux processus sont placés en fin de file.</li>
+<li># <b>E/S</b> : Mise à jour des processus en attente ; retour en file si un burst CPU suit.</li>
+<li># <b>Élection</b> : Si le CPU est libre, le processus en tête de file est élu.</li>
+<li># <b>Exécution</b> : Décrémentation du temps CPU et mise à jour du diagramme de Gantt.</li>
+<li># <b>Statistiques</b> : Incrémentation du temps d'attente pour les processus en file.</li>
+</ul>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">processus</td><td>Tableau des processus à ordonnancer. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">n</td><td>Nombre de processus total dans le tableau. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">resultats</td><td>Pointeur vers la structure stockant les métriques finales (taux d'occupation, etc.). </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">gantt</td><td>Matrice d'états pour la visualisation du diagramme de Gantt </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="fifo_8c.html">fifo.c</a></li>
+    <li class="footer">Généré par <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+  </ul>
+</div>
+</body>
+</html>

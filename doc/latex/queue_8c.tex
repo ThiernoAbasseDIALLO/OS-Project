@@ -1,0 +1,167 @@
+\hypertarget{queue_8c}{}\doxysection{Référence du fichier src/queue.c}
+\label{queue_8c}\index{src/queue.c@{src/queue.c}}
+
+
+Implémentation d\textquotesingle{}une file (FIFO) basée sur une liste chaînée.  
+
+
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}queue.\+h\char`\"{}}\newline
+\doxysubsection*{Fonctions}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{queue_8c_a5d52d862070a75fc7091f91acdf1bff4}{est\+VideL}} (\mbox{\hyperlink{structcellule}{Liste}} l)
+\begin{DoxyCompactList}\small\item\em Permet de tester si une Liste est vide ou non. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structcellule}{Liste}} \mbox{\hyperlink{queue_8c_ae18543cbf2dca1986fc87eb082989794}{alloc\+Mem}} ()
+\begin{DoxyCompactList}\small\item\em Fait l\textquotesingle{}allocation mémoire pour une nouvelle cellule. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{queue_8c_a06d9f5cd3b001f477cc929cbb9bd1141}\label{queue_8c_a06d9f5cd3b001f477cc929cbb9bd1141}} 
+void {\bfseries lib\+Mem} (\mbox{\hyperlink{structcellule}{Liste}} $\ast$l)
+\item 
+\mbox{\hyperlink{structcellule}{Liste}} \mbox{\hyperlink{queue_8c_a9a03be9df8ab4b659797699dcff36935}{initL}} ()
+\begin{DoxyCompactList}\small\item\em Initialise une Liste à NULL. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{queue_8c_a20f706c03633cbefef57e76b3912dede}{est\+VideF}} (\mbox{\hyperlink{structFile}{File}} f)
+\begin{DoxyCompactList}\small\item\em Permet de tester si la file est vide ou pas. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{queue_8c_a0da6d5dd40dd6d1c8003266ec3358e6d}{initF}} (\mbox{\hyperlink{structFile}{File}} $\ast$f)
+\begin{DoxyCompactList}\small\item\em Permet d\textquotesingle{}initialiser une \mbox{\hyperlink{structFile}{File}}. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{queue_8c_a68d9161d4ed351409cf2d00c291effeb}{enfiler}} (\mbox{\hyperlink{structFile}{File}} $\ast$f, \mbox{\hyperlink{structprocessus__t}{processus\+\_\+t}} $\ast$p)
+\begin{DoxyCompactList}\small\item\em Permet d\textquotesingle{}ajouter en queue un nouveau processus. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{queue_8c_a27be4e4836ed0b21de4c57a4f7a066bc}{defiler}} (\mbox{\hyperlink{structFile}{File}} $\ast$f)
+\begin{DoxyCompactList}\small\item\em Permet de supprimer un processus déjà traité, qui est en tête. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structprocessus__t}{processus\+\_\+t}} $\ast$ \mbox{\hyperlink{queue_8c_a5f289aa69f4b71332047cb8b1fd4369c}{sommetF}} (\mbox{\hyperlink{structFile}{File}} f)
+\begin{DoxyCompactList}\small\item\em Permet d\textquotesingle{}avoir le premier processus celui qui est en tête de la file. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Description détaillée}
+Implémentation d\textquotesingle{}une file (FIFO) basée sur une liste chaînée. 
+
+Participation \+: 33\% pour les 3 auteurs (DIALLO, DOSSO, MAREGA). 
+
+\doxysubsection{Documentation des fonctions}
+\mbox{\Hypertarget{queue_8c_ae18543cbf2dca1986fc87eb082989794}\label{queue_8c_ae18543cbf2dca1986fc87eb082989794}} 
+\index{queue.c@{queue.c}!allocMem@{allocMem}}
+\index{allocMem@{allocMem}!queue.c@{queue.c}}
+\doxysubsubsection{\texorpdfstring{allocMem()}{allocMem()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structcellule}{Liste}} alloc\+Mem (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Fait l\textquotesingle{}allocation mémoire pour une nouvelle cellule. 
+
+\begin{DoxyReturn}{Renvoie}
+Retourne un pointeur vers une cellule (Liste). 
+\end{DoxyReturn}
+\mbox{\Hypertarget{queue_8c_a27be4e4836ed0b21de4c57a4f7a066bc}\label{queue_8c_a27be4e4836ed0b21de4c57a4f7a066bc}} 
+\index{queue.c@{queue.c}!defiler@{defiler}}
+\index{defiler@{defiler}!queue.c@{queue.c}}
+\doxysubsubsection{\texorpdfstring{defiler()}{defiler()}}
+{\footnotesize\ttfamily void defiler (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structFile}{File}} $\ast$}]{f }\end{DoxyParamCaption})}
+
+
+
+Permet de supprimer un processus déjà traité, qui est en tête. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em f} & Une file en entrée et sortie. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{queue_8c_a68d9161d4ed351409cf2d00c291effeb}\label{queue_8c_a68d9161d4ed351409cf2d00c291effeb}} 
+\index{queue.c@{queue.c}!enfiler@{enfiler}}
+\index{enfiler@{enfiler}!queue.c@{queue.c}}
+\doxysubsubsection{\texorpdfstring{enfiler()}{enfiler()}}
+{\footnotesize\ttfamily void enfiler (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structFile}{File}} $\ast$}]{f,  }\item[{\mbox{\hyperlink{structprocessus__t}{processus\+\_\+t}} $\ast$}]{p }\end{DoxyParamCaption})}
+
+
+
+Permet d\textquotesingle{}ajouter en queue un nouveau processus. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em f} & Une file f en entrée et sortie. \\
+\hline
+{\em p} & Un tableau de processus. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{queue_8c_a20f706c03633cbefef57e76b3912dede}\label{queue_8c_a20f706c03633cbefef57e76b3912dede}} 
+\index{queue.c@{queue.c}!estVideF@{estVideF}}
+\index{estVideF@{estVideF}!queue.c@{queue.c}}
+\doxysubsubsection{\texorpdfstring{estVideF()}{estVideF()}}
+{\footnotesize\ttfamily bool est\+VideF (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structFile}{File}}}]{f }\end{DoxyParamCaption})}
+
+
+
+Permet de tester si la file est vide ou pas. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em f} & Une \mbox{\hyperlink{structFile}{File}} en entrée. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+Vrai si la file est vide sinon faux. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{queue_8c_a5d52d862070a75fc7091f91acdf1bff4}\label{queue_8c_a5d52d862070a75fc7091f91acdf1bff4}} 
+\index{queue.c@{queue.c}!estVideL@{estVideL}}
+\index{estVideL@{estVideL}!queue.c@{queue.c}}
+\doxysubsubsection{\texorpdfstring{estVideL()}{estVideL()}}
+{\footnotesize\ttfamily bool est\+VideL (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structcellule}{Liste}}}]{l }\end{DoxyParamCaption})}
+
+
+
+Permet de tester si une Liste est vide ou non. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em l} & Une liste en entrée \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+Vrai si la liste est vide sinon faux 
+\end{DoxyReturn}
+\mbox{\Hypertarget{queue_8c_a0da6d5dd40dd6d1c8003266ec3358e6d}\label{queue_8c_a0da6d5dd40dd6d1c8003266ec3358e6d}} 
+\index{queue.c@{queue.c}!initF@{initF}}
+\index{initF@{initF}!queue.c@{queue.c}}
+\doxysubsubsection{\texorpdfstring{initF()}{initF()}}
+{\footnotesize\ttfamily void initF (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structFile}{File}} $\ast$}]{f }\end{DoxyParamCaption})}
+
+
+
+Permet d\textquotesingle{}initialiser une \mbox{\hyperlink{structFile}{File}}. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em f} & Un pointeur vers une \mbox{\hyperlink{structFile}{File}}. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{queue_8c_a9a03be9df8ab4b659797699dcff36935}\label{queue_8c_a9a03be9df8ab4b659797699dcff36935}} 
+\index{queue.c@{queue.c}!initL@{initL}}
+\index{initL@{initL}!queue.c@{queue.c}}
+\doxysubsubsection{\texorpdfstring{initL()}{initL()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structcellule}{Liste}} initL (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Initialise une Liste à NULL. 
+
+\begin{DoxyReturn}{Renvoie}
+Une liste vide. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{queue_8c_a5f289aa69f4b71332047cb8b1fd4369c}\label{queue_8c_a5f289aa69f4b71332047cb8b1fd4369c}} 
+\index{queue.c@{queue.c}!sommetF@{sommetF}}
+\index{sommetF@{sommetF}!queue.c@{queue.c}}
+\doxysubsubsection{\texorpdfstring{sommetF()}{sommetF()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structprocessus__t}{processus\+\_\+t}}$\ast$ sommetF (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structFile}{File}}}]{f }\end{DoxyParamCaption})}
+
+
+
+Permet d\textquotesingle{}avoir le premier processus celui qui est en tête de la file. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em f} & Une \mbox{\hyperlink{structFile}{File}} f. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+Processus le premier processus de la file. 
+\end{DoxyReturn}

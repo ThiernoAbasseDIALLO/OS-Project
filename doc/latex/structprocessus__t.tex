@@ -1,0 +1,145 @@
+\hypertarget{structprocessus__t}{}\doxysection{Référence de la structure processus\+\_\+t}
+\label{structprocessus__t}\index{processus\_t@{processus\_t}}
+
+
+Structure représentant un processus et ses métriques.  
+
+
+
+
+{\ttfamily \#include $<$process.\+h$>$}
+
+\doxysubsection*{Attributs publics}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{structprocessus__t_aaa90685f6cda7f47d83fa739dc47d177}{pid}}
+\item 
+int \mbox{\hyperlink{structprocessus__t_a10979e225b43b0eabd64d141c995a4d0}{temps\+\_\+arrivee}}
+\item 
+int $\ast$ \mbox{\hyperlink{structprocessus__t_addb27a910bd898db374755b448bc5871}{bursts}}
+\item 
+int \mbox{\hyperlink{structprocessus__t_a7d63b3447efde04eeb1daf873cbc5772}{nb\+\_\+bursts}}
+\item 
+int \mbox{\hyperlink{structprocessus__t_a5f4785f6337f96f1584309402ed8417b}{index\+\_\+burst\+\_\+courant}}
+\item 
+int \mbox{\hyperlink{structprocessus__t_a0f377e01452f752391b3930b133b20e1}{temps\+\_\+cpu\+\_\+restant}}
+\item 
+int \mbox{\hyperlink{structprocessus__t_a10455ea49faf46385caa1dd8af76c750}{temps\+\_\+io\+\_\+restant}}
+\item 
+\mbox{\hyperlink{process_8h_ab53bfa5447e88893bb0d4485a27cdc5c}{etat\+\_\+processus\+\_\+t}} \mbox{\hyperlink{structprocessus__t_a73018aa6d70553f1395bc3e47c82909c}{etat}}
+\item 
+int \mbox{\hyperlink{structprocessus__t_a59b3879be653adb7e2696b845d25460b}{first\+\_\+run}}
+\item 
+int \mbox{\hyperlink{structprocessus__t_a23af38bf61b08c81092d9a03260147c0}{temps\+\_\+debut\+\_\+execution}}
+\item 
+int \mbox{\hyperlink{structprocessus__t_a0dccc237abb7bc3e4d8c15610e097235}{temps\+\_\+fin\+\_\+execution}}
+\item 
+int \mbox{\hyperlink{structprocessus__t_aa4d5e34b78907302e28f30c219161215}{temps\+\_\+attente}}
+\item 
+int \mbox{\hyperlink{structprocessus__t_aea03d96928ee1dd9aa0b2294879a648c}{temps\+\_\+reponse}}
+\item 
+int \mbox{\hyperlink{structprocessus__t_afe15570abb55c00165a9400d6178b8c6}{temps\+\_\+restitution}}
+\item 
+int \mbox{\hyperlink{structprocessus__t_a4b6e28fe424750a82d3e6aa1734f16e4}{dernier\+\_\+entree\+\_\+pret}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Description détaillée}
+Structure représentant un processus et ses métriques. 
+
+\doxysubsection{Documentation des données membres}
+\mbox{\Hypertarget{structprocessus__t_addb27a910bd898db374755b448bc5871}\label{structprocessus__t_addb27a910bd898db374755b448bc5871}} 
+\index{processus\_t@{processus\_t}!bursts@{bursts}}
+\index{bursts@{bursts}!processus\_t@{processus\_t}}
+\doxysubsubsection{\texorpdfstring{bursts}{bursts}}
+{\footnotesize\ttfamily int$\ast$ processus\+\_\+t\+::bursts}
+
+Tableau alternant CPU / I/O (ex\+: \mbox{[}CPU, IO, CPU\mbox{]}) \mbox{\Hypertarget{structprocessus__t_a4b6e28fe424750a82d3e6aa1734f16e4}\label{structprocessus__t_a4b6e28fe424750a82d3e6aa1734f16e4}} 
+\index{processus\_t@{processus\_t}!dernier\_entree\_pret@{dernier\_entree\_pret}}
+\index{dernier\_entree\_pret@{dernier\_entree\_pret}!processus\_t@{processus\_t}}
+\doxysubsubsection{\texorpdfstring{dernier\_entree\_pret}{dernier\_entree\_pret}}
+{\footnotesize\ttfamily int processus\+\_\+t\+::dernier\+\_\+entree\+\_\+pret}
+
+Instant de la dernière mise en file READY \mbox{\Hypertarget{structprocessus__t_a73018aa6d70553f1395bc3e47c82909c}\label{structprocessus__t_a73018aa6d70553f1395bc3e47c82909c}} 
+\index{processus\_t@{processus\_t}!etat@{etat}}
+\index{etat@{etat}!processus\_t@{processus\_t}}
+\doxysubsubsection{\texorpdfstring{etat}{etat}}
+{\footnotesize\ttfamily \mbox{\hyperlink{process_8h_ab53bfa5447e88893bb0d4485a27cdc5c}{etat\+\_\+processus\+\_\+t}} processus\+\_\+t\+::etat}
+
+État courant du processus \mbox{\Hypertarget{structprocessus__t_a59b3879be653adb7e2696b845d25460b}\label{structprocessus__t_a59b3879be653adb7e2696b845d25460b}} 
+\index{processus\_t@{processus\_t}!first\_run@{first\_run}}
+\index{first\_run@{first\_run}!processus\_t@{processus\_t}}
+\doxysubsubsection{\texorpdfstring{first\_run}{first\_run}}
+{\footnotesize\ttfamily int processus\+\_\+t\+::first\+\_\+run}
+
+Flag \+: 0 si jamais exécuté, 1 sinon \mbox{\Hypertarget{structprocessus__t_a5f4785f6337f96f1584309402ed8417b}\label{structprocessus__t_a5f4785f6337f96f1584309402ed8417b}} 
+\index{processus\_t@{processus\_t}!index\_burst\_courant@{index\_burst\_courant}}
+\index{index\_burst\_courant@{index\_burst\_courant}!processus\_t@{processus\_t}}
+\doxysubsubsection{\texorpdfstring{index\_burst\_courant}{index\_burst\_courant}}
+{\footnotesize\ttfamily int processus\+\_\+t\+::index\+\_\+burst\+\_\+courant}
+
+Indice du segment en cours d\textquotesingle{}exécution \mbox{\Hypertarget{structprocessus__t_a7d63b3447efde04eeb1daf873cbc5772}\label{structprocessus__t_a7d63b3447efde04eeb1daf873cbc5772}} 
+\index{processus\_t@{processus\_t}!nb\_bursts@{nb\_bursts}}
+\index{nb\_bursts@{nb\_bursts}!processus\_t@{processus\_t}}
+\doxysubsubsection{\texorpdfstring{nb\_bursts}{nb\_bursts}}
+{\footnotesize\ttfamily int processus\+\_\+t\+::nb\+\_\+bursts}
+
+Nombre total de segments dans le tableau bursts \mbox{\Hypertarget{structprocessus__t_aaa90685f6cda7f47d83fa739dc47d177}\label{structprocessus__t_aaa90685f6cda7f47d83fa739dc47d177}} 
+\index{processus\_t@{processus\_t}!pid@{pid}}
+\index{pid@{pid}!processus\_t@{processus\_t}}
+\doxysubsubsection{\texorpdfstring{pid}{pid}}
+{\footnotesize\ttfamily int processus\+\_\+t\+::pid}
+
+Identifiant unique du processus \mbox{\Hypertarget{structprocessus__t_a10979e225b43b0eabd64d141c995a4d0}\label{structprocessus__t_a10979e225b43b0eabd64d141c995a4d0}} 
+\index{processus\_t@{processus\_t}!temps\_arrivee@{temps\_arrivee}}
+\index{temps\_arrivee@{temps\_arrivee}!processus\_t@{processus\_t}}
+\doxysubsubsection{\texorpdfstring{temps\_arrivee}{temps\_arrivee}}
+{\footnotesize\ttfamily int processus\+\_\+t\+::temps\+\_\+arrivee}
+
+Instant d\textquotesingle{}arrivée dans le système (t) \mbox{\Hypertarget{structprocessus__t_aa4d5e34b78907302e28f30c219161215}\label{structprocessus__t_aa4d5e34b78907302e28f30c219161215}} 
+\index{processus\_t@{processus\_t}!temps\_attente@{temps\_attente}}
+\index{temps\_attente@{temps\_attente}!processus\_t@{processus\_t}}
+\doxysubsubsection{\texorpdfstring{temps\_attente}{temps\_attente}}
+{\footnotesize\ttfamily int processus\+\_\+t\+::temps\+\_\+attente}
+
+Cumul du temps passé en ETAT\+\_\+\+PRET \mbox{\Hypertarget{structprocessus__t_a0f377e01452f752391b3930b133b20e1}\label{structprocessus__t_a0f377e01452f752391b3930b133b20e1}} 
+\index{processus\_t@{processus\_t}!temps\_cpu\_restant@{temps\_cpu\_restant}}
+\index{temps\_cpu\_restant@{temps\_cpu\_restant}!processus\_t@{processus\_t}}
+\doxysubsubsection{\texorpdfstring{temps\_cpu\_restant}{temps\_cpu\_restant}}
+{\footnotesize\ttfamily int processus\+\_\+t\+::temps\+\_\+cpu\+\_\+restant}
+
+Temps restant pour le burst CPU actuel \mbox{\Hypertarget{structprocessus__t_a23af38bf61b08c81092d9a03260147c0}\label{structprocessus__t_a23af38bf61b08c81092d9a03260147c0}} 
+\index{processus\_t@{processus\_t}!temps\_debut\_execution@{temps\_debut\_execution}}
+\index{temps\_debut\_execution@{temps\_debut\_execution}!processus\_t@{processus\_t}}
+\doxysubsubsection{\texorpdfstring{temps\_debut\_execution}{temps\_debut\_execution}}
+{\footnotesize\ttfamily int processus\+\_\+t\+::temps\+\_\+debut\+\_\+execution}
+
+Instant du tout premier accès au CPU \mbox{\Hypertarget{structprocessus__t_a0dccc237abb7bc3e4d8c15610e097235}\label{structprocessus__t_a0dccc237abb7bc3e4d8c15610e097235}} 
+\index{processus\_t@{processus\_t}!temps\_fin\_execution@{temps\_fin\_execution}}
+\index{temps\_fin\_execution@{temps\_fin\_execution}!processus\_t@{processus\_t}}
+\doxysubsubsection{\texorpdfstring{temps\_fin\_execution}{temps\_fin\_execution}}
+{\footnotesize\ttfamily int processus\+\_\+t\+::temps\+\_\+fin\+\_\+execution}
+
+Instant où le processus passe à ETAT\+\_\+\+TERMINE \mbox{\Hypertarget{structprocessus__t_a10455ea49faf46385caa1dd8af76c750}\label{structprocessus__t_a10455ea49faf46385caa1dd8af76c750}} 
+\index{processus\_t@{processus\_t}!temps\_io\_restant@{temps\_io\_restant}}
+\index{temps\_io\_restant@{temps\_io\_restant}!processus\_t@{processus\_t}}
+\doxysubsubsection{\texorpdfstring{temps\_io\_restant}{temps\_io\_restant}}
+{\footnotesize\ttfamily int processus\+\_\+t\+::temps\+\_\+io\+\_\+restant}
+
+Temps restant pour le burst I/O actuel \mbox{\Hypertarget{structprocessus__t_aea03d96928ee1dd9aa0b2294879a648c}\label{structprocessus__t_aea03d96928ee1dd9aa0b2294879a648c}} 
+\index{processus\_t@{processus\_t}!temps\_reponse@{temps\_reponse}}
+\index{temps\_reponse@{temps\_reponse}!processus\_t@{processus\_t}}
+\doxysubsubsection{\texorpdfstring{temps\_reponse}{temps\_reponse}}
+{\footnotesize\ttfamily int processus\+\_\+t\+::temps\+\_\+reponse}
+
+Délai entre l\textquotesingle{}arrivée et la première exécution \mbox{\Hypertarget{structprocessus__t_afe15570abb55c00165a9400d6178b8c6}\label{structprocessus__t_afe15570abb55c00165a9400d6178b8c6}} 
+\index{processus\_t@{processus\_t}!temps\_restitution@{temps\_restitution}}
+\index{temps\_restitution@{temps\_restitution}!processus\_t@{processus\_t}}
+\doxysubsubsection{\texorpdfstring{temps\_restitution}{temps\_restitution}}
+{\footnotesize\ttfamily int processus\+\_\+t\+::temps\+\_\+restitution}
+
+Délai total entre l\textquotesingle{}arrivée et la fin (Turnaround) 
+
+La documentation de cette structure a été générée à partir du fichier suivant \+:\begin{DoxyCompactItemize}
+\item 
+include/\mbox{\hyperlink{process_8h}{process.\+h}}\end{DoxyCompactItemize}

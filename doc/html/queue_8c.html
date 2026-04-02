@@ -1,0 +1,363 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.9.1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Simulateur d&#39;Ordonnancement CPU: Référence du fichier src/queue.c</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+  $(document).ready(function() { init_search(); });
+/* @license-end */
+</script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">Simulateur d&#39;Ordonnancement CPU
+   &#160;<span id="projectnumber">1.0</span>
+   </div>
+   <div id="projectbrief">Simulation des algorithmes FIFO, SJF, SJRF et Round Robin</div>
+  </td>
+   <td>        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <img id="MSearchSelect" src="search/mag_sel.svg"
+               onmouseover="return searchBox.OnSearchSelectShow()"
+               onmouseout="return searchBox.OnSearchSelectHide()"
+               alt=""/>
+          <input type="text" id="MSearchField" value="Recherche" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><img id="MSearchCloseImg" border="0" src="search/close.svg" alt=""/></a>
+          </span>
+        </div>
+</td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Généré par Doxygen 1.9.1 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+var searchBox = new SearchBox("searchBox", "search",false,'Recherche','.html');
+/* @license-end */
+</script>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(document).ready(function(){initNavTree('queue_8c.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#func-members">Fonctions</a>  </div>
+  <div class="headertitle">
+<div class="title">Référence du fichier queue.c</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>Implémentation d'une file (FIFO) basée sur une liste chaînée.  
+<a href="#details">Plus de détails...</a></p>
+<div class="textblock"><code>#include &lt;stdlib.h&gt;</code><br />
+<code>#include &lt;stdio.h&gt;</code><br />
+<code>#include &quot;queue.h&quot;</code><br />
+</div><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Fonctions</h2></td></tr>
+<tr class="memitem:a5d52d862070a75fc7091f91acdf1bff4"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="queue_8c.html#a5d52d862070a75fc7091f91acdf1bff4">estVideL</a> (<a class="el" href="structcellule.html">Liste</a> l)</td></tr>
+<tr class="memdesc:a5d52d862070a75fc7091f91acdf1bff4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Permet de tester si une Liste est vide ou non.  <a href="queue_8c.html#a5d52d862070a75fc7091f91acdf1bff4">Plus de détails...</a><br /></td></tr>
+<tr class="separator:a5d52d862070a75fc7091f91acdf1bff4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae18543cbf2dca1986fc87eb082989794"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structcellule.html">Liste</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="queue_8c.html#ae18543cbf2dca1986fc87eb082989794">allocMem</a> ()</td></tr>
+<tr class="memdesc:ae18543cbf2dca1986fc87eb082989794"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fait l'allocation mémoire pour une nouvelle cellule.  <a href="queue_8c.html#ae18543cbf2dca1986fc87eb082989794">Plus de détails...</a><br /></td></tr>
+<tr class="separator:ae18543cbf2dca1986fc87eb082989794"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a06d9f5cd3b001f477cc929cbb9bd1141"><td class="memItemLeft" align="right" valign="top"><a id="a06d9f5cd3b001f477cc929cbb9bd1141"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>libMem</b> (<a class="el" href="structcellule.html">Liste</a> *l)</td></tr>
+<tr class="separator:a06d9f5cd3b001f477cc929cbb9bd1141"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9a03be9df8ab4b659797699dcff36935"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structcellule.html">Liste</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="queue_8c.html#a9a03be9df8ab4b659797699dcff36935">initL</a> ()</td></tr>
+<tr class="memdesc:a9a03be9df8ab4b659797699dcff36935"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialise une Liste à NULL.  <a href="queue_8c.html#a9a03be9df8ab4b659797699dcff36935">Plus de détails...</a><br /></td></tr>
+<tr class="separator:a9a03be9df8ab4b659797699dcff36935"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a20f706c03633cbefef57e76b3912dede"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="queue_8c.html#a20f706c03633cbefef57e76b3912dede">estVideF</a> (<a class="el" href="structFile.html">File</a> f)</td></tr>
+<tr class="memdesc:a20f706c03633cbefef57e76b3912dede"><td class="mdescLeft">&#160;</td><td class="mdescRight">Permet de tester si la file est vide ou pas.  <a href="queue_8c.html#a20f706c03633cbefef57e76b3912dede">Plus de détails...</a><br /></td></tr>
+<tr class="separator:a20f706c03633cbefef57e76b3912dede"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0da6d5dd40dd6d1c8003266ec3358e6d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="queue_8c.html#a0da6d5dd40dd6d1c8003266ec3358e6d">initF</a> (<a class="el" href="structFile.html">File</a> *f)</td></tr>
+<tr class="memdesc:a0da6d5dd40dd6d1c8003266ec3358e6d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Permet d'initialiser une <a class="el" href="structFile.html" title="Structure de contrôle de la File.">File</a>.  <a href="queue_8c.html#a0da6d5dd40dd6d1c8003266ec3358e6d">Plus de détails...</a><br /></td></tr>
+<tr class="separator:a0da6d5dd40dd6d1c8003266ec3358e6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a68d9161d4ed351409cf2d00c291effeb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="queue_8c.html#a68d9161d4ed351409cf2d00c291effeb">enfiler</a> (<a class="el" href="structFile.html">File</a> *f, <a class="el" href="structprocessus__t.html">processus_t</a> *p)</td></tr>
+<tr class="memdesc:a68d9161d4ed351409cf2d00c291effeb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Permet d'ajouter en queue un nouveau processus.  <a href="queue_8c.html#a68d9161d4ed351409cf2d00c291effeb">Plus de détails...</a><br /></td></tr>
+<tr class="separator:a68d9161d4ed351409cf2d00c291effeb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a27be4e4836ed0b21de4c57a4f7a066bc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="queue_8c.html#a27be4e4836ed0b21de4c57a4f7a066bc">defiler</a> (<a class="el" href="structFile.html">File</a> *f)</td></tr>
+<tr class="memdesc:a27be4e4836ed0b21de4c57a4f7a066bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Permet de supprimer un processus déjà traité, qui est en tête.  <a href="queue_8c.html#a27be4e4836ed0b21de4c57a4f7a066bc">Plus de détails...</a><br /></td></tr>
+<tr class="separator:a27be4e4836ed0b21de4c57a4f7a066bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5f289aa69f4b71332047cb8b1fd4369c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structprocessus__t.html">processus_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="queue_8c.html#a5f289aa69f4b71332047cb8b1fd4369c">sommetF</a> (<a class="el" href="structFile.html">File</a> f)</td></tr>
+<tr class="memdesc:a5f289aa69f4b71332047cb8b1fd4369c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Permet d'avoir le premier processus celui qui est en tête de la file.  <a href="queue_8c.html#a5f289aa69f4b71332047cb8b1fd4369c">Plus de détails...</a><br /></td></tr>
+<tr class="separator:a5f289aa69f4b71332047cb8b1fd4369c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Description détaillée</h2>
+<div class="textblock"><p>Implémentation d'une file (FIFO) basée sur une liste chaînée. </p>
+<p>Participation : 33% pour les 3 auteurs (DIALLO, DOSSO, MAREGA). </p>
+</div><h2 class="groupheader">Documentation des fonctions</h2>
+<a id="ae18543cbf2dca1986fc87eb082989794"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae18543cbf2dca1986fc87eb082989794">&#9670;&nbsp;</a></span>allocMem()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structcellule.html">Liste</a> allocMem </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Fait l'allocation mémoire pour une nouvelle cellule. </p>
+<dl class="section return"><dt>Renvoie</dt><dd>Retourne un pointeur vers une cellule (Liste). </dd></dl>
+
+</div>
+</div>
+<a id="a27be4e4836ed0b21de4c57a4f7a066bc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a27be4e4836ed0b21de4c57a4f7a066bc">&#9670;&nbsp;</a></span>defiler()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void defiler </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structFile.html">File</a> *&#160;</td>
+          <td class="paramname"><em>f</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Permet de supprimer un processus déjà traité, qui est en tête. </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">f</td><td>Une file en entrée et sortie. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a68d9161d4ed351409cf2d00c291effeb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a68d9161d4ed351409cf2d00c291effeb">&#9670;&nbsp;</a></span>enfiler()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void enfiler </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structFile.html">File</a> *&#160;</td>
+          <td class="paramname"><em>f</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structprocessus__t.html">processus_t</a> *&#160;</td>
+          <td class="paramname"><em>p</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Permet d'ajouter en queue un nouveau processus. </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">f</td><td>Une file f en entrée et sortie. </td></tr>
+    <tr><td class="paramname">p</td><td>Un tableau de processus. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a20f706c03633cbefef57e76b3912dede"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a20f706c03633cbefef57e76b3912dede">&#9670;&nbsp;</a></span>estVideF()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool estVideF </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structFile.html">File</a>&#160;</td>
+          <td class="paramname"><em>f</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Permet de tester si la file est vide ou pas. </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">f</td><td>Une <a class="el" href="structFile.html" title="Structure de contrôle de la File.">File</a> en entrée. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Renvoie</dt><dd>Vrai si la file est vide sinon faux. </dd></dl>
+
+</div>
+</div>
+<a id="a5d52d862070a75fc7091f91acdf1bff4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5d52d862070a75fc7091f91acdf1bff4">&#9670;&nbsp;</a></span>estVideL()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool estVideL </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structcellule.html">Liste</a>&#160;</td>
+          <td class="paramname"><em>l</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Permet de tester si une Liste est vide ou non. </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">l</td><td>Une liste en entrée </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Renvoie</dt><dd>Vrai si la liste est vide sinon faux </dd></dl>
+
+</div>
+</div>
+<a id="a0da6d5dd40dd6d1c8003266ec3358e6d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0da6d5dd40dd6d1c8003266ec3358e6d">&#9670;&nbsp;</a></span>initF()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void initF </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structFile.html">File</a> *&#160;</td>
+          <td class="paramname"><em>f</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Permet d'initialiser une <a class="el" href="structFile.html" title="Structure de contrôle de la File.">File</a>. </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">f</td><td>Un pointeur vers une <a class="el" href="structFile.html" title="Structure de contrôle de la File.">File</a>. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a9a03be9df8ab4b659797699dcff36935"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9a03be9df8ab4b659797699dcff36935">&#9670;&nbsp;</a></span>initL()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structcellule.html">Liste</a> initL </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Initialise une Liste à NULL. </p>
+<dl class="section return"><dt>Renvoie</dt><dd>Une liste vide. </dd></dl>
+
+</div>
+</div>
+<a id="a5f289aa69f4b71332047cb8b1fd4369c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5f289aa69f4b71332047cb8b1fd4369c">&#9670;&nbsp;</a></span>sommetF()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structprocessus__t.html">processus_t</a>* sommetF </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structFile.html">File</a>&#160;</td>
+          <td class="paramname"><em>f</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Permet d'avoir le premier processus celui qui est en tête de la file. </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">f</td><td>Une <a class="el" href="structFile.html" title="Structure de contrôle de la File.">File</a> f. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Renvoie</dt><dd>Processus le premier processus de la file. </dd></dl>
+
+</div>
+</div>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="queue_8c.html">queue.c</a></li>
+    <li class="footer">Généré par <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+  </ul>
+</div>
+</body>
+</html>

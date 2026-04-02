@@ -1,0 +1,74 @@
+\hypertarget{tableau_8c}{}\doxysection{Référence du fichier src/tableau.c}
+\label{tableau_8c}\index{src/tableau.c@{src/tableau.c}}
+
+
+Fonctions utilitaires pour la gestion de tableaux dynamiques d\textquotesingle{}états.  
+
+
+{\ttfamily \#include \char`\"{}tableau.\+h\char`\"{}}\newline
+\doxysubsection*{Définitions de type}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{tableau_8c_a0bbc86ecbcda2245bf165e8e7f3e13d5}\label{tableau_8c_a0bbc86ecbcda2245bf165e8e7f3e13d5}} 
+typedef int {\bfseries TElement}
+\end{DoxyCompactItemize}
+\doxysubsection*{Fonctions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{process_8h_ab53bfa5447e88893bb0d4485a27cdc5c}{etat\+\_\+processus\+\_\+t}} $\ast$ \mbox{\hyperlink{tableau_8c_adba32828f77831d660f890413bf876b8}{alloc\+Tab}} (int n\+Max)
+\begin{DoxyCompactList}\small\item\em Alloue un tableau d\textquotesingle{}états de processus. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{tableau_8c_a8aba3ed96281a5841b0db86b81ec87f0}{alloc\+TabP}} (int n\+Max, \mbox{\hyperlink{process_8h_ab53bfa5447e88893bb0d4485a27cdc5c}{etat\+\_\+processus\+\_\+t}} $\ast$$\ast$tab)
+\begin{DoxyCompactList}\small\item\em Alloue un tableau via un pointeur de pointeur (passage par adresse). \end{DoxyCompactList}\item 
+\mbox{\hyperlink{process_8h_ab53bfa5447e88893bb0d4485a27cdc5c}{etat\+\_\+processus\+\_\+t}} $\ast$ \mbox{\hyperlink{tableau_8c_a837c58b436c55407adadf41c36e74f76}{lib\+Tab}} (\mbox{\hyperlink{process_8h_ab53bfa5447e88893bb0d4485a27cdc5c}{etat\+\_\+processus\+\_\+t}} $\ast$tab)
+\begin{DoxyCompactList}\small\item\em Libère la mémoire d\textquotesingle{}un tableau et retourne NULL. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{tableau_8c_a995f8dfe4a1f381eb41a719f1d5493b1}{lib\+TabP}} (\mbox{\hyperlink{process_8h_ab53bfa5447e88893bb0d4485a27cdc5c}{etat\+\_\+processus\+\_\+t}} $\ast$$\ast$tab)
+\begin{DoxyCompactList}\small\item\em Libère la mémoire d\textquotesingle{}un tableau et met le pointeur à NULL (par adresse). \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Description détaillée}
+Fonctions utilitaires pour la gestion de tableaux dynamiques d\textquotesingle{}états. 
+
+Participation \+: 33\% pour les 3 auteurs (DIALLO, DOSSO, MAREGA). 
+
+\doxysubsection{Documentation des fonctions}
+\mbox{\Hypertarget{tableau_8c_adba32828f77831d660f890413bf876b8}\label{tableau_8c_adba32828f77831d660f890413bf876b8}} 
+\index{tableau.c@{tableau.c}!allocTab@{allocTab}}
+\index{allocTab@{allocTab}!tableau.c@{tableau.c}}
+\doxysubsubsection{\texorpdfstring{allocTab()}{allocTab()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{process_8h_ab53bfa5447e88893bb0d4485a27cdc5c}{etat\+\_\+processus\+\_\+t}}$\ast$ alloc\+Tab (\begin{DoxyParamCaption}\item[{int}]{n\+Max }\end{DoxyParamCaption})}
+
+
+
+Alloue un tableau d\textquotesingle{}états de processus. 
+
+Utilise malloc pour réserver la mémoire. Affiche une erreur avec perror() si l\textquotesingle{}allocation échoue. \mbox{\Hypertarget{tableau_8c_a8aba3ed96281a5841b0db86b81ec87f0}\label{tableau_8c_a8aba3ed96281a5841b0db86b81ec87f0}} 
+\index{tableau.c@{tableau.c}!allocTabP@{allocTabP}}
+\index{allocTabP@{allocTabP}!tableau.c@{tableau.c}}
+\doxysubsubsection{\texorpdfstring{allocTabP()}{allocTabP()}}
+{\footnotesize\ttfamily void alloc\+TabP (\begin{DoxyParamCaption}\item[{int}]{n\+Max,  }\item[{\mbox{\hyperlink{process_8h_ab53bfa5447e88893bb0d4485a27cdc5c}{etat\+\_\+processus\+\_\+t}} $\ast$$\ast$}]{tab }\end{DoxyParamCaption})}
+
+
+
+Alloue un tableau via un pointeur de pointeur (passage par adresse). 
+
+Cette version modifie directement le pointeur fourni par l\textquotesingle{}appelant. \mbox{\Hypertarget{tableau_8c_a837c58b436c55407adadf41c36e74f76}\label{tableau_8c_a837c58b436c55407adadf41c36e74f76}} 
+\index{tableau.c@{tableau.c}!libTab@{libTab}}
+\index{libTab@{libTab}!tableau.c@{tableau.c}}
+\doxysubsubsection{\texorpdfstring{libTab()}{libTab()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{process_8h_ab53bfa5447e88893bb0d4485a27cdc5c}{etat\+\_\+processus\+\_\+t}}$\ast$ lib\+Tab (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{process_8h_ab53bfa5447e88893bb0d4485a27cdc5c}{etat\+\_\+processus\+\_\+t}} $\ast$}]{tab }\end{DoxyParamCaption})}
+
+
+
+Libère la mémoire d\textquotesingle{}un tableau et retourne NULL. 
+
+Libère la mémoire. Notez que l\textquotesingle{}appelant doit récupérer la valeur de retour (NULL) pour sécuriser son pointeur. \mbox{\Hypertarget{tableau_8c_a995f8dfe4a1f381eb41a719f1d5493b1}\label{tableau_8c_a995f8dfe4a1f381eb41a719f1d5493b1}} 
+\index{tableau.c@{tableau.c}!libTabP@{libTabP}}
+\index{libTabP@{libTabP}!tableau.c@{tableau.c}}
+\doxysubsubsection{\texorpdfstring{libTabP()}{libTabP()}}
+{\footnotesize\ttfamily void lib\+TabP (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{process_8h_ab53bfa5447e88893bb0d4485a27cdc5c}{etat\+\_\+processus\+\_\+t}} $\ast$$\ast$}]{tab }\end{DoxyParamCaption})}
+
+
+
+Libère la mémoire d\textquotesingle{}un tableau et met le pointeur à NULL (par adresse). 
+
+Cette version est plus sécurisée, car elle met automatiquement le pointeur de l\textquotesingle{}appelant à NULL après le free(). 

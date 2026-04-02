@@ -1,0 +1,90 @@
+\hypertarget{matrice_8c}{}\doxysection{Référence du fichier src/matrice.c}
+\label{matrice_8c}\index{src/matrice.c@{src/matrice.c}}
+
+
+Gestion de la matrice pour le diagramme de Gantt. Ce fichier contient les fonctions nécessaires pour créer, initialiser et détruire une matrice de type etat\+\_\+processus\+\_\+t.  
+
+
+{\ttfamily \#include \char`\"{}matrice.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+\doxysubsection*{Fonctions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{process_8h_ab53bfa5447e88893bb0d4485a27cdc5c}{etat\+\_\+processus\+\_\+t}} $\ast$$\ast$ \mbox{\hyperlink{matrice_8c_ad4cec41185938ca099eac925619bcd06}{alloc\+Mat}} (int nb\+Lig, int nb\+Col)
+\begin{DoxyCompactList}\small\item\em Alloue dynamiquement une matrice d\textquotesingle{}états de processus. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{process_8h_ab53bfa5447e88893bb0d4485a27cdc5c}{etat\+\_\+processus\+\_\+t}} $\ast$$\ast$ \mbox{\hyperlink{matrice_8c_ae70e0be59db92f882a4a8711020ec0c9}{lib\+Mat}} (int nb\+Lig, \mbox{\hyperlink{process_8h_ab53bfa5447e88893bb0d4485a27cdc5c}{etat\+\_\+processus\+\_\+t}} $\ast$$\ast$mat)
+\begin{DoxyCompactList}\small\item\em Libère proprement la mémoire occupée par une matrice. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{matrice_8c_ab5db62c5ce3ef51f16c08b9ecddd65ac}{init\+Mat}} (int nb\+Col, int nb\+Lig, \mbox{\hyperlink{process_8h_ab53bfa5447e88893bb0d4485a27cdc5c}{etat\+\_\+processus\+\_\+t}} $\ast$$\ast$mat)
+\begin{DoxyCompactList}\small\item\em Initialise toutes les cases d\textquotesingle{}une matrice à l\textquotesingle{}état par défaut. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Description détaillée}
+Gestion de la matrice pour le diagramme de Gantt. Ce fichier contient les fonctions nécessaires pour créer, initialiser et détruire une matrice de type etat\+\_\+processus\+\_\+t. 
+
+Participation \+: 33\% pour les 3 auteurs (DIALLO, DOSSO, MAREGA). 
+
+\doxysubsection{Documentation des fonctions}
+\mbox{\Hypertarget{matrice_8c_ad4cec41185938ca099eac925619bcd06}\label{matrice_8c_ad4cec41185938ca099eac925619bcd06}} 
+\index{matrice.c@{matrice.c}!allocMat@{allocMat}}
+\index{allocMat@{allocMat}!matrice.c@{matrice.c}}
+\doxysubsubsection{\texorpdfstring{allocMat()}{allocMat()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{process_8h_ab53bfa5447e88893bb0d4485a27cdc5c}{etat\+\_\+processus\+\_\+t}}$\ast$$\ast$ alloc\+Mat (\begin{DoxyParamCaption}\item[{int}]{nb\+Lig,  }\item[{int}]{nb\+Col }\end{DoxyParamCaption})}
+
+
+
+Alloue dynamiquement une matrice d\textquotesingle{}états de processus. 
+
+
+\begin{DoxyItemize}
+\item La matrice est typiquement utilisée pour le diagramme de Gantt \+:
+\item Lignes \+: Processus (indexés de 0 à nb\+Lig-\/1).
+\item Colonnes \+: Temps/\+Ticks (indexés de 0 à nb\+Col-\/1). 
+\begin{DoxyParams}[1]{Paramètres}
+\mbox{\texttt{ in}}  & {\em nb\+Lig} & Nombre de lignes (nombre de processus). \\
+\hline
+\mbox{\texttt{ in}}  & {\em nb\+Col} & Nombre de colonnes (durée totale de la simulation). \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+Un pointeur vers le tableau de pointeurs, ou NULL en cas d\textquotesingle{}échec. 
+\end{DoxyReturn}
+
+\end{DoxyItemize}\mbox{\Hypertarget{matrice_8c_ab5db62c5ce3ef51f16c08b9ecddd65ac}\label{matrice_8c_ab5db62c5ce3ef51f16c08b9ecddd65ac}} 
+\index{matrice.c@{matrice.c}!initMat@{initMat}}
+\index{initMat@{initMat}!matrice.c@{matrice.c}}
+\doxysubsubsection{\texorpdfstring{initMat()}{initMat()}}
+{\footnotesize\ttfamily void init\+Mat (\begin{DoxyParamCaption}\item[{int}]{nb\+Col,  }\item[{int}]{nb\+Lig,  }\item[{\mbox{\hyperlink{process_8h_ab53bfa5447e88893bb0d4485a27cdc5c}{etat\+\_\+processus\+\_\+t}} $\ast$$\ast$}]{mat }\end{DoxyParamCaption})}
+
+
+
+Initialise toutes les cases d\textquotesingle{}une matrice à l\textquotesingle{}état par défaut. 
+
+
+\begin{DoxyParams}[1]{Paramètres}
+\mbox{\texttt{ in}}  & {\em nb\+Col} & Nombre de colonnes. \\
+\hline
+\mbox{\texttt{ in}}  & {\em nb\+Lig} & Nombre de lignes. \\
+\hline
+\mbox{\texttt{ out}}  & {\em mat} & La matrice déjà allouée à remplir. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{matrice_8c_ae70e0be59db92f882a4a8711020ec0c9}\label{matrice_8c_ae70e0be59db92f882a4a8711020ec0c9}} 
+\index{matrice.c@{matrice.c}!libMat@{libMat}}
+\index{libMat@{libMat}!matrice.c@{matrice.c}}
+\doxysubsubsection{\texorpdfstring{libMat()}{libMat()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{process_8h_ab53bfa5447e88893bb0d4485a27cdc5c}{etat\+\_\+processus\+\_\+t}}$\ast$$\ast$ lib\+Mat (\begin{DoxyParamCaption}\item[{int}]{nb\+Lig,  }\item[{\mbox{\hyperlink{process_8h_ab53bfa5447e88893bb0d4485a27cdc5c}{etat\+\_\+processus\+\_\+t}} $\ast$$\ast$}]{mat }\end{DoxyParamCaption})}
+
+
+
+Libère proprement la mémoire occupée par une matrice. 
+
+
+\begin{DoxyParams}[1]{Paramètres}
+\mbox{\texttt{ in}}  & {\em nb\+Lig} & Nombre de lignes de la matrice. \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em mat} & Pointeur de la matrice à libérer. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+NULL après libération pour éviter les pointeurs fous. 
+\end{DoxyReturn}

@@ -1,0 +1,327 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.9.1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Simulateur d&#39;Ordonnancement CPU: Référence du fichier include/process.h</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+  $(document).ready(function() { init_search(); });
+/* @license-end */
+</script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">Simulateur d&#39;Ordonnancement CPU
+   &#160;<span id="projectnumber">1.0</span>
+   </div>
+   <div id="projectbrief">Simulation des algorithmes FIFO, SJF, SJRF et Round Robin</div>
+  </td>
+   <td>        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <img id="MSearchSelect" src="search/mag_sel.svg"
+               onmouseover="return searchBox.OnSearchSelectShow()"
+               onmouseout="return searchBox.OnSearchSelectHide()"
+               alt=""/>
+          <input type="text" id="MSearchField" value="Recherche" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><img id="MSearchCloseImg" border="0" src="search/close.svg" alt=""/></a>
+          </span>
+        </div>
+</td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Généré par Doxygen 1.9.1 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+var searchBox = new SearchBox("searchBox", "search",false,'Recherche','.html');
+/* @license-end */
+</script>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(document).ready(function(){initNavTree('process_8h.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
+<a href="#enum-members">Énumérations</a> &#124;
+<a href="#func-members">Fonctions</a>  </div>
+  <div class="headertitle">
+<div class="title">Référence du fichier process.h</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>Définitions des structures et prototypes pour la gestion des processus.  
+<a href="#details">Plus de détails...</a></p>
+
+<p><a href="process_8h_source.html">Aller au code source de ce fichier.</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structprocessus__t.html">processus_t</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Structure représentant un processus et ses métriques.  <a href="structprocessus__t.html#details">Plus de détails...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structresultats__t.html">resultats_t</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Structure regroupant les résultats globaux de la simulation.  <a href="structresultats__t.html#details">Plus de détails...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
+Énumérations</h2></td></tr>
+<tr class="memitem:ab53bfa5447e88893bb0d4485a27cdc5c"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="process_8h.html#ab53bfa5447e88893bb0d4485a27cdc5c">etat_processus_t</a> { <br />
+&#160;&#160;<a class="el" href="process_8h.html#ab53bfa5447e88893bb0d4485a27cdc5cafc649117241b7f132a95e153cafb808f">ETAT_NOUVEAU</a>
+, <a class="el" href="process_8h.html#ab53bfa5447e88893bb0d4485a27cdc5cac8de1ed925fdd7f4fcdef799b7765adb">ETAT_PRET</a>
+, <a class="el" href="process_8h.html#ab53bfa5447e88893bb0d4485a27cdc5ca4457c4dfc0bf6345e84bb0c54240e8e4">ETAT_EN_EXECUTION</a>
+, <a class="el" href="process_8h.html#ab53bfa5447e88893bb0d4485a27cdc5ca2e5dd87601c586b20ee0470be8c5bb71">ETAT_EN_ATTENTE</a>
+, <br />
+&#160;&#160;<a class="el" href="process_8h.html#ab53bfa5447e88893bb0d4485a27cdc5ca2ff6733c66ac4a1203a7ffa2337a1f00">ETAT_TERMINE</a>
+<br />
+ }</td></tr>
+<tr class="memdesc:ab53bfa5447e88893bb0d4485a27cdc5c"><td class="mdescLeft">&#160;</td><td class="mdescRight">États possibles d'un processus dans le cycle de vie de l'ordonnancement.  <a href="process_8h.html#ab53bfa5447e88893bb0d4485a27cdc5c">Plus de détails...</a><br /></td></tr>
+<tr class="separator:ab53bfa5447e88893bb0d4485a27cdc5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Fonctions</h2></td></tr>
+<tr class="memitem:ae19ad2170b58c41a338f031e447ab588"><td class="memItemLeft" align="right" valign="top"><a id="ae19ad2170b58c41a338f031e447ab588"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="process_8h.html#ae19ad2170b58c41a338f031e447ab588">initialiser_processus</a> (<a class="el" href="structprocessus__t.html">processus_t</a> *p)</td></tr>
+<tr class="memdesc:ae19ad2170b58c41a338f031e447ab588"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialise les indicateurs de performance d'un processus. <br /></td></tr>
+<tr class="separator:ae19ad2170b58c41a338f031e447ab588"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6d2f0ead70cb2a01930ebe66b5611f1b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structprocessus__t.html">processus_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="process_8h.html#a6d2f0ead70cb2a01930ebe66b5611f1b">allocProcessus</a> (int n)</td></tr>
+<tr class="memdesc:a6d2f0ead70cb2a01930ebe66b5611f1b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Alloue dynamiquement un tableau de processus.  <a href="process_8h.html#a6d2f0ead70cb2a01930ebe66b5611f1b">Plus de détails...</a><br /></td></tr>
+<tr class="separator:a6d2f0ead70cb2a01930ebe66b5611f1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a59fd9c41849d39366efe5737faea962d"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="process_8h.html#a59fd9c41849d39366efe5737faea962d">temps_attente_moyenne</a> (<a class="el" href="structprocessus__t.html">processus_t</a> *p, int n)</td></tr>
+<tr class="memdesc:a59fd9c41849d39366efe5737faea962d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calcule la moyenne du temps d'attente.  <a href="process_8h.html#a59fd9c41849d39366efe5737faea962d">Plus de détails...</a><br /></td></tr>
+<tr class="separator:a59fd9c41849d39366efe5737faea962d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa2fce324c0571ce2593f6d90e20c7195"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="process_8h.html#aa2fce324c0571ce2593f6d90e20c7195">calcul_metrique</a> (<a class="el" href="structprocessus__t.html">processus_t</a> *p, int n)</td></tr>
+<tr class="memdesc:aa2fce324c0571ce2593f6d90e20c7195"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calcule le temps de restitution (Turnaround) pour chaque processus.  <a href="process_8h.html#aa2fce324c0571ce2593f6d90e20c7195">Plus de détails...</a><br /></td></tr>
+<tr class="separator:aa2fce324c0571ce2593f6d90e20c7195"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a90a6a89dda73d98d9311245e4c91af6e"><td class="memItemLeft" align="right" valign="top"><a id="a90a6a89dda73d98d9311245e4c91af6e"></a>
+<a class="el" href="structresultats__t.html">resultats_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="process_8h.html#a90a6a89dda73d98d9311245e4c91af6e">calcul_resultats</a> (<a class="el" href="structprocessus__t.html">processus_t</a> *p, int n, int temps_total, int temps_n_occupation)</td></tr>
+<tr class="memdesc:a90a6a89dda73d98d9311245e4c91af6e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compile toutes les métriques finales dans la structure <a class="el" href="structresultats__t.html" title="Structure regroupant les résultats globaux de la simulation.">resultats_t</a>. <br /></td></tr>
+<tr class="separator:a90a6a89dda73d98d9311245e4c91af6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab23d95ea0b451d413a2a7826d21c7e60"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structprocessus__t.html">processus_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="process_8h.html#ab23d95ea0b451d413a2a7826d21c7e60">lireFichier</a> (char *nom, int *n)</td></tr>
+<tr class="memdesc:ab23d95ea0b451d413a2a7826d21c7e60"><td class="mdescLeft">&#160;</td><td class="mdescRight">Charge les processus à partir d'un fichier texte.  <a href="process_8h.html#ab23d95ea0b451d413a2a7826d21c7e60">Plus de détails...</a><br /></td></tr>
+<tr class="separator:ab23d95ea0b451d413a2a7826d21c7e60"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a28659f5121a2460353a556e1b1cf49d3"><td class="memItemLeft" align="right" valign="top"><a id="a28659f5121a2460353a556e1b1cf49d3"></a>
+<a class="el" href="structresultats__t.html">resultats_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="process_8h.html#a28659f5121a2460353a556e1b1cf49d3">init_resultats</a> ()</td></tr>
+<tr class="memdesc:a28659f5121a2460353a556e1b1cf49d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialise une structure de résultats à zéro. <br /></td></tr>
+<tr class="separator:a28659f5121a2460353a556e1b1cf49d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Description détaillée</h2>
+<div class="textblock"><p>Définitions des structures et prototypes pour la gestion des processus. </p>
+</div><h2 class="groupheader">Documentation du type de l'énumération</h2>
+<a id="ab53bfa5447e88893bb0d4485a27cdc5c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab53bfa5447e88893bb0d4485a27cdc5c">&#9670;&nbsp;</a></span>etat_processus_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="process_8h.html#ab53bfa5447e88893bb0d4485a27cdc5c">etat_processus_t</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>États possibles d'un processus dans le cycle de vie de l'ordonnancement. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Valeurs énumérées</th></tr><tr><td class="fieldname"><a id="ab53bfa5447e88893bb0d4485a27cdc5cafc649117241b7f132a95e153cafb808f"></a>ETAT_NOUVEAU&#160;</td><td class="fielddoc"><p>Processus chargé, mais pas encore arrivé dans le système </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ab53bfa5447e88893bb0d4485a27cdc5cac8de1ed925fdd7f4fcdef799b7765adb"></a>ETAT_PRET&#160;</td><td class="fielddoc"><p>En file d'attente, prêt à être exécuté par le CPU </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ab53bfa5447e88893bb0d4485a27cdc5ca4457c4dfc0bf6345e84bb0c54240e8e4"></a>ETAT_EN_EXECUTION&#160;</td><td class="fielddoc"><p>En train d'utiliser le processeur (CPU Burst) </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ab53bfa5447e88893bb0d4485a27cdc5ca2e5dd87601c586b20ee0470be8c5bb71"></a>ETAT_EN_ATTENTE&#160;</td><td class="fielddoc"><p>En train d'effectuer une Entrée/Sortie (I/O Burst) </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ab53bfa5447e88893bb0d4485a27cdc5ca2ff6733c66ac4a1203a7ffa2337a1f00"></a>ETAT_TERMINE&#160;</td><td class="fielddoc"><p>Exécution complètement terminée </p>
+</td></tr>
+</table>
+
+</div>
+</div>
+<h2 class="groupheader">Documentation des fonctions</h2>
+<a id="a6d2f0ead70cb2a01930ebe66b5611f1b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6d2f0ead70cb2a01930ebe66b5611f1b">&#9670;&nbsp;</a></span>allocProcessus()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structprocessus__t.html">processus_t</a>* allocProcessus </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>n</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Alloue dynamiquement un tableau de processus. </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">n</td><td>Nombre de processus à allouer. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="aa2fce324c0571ce2593f6d90e20c7195"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa2fce324c0571ce2593f6d90e20c7195">&#9670;&nbsp;</a></span>calcul_metrique()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void calcul_metrique </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structprocessus__t.html">processus_t</a> *&#160;</td>
+          <td class="paramname"><em>p</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>n</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Calcule le temps de restitution (Turnaround) pour chaque processus. </p>
+<p>Formule : temps_fin_execution - temps_arrivee. </p>
+
+</div>
+</div>
+<a id="ab23d95ea0b451d413a2a7826d21c7e60"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab23d95ea0b451d413a2a7826d21c7e60">&#9670;&nbsp;</a></span>lireFichier()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structprocessus__t.html">processus_t</a>* lireFichier </td>
+          <td>(</td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>nom</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int *&#160;</td>
+          <td class="paramname"><em>n</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Charge les processus à partir d'un fichier texte. </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">nom</td><td>Chemin du fichier. </td></tr>
+    <tr><td class="paramname">n</td><td>Pointeur pour récupérer le nombre de processus lus. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a59fd9c41849d39366efe5737faea962d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a59fd9c41849d39366efe5737faea962d">&#9670;&nbsp;</a></span>temps_attente_moyenne()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float temps_attente_moyenne </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structprocessus__t.html">processus_t</a> *&#160;</td>
+          <td class="paramname"><em>p</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>n</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Calcule la moyenne du temps d'attente. </p>
+<dl class="section return"><dt>Renvoie</dt><dd>float Moyenne calculée. </dd></dl>
+
+</div>
+</div>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="process_8h.html">process.h</a></li>
+    <li class="footer">Généré par <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+  </ul>
+</div>
+</body>
+</html>

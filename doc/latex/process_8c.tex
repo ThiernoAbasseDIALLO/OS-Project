@@ -1,0 +1,99 @@
+\hypertarget{process_8c}{}\doxysection{Référence du fichier src/process.c}
+\label{process_8c}\index{src/process.c@{src/process.c}}
+
+
+Implémentation des outils de gestion des processus et des calculs.  
+
+
+{\ttfamily \#include \char`\"{}process.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{process_8c_a1dbdba4e087fb47a7b798fdde8a12ca0}\label{process_8c_a1dbdba4e087fb47a7b798fdde8a12ca0}} 
+\#define {\bfseries MAX\+\_\+\+BURSTS}~20
+\end{DoxyCompactItemize}
+\doxysubsection*{Fonctions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{process_8c_ae19ad2170b58c41a338f031e447ab588}\label{process_8c_ae19ad2170b58c41a338f031e447ab588}} 
+void \mbox{\hyperlink{process_8c_ae19ad2170b58c41a338f031e447ab588}{initialiser\+\_\+processus}} (\mbox{\hyperlink{structprocessus__t}{processus\+\_\+t}} $\ast$p)
+\begin{DoxyCompactList}\small\item\em Initialise les indicateurs de performance d\textquotesingle{}un processus. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structprocessus__t}{processus\+\_\+t}} $\ast$ \mbox{\hyperlink{process_8c_a6d2f0ead70cb2a01930ebe66b5611f1b}{alloc\+Processus}} (int n)
+\begin{DoxyCompactList}\small\item\em Alloue dynamiquement un tableau de processus. \end{DoxyCompactList}\item 
+float \mbox{\hyperlink{process_8c_a59fd9c41849d39366efe5737faea962d}{temps\+\_\+attente\+\_\+moyenne}} (\mbox{\hyperlink{structprocessus__t}{processus\+\_\+t}} $\ast$p, int n)
+\begin{DoxyCompactList}\small\item\em Calcule la moyenne du temps d\textquotesingle{}attente. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{process_8c_aa2fce324c0571ce2593f6d90e20c7195}{calcul\+\_\+metrique}} (\mbox{\hyperlink{structprocessus__t}{processus\+\_\+t}} $\ast$p, int n)
+\begin{DoxyCompactList}\small\item\em Calcule le temps de restitution (Turnaround) pour chaque processus. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{process_8c_a90a6a89dda73d98d9311245e4c91af6e}\label{process_8c_a90a6a89dda73d98d9311245e4c91af6e}} 
+\mbox{\hyperlink{structresultats__t}{resultats\+\_\+t}} \mbox{\hyperlink{process_8c_a90a6a89dda73d98d9311245e4c91af6e}{calcul\+\_\+resultats}} (\mbox{\hyperlink{structprocessus__t}{processus\+\_\+t}} $\ast$p, int n, int temps\+\_\+total, int temps\+\_\+n\+\_\+occupation)
+\begin{DoxyCompactList}\small\item\em Compile toutes les métriques finales dans la structure \mbox{\hyperlink{structresultats__t}{resultats\+\_\+t}}. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structprocessus__t}{processus\+\_\+t}} $\ast$ \mbox{\hyperlink{process_8c_ad1f80306733ef2e0d0926fe5caef3a18}{lire\+Fichier}} (char $\ast$file, int $\ast$n)
+\begin{DoxyCompactList}\small\item\em Charge les processus à partir d\textquotesingle{}un fichier texte. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{process_8c_a28659f5121a2460353a556e1b1cf49d3}\label{process_8c_a28659f5121a2460353a556e1b1cf49d3}} 
+\mbox{\hyperlink{structresultats__t}{resultats\+\_\+t}} \mbox{\hyperlink{process_8c_a28659f5121a2460353a556e1b1cf49d3}{init\+\_\+resultats}} ()
+\begin{DoxyCompactList}\small\item\em Initialise une structure de résultats à zéro. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Description détaillée}
+Implémentation des outils de gestion des processus et des calculs. 
+
+Participation \+: 33\% pour les 3 auteurs (DIALLO, DOSSO, MAREGA). 
+
+\doxysubsection{Documentation des fonctions}
+\mbox{\Hypertarget{process_8c_a6d2f0ead70cb2a01930ebe66b5611f1b}\label{process_8c_a6d2f0ead70cb2a01930ebe66b5611f1b}} 
+\index{process.c@{process.c}!allocProcessus@{allocProcessus}}
+\index{allocProcessus@{allocProcessus}!process.c@{process.c}}
+\doxysubsubsection{\texorpdfstring{allocProcessus()}{allocProcessus()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structprocessus__t}{processus\+\_\+t}}$\ast$ alloc\+Processus (\begin{DoxyParamCaption}\item[{int}]{n }\end{DoxyParamCaption})}
+
+
+
+Alloue dynamiquement un tableau de processus. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em n} & Nombre de processus à allouer. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{process_8c_aa2fce324c0571ce2593f6d90e20c7195}\label{process_8c_aa2fce324c0571ce2593f6d90e20c7195}} 
+\index{process.c@{process.c}!calcul\_metrique@{calcul\_metrique}}
+\index{calcul\_metrique@{calcul\_metrique}!process.c@{process.c}}
+\doxysubsubsection{\texorpdfstring{calcul\_metrique()}{calcul\_metrique()}}
+{\footnotesize\ttfamily void calcul\+\_\+metrique (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structprocessus__t}{processus\+\_\+t}} $\ast$}]{p,  }\item[{int}]{n }\end{DoxyParamCaption})}
+
+
+
+Calcule le temps de restitution (Turnaround) pour chaque processus. 
+
+Formule \+: temps\+\_\+fin\+\_\+execution -\/ temps\+\_\+arrivee. \mbox{\Hypertarget{process_8c_ad1f80306733ef2e0d0926fe5caef3a18}\label{process_8c_ad1f80306733ef2e0d0926fe5caef3a18}} 
+\index{process.c@{process.c}!lireFichier@{lireFichier}}
+\index{lireFichier@{lireFichier}!process.c@{process.c}}
+\doxysubsubsection{\texorpdfstring{lireFichier()}{lireFichier()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structprocessus__t}{processus\+\_\+t}}$\ast$ lire\+Fichier (\begin{DoxyParamCaption}\item[{char $\ast$}]{nom,  }\item[{int $\ast$}]{n }\end{DoxyParamCaption})}
+
+
+
+Charge les processus à partir d\textquotesingle{}un fichier texte. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em nom} & Chemin du fichier. \\
+\hline
+{\em n} & Pointeur pour récupérer le nombre de processus lus. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{process_8c_a59fd9c41849d39366efe5737faea962d}\label{process_8c_a59fd9c41849d39366efe5737faea962d}} 
+\index{process.c@{process.c}!temps\_attente\_moyenne@{temps\_attente\_moyenne}}
+\index{temps\_attente\_moyenne@{temps\_attente\_moyenne}!process.c@{process.c}}
+\doxysubsubsection{\texorpdfstring{temps\_attente\_moyenne()}{temps\_attente\_moyenne()}}
+{\footnotesize\ttfamily float temps\+\_\+attente\+\_\+moyenne (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structprocessus__t}{processus\+\_\+t}} $\ast$}]{p,  }\item[{int}]{n }\end{DoxyParamCaption})}
+
+
+
+Calcule la moyenne du temps d\textquotesingle{}attente. 
+
+\begin{DoxyReturn}{Renvoie}
+float Moyenne calculée. 
+\end{DoxyReturn}

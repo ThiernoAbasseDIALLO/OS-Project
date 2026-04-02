@@ -1,0 +1,121 @@
+\hypertarget{output_8c}{}\doxysection{Référence du fichier src/output.c}
+\label{output_8c}\index{src/output.c@{src/output.c}}
+
+
+Fonctions d\textquotesingle{}affichage et d\textquotesingle{}exportation des données de simulation.  
+
+
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}output.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$sys/types.\+h$>$}\newline
+{\ttfamily \#include $<$sys/stat.\+h$>$}\newline
+{\ttfamily \#include $<$fcntl.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$unistd.\+h$>$}\newline
+{\ttfamily \#include $<$time.\+h$>$}\newline
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{output_8c_a70ed59adcb4159ac551058053e649640}\label{output_8c_a70ed59adcb4159ac551058053e649640}} 
+\#define {\bfseries SIZE}~1024
+\end{DoxyCompactItemize}
+\doxysubsection*{Fonctions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{output_8c_ac2edb9543f7c716bf8650f00cf71b16b}{exporter\+\_\+csv}} (const char $\ast$nom\+\_\+algo, \mbox{\hyperlink{structresultats__t}{resultats\+\_\+t}} r)
+\begin{DoxyCompactList}\small\item\em Exporte les métriques de simulation dans un fichier CSV. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{output_8c_a80a96d63028b24d850e456273796546c}{afficher\+\_\+resultats}} (\mbox{\hyperlink{structprocessus__t}{processus\+\_\+t}} $\ast$p, int n, \mbox{\hyperlink{structresultats__t}{resultats\+\_\+t}} r)
+\begin{DoxyCompactList}\small\item\em Affiche un tableau récapitulatif des processus sur la console. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{output_8c_a0ae187c29a51b3cc6d5e07585d91d95f}{remplir\+\_\+gantt}} (\mbox{\hyperlink{process_8h_ab53bfa5447e88893bb0d4485a27cdc5c}{etat\+\_\+processus\+\_\+t}} $\ast$$\ast$gantt, \mbox{\hyperlink{structprocessus__t}{processus\+\_\+t}} $\ast$processus, int n, int t)
+\begin{DoxyCompactList}\small\item\em Enregistre l\textquotesingle{}état de chaque processus à un instant T dans la matrice. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{output_8c_a7a9d7656dd631717f8c48ae470c77226}{afficher\+\_\+gantt}} (\mbox{\hyperlink{process_8h_ab53bfa5447e88893bb0d4485a27cdc5c}{etat\+\_\+processus\+\_\+t}} $\ast$$\ast$gantt, \mbox{\hyperlink{structprocessus__t}{processus\+\_\+t}} $\ast$processus, int n, int t\+\_\+max)
+\begin{DoxyCompactList}\small\item\em Affiche visuellement le diagramme de Gantt dans le terminal. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Description détaillée}
+Fonctions d\textquotesingle{}affichage et d\textquotesingle{}exportation des données de simulation. 
+
+Participation \+: 33\% pour les 3 auteurs (DIALLO, DOSSO, MAREGA). 
+
+\doxysubsection{Documentation des fonctions}
+\mbox{\Hypertarget{output_8c_a7a9d7656dd631717f8c48ae470c77226}\label{output_8c_a7a9d7656dd631717f8c48ae470c77226}} 
+\index{output.c@{output.c}!afficher\_gantt@{afficher\_gantt}}
+\index{afficher\_gantt@{afficher\_gantt}!output.c@{output.c}}
+\doxysubsubsection{\texorpdfstring{afficher\_gantt()}{afficher\_gantt()}}
+{\footnotesize\ttfamily void afficher\+\_\+gantt (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{process_8h_ab53bfa5447e88893bb0d4485a27cdc5c}{etat\+\_\+processus\+\_\+t}} $\ast$$\ast$}]{gantt,  }\item[{\mbox{\hyperlink{structprocessus__t}{processus\+\_\+t}} $\ast$}]{processus,  }\item[{int}]{n,  }\item[{int}]{t\+\_\+max }\end{DoxyParamCaption})}
+
+
+
+Affiche visuellement le diagramme de Gantt dans le terminal. 
+
+Affiche une ligne par processus avec des codes (UC, ES, W) et une ligne récapitulative de l\textquotesingle{}occupation CPU. 
+\begin{DoxyParams}[1]{Paramètres}
+\mbox{\texttt{ in}}  & {\em gantt} & Matrice d\textquotesingle{}états complète. \\
+\hline
+\mbox{\texttt{ in}}  & {\em processus} & Utilisé pour les noms des processus. \\
+\hline
+\mbox{\texttt{ in}}  & {\em n} & Nombre de processus. \\
+\hline
+\mbox{\texttt{ in}}  & {\em t\+\_\+max} & Durée totale de la simulation. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{output_8c_a80a96d63028b24d850e456273796546c}\label{output_8c_a80a96d63028b24d850e456273796546c}} 
+\index{output.c@{output.c}!afficher\_resultats@{afficher\_resultats}}
+\index{afficher\_resultats@{afficher\_resultats}!output.c@{output.c}}
+\doxysubsubsection{\texorpdfstring{afficher\_resultats()}{afficher\_resultats()}}
+{\footnotesize\ttfamily void afficher\+\_\+resultats (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structprocessus__t}{processus\+\_\+t}} $\ast$}]{p,  }\item[{int}]{n,  }\item[{\mbox{\hyperlink{structresultats__t}{resultats\+\_\+t}}}]{r }\end{DoxyParamCaption})}
+
+
+
+Affiche un tableau récapitulatif des processus sur la console. 
+
+
+\begin{DoxyParams}[1]{Paramètres}
+\mbox{\texttt{ in}}  & {\em p} & Tableau des processus avec leurs métriques individuelles. \\
+\hline
+\mbox{\texttt{ in}}  & {\em n} & Nombre de processus. \\
+\hline
+\mbox{\texttt{ in}}  & {\em r} & Métriques globales (moyennes). \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{output_8c_ac2edb9543f7c716bf8650f00cf71b16b}\label{output_8c_ac2edb9543f7c716bf8650f00cf71b16b}} 
+\index{output.c@{output.c}!exporter\_csv@{exporter\_csv}}
+\index{exporter\_csv@{exporter\_csv}!output.c@{output.c}}
+\doxysubsubsection{\texorpdfstring{exporter\_csv()}{exporter\_csv()}}
+{\footnotesize\ttfamily void exporter\+\_\+csv (\begin{DoxyParamCaption}\item[{const char $\ast$}]{nom\+\_\+algo,  }\item[{\mbox{\hyperlink{structresultats__t}{resultats\+\_\+t}}}]{r }\end{DoxyParamCaption})}
+
+
+
+Exporte les métriques de simulation dans un fichier CSV. 
+
+\begin{DoxyNote}{Note}
+Le nom du fichier est généré automatiquement \+: resultats\+\_\+\+ALGO\+\_\+\+DATE.\+csv. 
+\end{DoxyNote}
+
+\begin{DoxyParams}[1]{Paramètres}
+\mbox{\texttt{ in}}  & {\em nom\+\_\+algo} & Nom de l\textquotesingle{}algorithme (utilisé pour le nom du fichier). \\
+\hline
+\mbox{\texttt{ in}}  & {\em r} & Structure contenant les moyennes et taux calculés. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{output_8c_a0ae187c29a51b3cc6d5e07585d91d95f}\label{output_8c_a0ae187c29a51b3cc6d5e07585d91d95f}} 
+\index{output.c@{output.c}!remplir\_gantt@{remplir\_gantt}}
+\index{remplir\_gantt@{remplir\_gantt}!output.c@{output.c}}
+\doxysubsubsection{\texorpdfstring{remplir\_gantt()}{remplir\_gantt()}}
+{\footnotesize\ttfamily void remplir\+\_\+gantt (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{process_8h_ab53bfa5447e88893bb0d4485a27cdc5c}{etat\+\_\+processus\+\_\+t}} $\ast$$\ast$}]{gantt,  }\item[{\mbox{\hyperlink{structprocessus__t}{processus\+\_\+t}} $\ast$}]{processus,  }\item[{int}]{n,  }\item[{int}]{t }\end{DoxyParamCaption})}
+
+
+
+Enregistre l\textquotesingle{}état de chaque processus à un instant T dans la matrice. 
+
+
+\begin{DoxyParams}[1]{Paramètres}
+\mbox{\texttt{ out}}  & {\em gantt} & Matrice à remplir. \\
+\hline
+\mbox{\texttt{ in}}  & {\em processus} & Tableau des processus à l\textquotesingle{}instant t. \\
+\hline
+\mbox{\texttt{ in}}  & {\em n} & Nombre de processus. \\
+\hline
+\mbox{\texttt{ in}}  & {\em t} & Instant actuel de la simulation. \\
+\hline
+\end{DoxyParams}

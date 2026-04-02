@@ -1,0 +1,57 @@
+\hypertarget{sjf_8c}{}\doxysection{Référence du fichier src/sjf.c}
+\label{sjf_8c}\index{src/sjf.c@{src/sjf.c}}
+
+
+Logique de l\textquotesingle{}algorithme d\textquotesingle{}ordonnancement SJF non-\/préemptif.  
+
+
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}../include/sjf.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../include/process.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../include/output.\+h\char`\"{}}\newline
+\doxysubsection*{Fonctions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{sjf_8c_ab559cd29044b0f43f5eaeaf54c744760}{run\+\_\+sjf}} (\mbox{\hyperlink{structprocessus__t}{processus\+\_\+t}} $\ast$processus, int n, \mbox{\hyperlink{structresultats__t}{resultats\+\_\+t}} $\ast$resultats, \mbox{\hyperlink{process_8h_ab53bfa5447e88893bb0d4485a27cdc5c}{etat\+\_\+processus\+\_\+t}} $\ast$$\ast$gantt)
+\begin{DoxyCompactList}\small\item\em Exécute l\textquotesingle{}algorithme SJF non-\/préemptif tick par tick. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Description détaillée}
+Logique de l\textquotesingle{}algorithme d\textquotesingle{}ordonnancement SJF non-\/préemptif. 
+
+Stratégie \+: parmi tous les processus prêts, on exécute celui dont le burst CPU courant est le plus court. Non-\/préemptif. Les E/S sont parallélisées.
+
+La variable courant est persistante \+: une fois sélectionné, le processus garde le CPU jusqu\textquotesingle{}à la fin de son burst, même si un processus plus court arrive entre-\/temps. C\textquotesingle{}est ce qui différencie SJF (non-\/préemptif) de SJRF (préemptif). Pas d\textquotesingle{}affichage ni d\textquotesingle{}export CSV — géré dans \mbox{\hyperlink{main_8c}{main.\+c}}.
+
+Participation \+: 33\% pour les 3 auteurs (DIALLO, DOSSO, MAREGA). 
+
+\doxysubsection{Documentation des fonctions}
+\mbox{\Hypertarget{sjf_8c_ab559cd29044b0f43f5eaeaf54c744760}\label{sjf_8c_ab559cd29044b0f43f5eaeaf54c744760}} 
+\index{sjf.c@{sjf.c}!run\_sjf@{run\_sjf}}
+\index{run\_sjf@{run\_sjf}!sjf.c@{sjf.c}}
+\doxysubsubsection{\texorpdfstring{run\_sjf()}{run\_sjf()}}
+{\footnotesize\ttfamily void run\+\_\+sjf (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structprocessus__t}{processus\+\_\+t}} $\ast$}]{processus,  }\item[{int}]{n,  }\item[{\mbox{\hyperlink{structresultats__t}{resultats\+\_\+t}} $\ast$}]{resultats,  }\item[{\mbox{\hyperlink{process_8h_ab53bfa5447e88893bb0d4485a27cdc5c}{etat\+\_\+processus\+\_\+t}} $\ast$$\ast$}]{gantt }\end{DoxyParamCaption})}
+
+
+
+Exécute l\textquotesingle{}algorithme SJF non-\/préemptif tick par tick. 
+
+
+\begin{DoxyEnumerate}
+\item Nouvelles arrivées → ETAT\+\_\+\+PRET si temps\+\_\+arrivee == t.
+\item Décrémenter les E/S ; si terminées → ETAT\+\_\+\+PRET ou TERMINE.
+\item Si courant == NULL (CPU libre) → selectionner\+\_\+processus(). La sélection n\textquotesingle{}a lieu QUE si le CPU est libre. Un processus en cours de burst ne peut pas être interrompu.
+\item Exécuter courant \+: premier accès → temps\+\_\+reponse, décrémenter temps\+\_\+cpu\+\_\+restant, si burst fini → E/S suivante ou TERMINE, courant = NULL.
+\item Accumuler temps\+\_\+attente des processus PRET non élus.
+\item t += 1.
+\end{DoxyEnumerate}
+
+
+\begin{DoxyParams}{Paramètres}
+{\em processus} & Tableau des processus à ordonnancer. \\
+\hline
+{\em n} & Nombre de processus. \\
+\hline
+{\em resultats} & Pointeur vers la structure de résultats à remplir. \\
+\hline
+\end{DoxyParams}

@@ -1,0 +1,144 @@
+\hypertarget{process_8h}{}\doxysection{Référence du fichier include/process.h}
+\label{process_8h}\index{include/process.h@{include/process.h}}
+
+
+Définitions des structures et prototypes pour la gestion des processus.  
+
+
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structprocessus__t}{processus\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Structure représentant un processus et ses métriques. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structresultats__t}{resultats\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Structure regroupant les résultats globaux de la simulation. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Énumérations}
+\begin{DoxyCompactItemize}
+\item 
+enum \mbox{\hyperlink{process_8h_ab53bfa5447e88893bb0d4485a27cdc5c}{etat\+\_\+processus\+\_\+t}} \{ \newline
+\mbox{\hyperlink{process_8h_ab53bfa5447e88893bb0d4485a27cdc5cafc649117241b7f132a95e153cafb808f}{ETAT\+\_\+\+NOUVEAU}}
+, \mbox{\hyperlink{process_8h_ab53bfa5447e88893bb0d4485a27cdc5cac8de1ed925fdd7f4fcdef799b7765adb}{ETAT\+\_\+\+PRET}}
+, \mbox{\hyperlink{process_8h_ab53bfa5447e88893bb0d4485a27cdc5ca4457c4dfc0bf6345e84bb0c54240e8e4}{ETAT\+\_\+\+EN\+\_\+\+EXECUTION}}
+, \mbox{\hyperlink{process_8h_ab53bfa5447e88893bb0d4485a27cdc5ca2e5dd87601c586b20ee0470be8c5bb71}{ETAT\+\_\+\+EN\+\_\+\+ATTENTE}}
+, \newline
+\mbox{\hyperlink{process_8h_ab53bfa5447e88893bb0d4485a27cdc5ca2ff6733c66ac4a1203a7ffa2337a1f00}{ETAT\+\_\+\+TERMINE}}
+ \}
+\begin{DoxyCompactList}\small\item\em États possibles d\textquotesingle{}un processus dans le cycle de vie de l\textquotesingle{}ordonnancement. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Fonctions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{process_8h_ae19ad2170b58c41a338f031e447ab588}\label{process_8h_ae19ad2170b58c41a338f031e447ab588}} 
+void \mbox{\hyperlink{process_8h_ae19ad2170b58c41a338f031e447ab588}{initialiser\+\_\+processus}} (\mbox{\hyperlink{structprocessus__t}{processus\+\_\+t}} $\ast$p)
+\begin{DoxyCompactList}\small\item\em Initialise les indicateurs de performance d\textquotesingle{}un processus. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structprocessus__t}{processus\+\_\+t}} $\ast$ \mbox{\hyperlink{process_8h_a6d2f0ead70cb2a01930ebe66b5611f1b}{alloc\+Processus}} (int n)
+\begin{DoxyCompactList}\small\item\em Alloue dynamiquement un tableau de processus. \end{DoxyCompactList}\item 
+float \mbox{\hyperlink{process_8h_a59fd9c41849d39366efe5737faea962d}{temps\+\_\+attente\+\_\+moyenne}} (\mbox{\hyperlink{structprocessus__t}{processus\+\_\+t}} $\ast$p, int n)
+\begin{DoxyCompactList}\small\item\em Calcule la moyenne du temps d\textquotesingle{}attente. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{process_8h_aa2fce324c0571ce2593f6d90e20c7195}{calcul\+\_\+metrique}} (\mbox{\hyperlink{structprocessus__t}{processus\+\_\+t}} $\ast$p, int n)
+\begin{DoxyCompactList}\small\item\em Calcule le temps de restitution (Turnaround) pour chaque processus. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{process_8h_a90a6a89dda73d98d9311245e4c91af6e}\label{process_8h_a90a6a89dda73d98d9311245e4c91af6e}} 
+\mbox{\hyperlink{structresultats__t}{resultats\+\_\+t}} \mbox{\hyperlink{process_8h_a90a6a89dda73d98d9311245e4c91af6e}{calcul\+\_\+resultats}} (\mbox{\hyperlink{structprocessus__t}{processus\+\_\+t}} $\ast$p, int n, int temps\+\_\+total, int temps\+\_\+n\+\_\+occupation)
+\begin{DoxyCompactList}\small\item\em Compile toutes les métriques finales dans la structure \mbox{\hyperlink{structresultats__t}{resultats\+\_\+t}}. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structprocessus__t}{processus\+\_\+t}} $\ast$ \mbox{\hyperlink{process_8h_ab23d95ea0b451d413a2a7826d21c7e60}{lire\+Fichier}} (char $\ast$nom, int $\ast$n)
+\begin{DoxyCompactList}\small\item\em Charge les processus à partir d\textquotesingle{}un fichier texte. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{process_8h_a28659f5121a2460353a556e1b1cf49d3}\label{process_8h_a28659f5121a2460353a556e1b1cf49d3}} 
+\mbox{\hyperlink{structresultats__t}{resultats\+\_\+t}} \mbox{\hyperlink{process_8h_a28659f5121a2460353a556e1b1cf49d3}{init\+\_\+resultats}} ()
+\begin{DoxyCompactList}\small\item\em Initialise une structure de résultats à zéro. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Description détaillée}
+Définitions des structures et prototypes pour la gestion des processus. 
+
+
+
+\doxysubsection{Documentation du type de l\textquotesingle{}énumération}
+\mbox{\Hypertarget{process_8h_ab53bfa5447e88893bb0d4485a27cdc5c}\label{process_8h_ab53bfa5447e88893bb0d4485a27cdc5c}} 
+\index{process.h@{process.h}!etat\_processus\_t@{etat\_processus\_t}}
+\index{etat\_processus\_t@{etat\_processus\_t}!process.h@{process.h}}
+\doxysubsubsection{\texorpdfstring{etat\_processus\_t}{etat\_processus\_t}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{process_8h_ab53bfa5447e88893bb0d4485a27cdc5c}{etat\+\_\+processus\+\_\+t}}}
+
+
+
+États possibles d\textquotesingle{}un processus dans le cycle de vie de l\textquotesingle{}ordonnancement. 
+
+\begin{DoxyEnumFields}{Valeurs énumérées}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{ETAT\_NOUVEAU@{ETAT\_NOUVEAU}!process.h@{process.h}}\index{process.h@{process.h}!ETAT\_NOUVEAU@{ETAT\_NOUVEAU}}}\mbox{\Hypertarget{process_8h_ab53bfa5447e88893bb0d4485a27cdc5cafc649117241b7f132a95e153cafb808f}\label{process_8h_ab53bfa5447e88893bb0d4485a27cdc5cafc649117241b7f132a95e153cafb808f}} 
+ETAT\+\_\+\+NOUVEAU&Processus chargé, mais pas encore arrivé dans le système \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{ETAT\_PRET@{ETAT\_PRET}!process.h@{process.h}}\index{process.h@{process.h}!ETAT\_PRET@{ETAT\_PRET}}}\mbox{\Hypertarget{process_8h_ab53bfa5447e88893bb0d4485a27cdc5cac8de1ed925fdd7f4fcdef799b7765adb}\label{process_8h_ab53bfa5447e88893bb0d4485a27cdc5cac8de1ed925fdd7f4fcdef799b7765adb}} 
+ETAT\+\_\+\+PRET&En file d\textquotesingle{}attente, prêt à être exécuté par le CPU \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{ETAT\_EN\_EXECUTION@{ETAT\_EN\_EXECUTION}!process.h@{process.h}}\index{process.h@{process.h}!ETAT\_EN\_EXECUTION@{ETAT\_EN\_EXECUTION}}}\mbox{\Hypertarget{process_8h_ab53bfa5447e88893bb0d4485a27cdc5ca4457c4dfc0bf6345e84bb0c54240e8e4}\label{process_8h_ab53bfa5447e88893bb0d4485a27cdc5ca4457c4dfc0bf6345e84bb0c54240e8e4}} 
+ETAT\+\_\+\+EN\+\_\+\+EXECUTION&En train d\textquotesingle{}utiliser le processeur (CPU Burst) \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{ETAT\_EN\_ATTENTE@{ETAT\_EN\_ATTENTE}!process.h@{process.h}}\index{process.h@{process.h}!ETAT\_EN\_ATTENTE@{ETAT\_EN\_ATTENTE}}}\mbox{\Hypertarget{process_8h_ab53bfa5447e88893bb0d4485a27cdc5ca2e5dd87601c586b20ee0470be8c5bb71}\label{process_8h_ab53bfa5447e88893bb0d4485a27cdc5ca2e5dd87601c586b20ee0470be8c5bb71}} 
+ETAT\+\_\+\+EN\+\_\+\+ATTENTE&En train d\textquotesingle{}effectuer une Entrée/\+Sortie (I/O Burst) \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{ETAT\_TERMINE@{ETAT\_TERMINE}!process.h@{process.h}}\index{process.h@{process.h}!ETAT\_TERMINE@{ETAT\_TERMINE}}}\mbox{\Hypertarget{process_8h_ab53bfa5447e88893bb0d4485a27cdc5ca2ff6733c66ac4a1203a7ffa2337a1f00}\label{process_8h_ab53bfa5447e88893bb0d4485a27cdc5ca2ff6733c66ac4a1203a7ffa2337a1f00}} 
+ETAT\+\_\+\+TERMINE&Exécution complètement terminée \\
+\hline
+
+\end{DoxyEnumFields}
+
+
+\doxysubsection{Documentation des fonctions}
+\mbox{\Hypertarget{process_8h_a6d2f0ead70cb2a01930ebe66b5611f1b}\label{process_8h_a6d2f0ead70cb2a01930ebe66b5611f1b}} 
+\index{process.h@{process.h}!allocProcessus@{allocProcessus}}
+\index{allocProcessus@{allocProcessus}!process.h@{process.h}}
+\doxysubsubsection{\texorpdfstring{allocProcessus()}{allocProcessus()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structprocessus__t}{processus\+\_\+t}}$\ast$ alloc\+Processus (\begin{DoxyParamCaption}\item[{int}]{n }\end{DoxyParamCaption})}
+
+
+
+Alloue dynamiquement un tableau de processus. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em n} & Nombre de processus à allouer. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{process_8h_aa2fce324c0571ce2593f6d90e20c7195}\label{process_8h_aa2fce324c0571ce2593f6d90e20c7195}} 
+\index{process.h@{process.h}!calcul\_metrique@{calcul\_metrique}}
+\index{calcul\_metrique@{calcul\_metrique}!process.h@{process.h}}
+\doxysubsubsection{\texorpdfstring{calcul\_metrique()}{calcul\_metrique()}}
+{\footnotesize\ttfamily void calcul\+\_\+metrique (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structprocessus__t}{processus\+\_\+t}} $\ast$}]{p,  }\item[{int}]{n }\end{DoxyParamCaption})}
+
+
+
+Calcule le temps de restitution (Turnaround) pour chaque processus. 
+
+Formule \+: temps\+\_\+fin\+\_\+execution -\/ temps\+\_\+arrivee. \mbox{\Hypertarget{process_8h_ab23d95ea0b451d413a2a7826d21c7e60}\label{process_8h_ab23d95ea0b451d413a2a7826d21c7e60}} 
+\index{process.h@{process.h}!lireFichier@{lireFichier}}
+\index{lireFichier@{lireFichier}!process.h@{process.h}}
+\doxysubsubsection{\texorpdfstring{lireFichier()}{lireFichier()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structprocessus__t}{processus\+\_\+t}}$\ast$ lire\+Fichier (\begin{DoxyParamCaption}\item[{char $\ast$}]{nom,  }\item[{int $\ast$}]{n }\end{DoxyParamCaption})}
+
+
+
+Charge les processus à partir d\textquotesingle{}un fichier texte. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em nom} & Chemin du fichier. \\
+\hline
+{\em n} & Pointeur pour récupérer le nombre de processus lus. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{process_8h_a59fd9c41849d39366efe5737faea962d}\label{process_8h_a59fd9c41849d39366efe5737faea962d}} 
+\index{process.h@{process.h}!temps\_attente\_moyenne@{temps\_attente\_moyenne}}
+\index{temps\_attente\_moyenne@{temps\_attente\_moyenne}!process.h@{process.h}}
+\doxysubsubsection{\texorpdfstring{temps\_attente\_moyenne()}{temps\_attente\_moyenne()}}
+{\footnotesize\ttfamily float temps\+\_\+attente\+\_\+moyenne (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structprocessus__t}{processus\+\_\+t}} $\ast$}]{p,  }\item[{int}]{n }\end{DoxyParamCaption})}
+
+
+
+Calcule la moyenne du temps d\textquotesingle{}attente. 
+
+\begin{DoxyReturn}{Renvoie}
+float Moyenne calculée. 
+\end{DoxyReturn}

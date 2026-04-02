@@ -1,0 +1,63 @@
+\hypertarget{rr_8c}{}\doxysection{Référence du fichier src/rr.c}
+\label{rr_8c}\index{src/rr.c@{src/rr.c}}
+
+
+Logique de l\textquotesingle{}algorithme d\textquotesingle{}ordonnancement Round Robin (RR).  
+
+
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}rr.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}process.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}queue.\+h\char`\"{}}\newline
+\doxysubsection*{Fonctions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{rr_8c_a6b3bd3ca1b1695f1919da211fb677c68}{run\+\_\+rr}} (\mbox{\hyperlink{structprocessus__t}{processus\+\_\+t}} $\ast$processus, int n, int quantum, \mbox{\hyperlink{structresultats__t}{resultats\+\_\+t}} $\ast$resultats)
+\begin{DoxyCompactList}\small\item\em Exécute l\textquotesingle{}algorithme Round Robin tick par tick. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Description détaillée}
+Logique de l\textquotesingle{}algorithme d\textquotesingle{}ordonnancement Round Robin (RR). 
+
+Stratégie \+: chaque processus reçoit le CPU pour un quantum fixe. Si son burst n\textquotesingle{}est pas terminé à l\textquotesingle{}issue du quantum, il est interrompu et replacé EN FIN de file des prêts (préemptif). Les E/S sont parallélisées.
+
+Utilise la \mbox{\hyperlink{structFile}{File}} de \mbox{\hyperlink{queue_8h_source}{queue.\+h}} pour gérer la file des prêts.
+
+Participation \+: Auteur1 (33\%), Auteur2 (33\%), Auteur3 (33\%) 
+
+\doxysubsection{Documentation des fonctions}
+\mbox{\Hypertarget{rr_8c_a6b3bd3ca1b1695f1919da211fb677c68}\label{rr_8c_a6b3bd3ca1b1695f1919da211fb677c68}} 
+\index{rr.c@{rr.c}!run\_rr@{run\_rr}}
+\index{run\_rr@{run\_rr}!rr.c@{rr.c}}
+\doxysubsubsection{\texorpdfstring{run\_rr()}{run\_rr()}}
+{\footnotesize\ttfamily void run\+\_\+rr (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structprocessus__t}{processus\+\_\+t}} $\ast$}]{processus,  }\item[{int}]{n,  }\item[{int}]{quantum,  }\item[{\mbox{\hyperlink{structresultats__t}{resultats\+\_\+t}} $\ast$}]{resultats }\end{DoxyParamCaption})}
+
+
+
+Exécute l\textquotesingle{}algorithme Round Robin tick par tick. 
+
+\mbox{\hyperlink{rr_8c_a6b3bd3ca1b1695f1919da211fb677c68}{run\+\_\+rr()}} \+:
+\begin{DoxyEnumerate}
+\item Repasse EN\+\_\+\+EXECUTION → PRET (préparation du tick).
+\item Enfile les processus qui arrivent à t.
+\item Décrémente les E/S ; si terminées → enfile en fin ou TERMINE.
+\item Si CPU libre → prend la tête de file, réinitialise quantum\+\_\+restant. Premier accès → enregistre temps\+\_\+reponse. Décrémente temps\+\_\+cpu\+\_\+restant ET quantum\+\_\+restant. Si burst fini → E/S suivante ou TERMINE. Si quantum épuisé avant fin burst → remet en FIN de file (préemption).
+\item Incrémente temps\+\_\+attente des processus encore PRET.
+\item t += 1.
+\begin{DoxyItemize}
+\item Sélection = toujours la tête de file (FIFO circulaire).
+\item Préemption \+: quand quantum\+\_\+restant == 0, le processus retourne en FIN de file via \mbox{\hyperlink{queue_8c_a68d9161d4ed351409cf2d00c291effeb}{enfiler()}} et reçoit un nouveau quantum au prochain tour.
+\end{DoxyItemize}
+\end{DoxyEnumerate}
+
+
+\begin{DoxyParams}{Paramètres}
+{\em processus} & Tableau des processus à ordonnancer. \\
+\hline
+{\em n} & Nombre de processus. \\
+\hline
+{\em quantum} & Durée du quantum en ms (doit être $>$ 0). \\
+\hline
+{\em resultats} & Pointeur vers la structure de résultats à remplir. \\
+\hline
+\end{DoxyParams}
