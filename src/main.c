@@ -22,13 +22,12 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "process.h"
-#include "sjrf.h"
-#include "rr.h"
-#include "fifo.h"
-#include "sjf.h"
-#include "output.h"
 #include "matrice.h"
+#include "output.h"
+#include "scheduler.h"
+
+extern scheduler_t SCHEDULERS[];
+extern int NB_SCHEDULERS;
 
 #define MAX_BURSTS    20
 #define MAX_PROCESSES 64
@@ -68,42 +67,35 @@ int main(int argc, char *argv[])
 
     resultats_t r = init_resultats();
 
-    if (strcmp(algo, "fifo") == 0) {
-        run_fifo(p, n, &r, gantt);
+    scheduler_t *choix = NULL;
 
-    } else if (strcmp(algo, "sjf") == 0) {
-        run_sjf(p, n, &r, gantt);
-
-    } else if (strcmp(algo, "sjrf") == 0) {
-        run_sjrf(p, n, &r, gantt);
-
-    } else if (strcmp(algo, "rr") == 0) {
-        if (argc < 4) {
-            fprintf(stderr, "RR : le quantum est obligatoire. Ex: rr 4\n");
-            afficher_aide(argv[0]);
-            return 1;
+    for (int i = 0; i < NB_SCHEDULERS; i++) {
+        if (strcmp(algo, SCHEDULERS[i].nom) == 0) {
+            choix = &SCHEDULERS[i];
+            break;
         }
+    }
 
-        int quantum = atoi(argv[3]);
-
-        if (quantum <= 0) {
-            fprintf(stderr, "RR : le quantum doit etre un entier > 0.\n");
-            return 1;
-        }
-
-        run_rr(p, n, quantum, &r, gantt);
-
-    } else {
-        fprintf(stderr, "Algorithme inconnu : '%s'\n\n", algo);
-        afficher_aide(argv[0]);
-        // for (int i = 0; i < n; i++) free(liste[i].bursts);
+    if (!choix) {
+        fprintf(stderr, "Algorithme inconnu : %s\n", algo);
         return 1;
     }
+
+    int quantum = 0;
+    if (choix->besoin_quantum) {
+        if (argc < 4) {
+            fprintf(stderr, "Cet algo nécessite un quantum\n");
+            return 1;
+        }
+        quantum = atoi(argv[3]);
+    }
+
+    choix->fonction(p, n, quantum, &r, gantt);
 
     afficher_resultats(p, n, r);
     afficher_gantt(gantt, p, n, r.t_max);
     gantt = libMat(n, gantt);
 
-    // exporter_csv(algo, r);
+    exporter_csv(algo, r);
     return 0;
 }
