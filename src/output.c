@@ -31,7 +31,7 @@ void exporter_csv(const char *nom_algo, resultats_t r) {
     /* Génération d'un timestamp pour éviter d'écraser les fichiers précédents */
     t = time(NULL);
     struct tm *tm_info = localtime(&t);
-    strftime(date, sizeof(date), "%y%m%d_%H%M", tm_info);
+    strftime(date, sizeof(date), "%y%m%d_%H%M%S", tm_info);
 
     /* Creer le nom du fichier */
     snprintf(filename, sizeof(filename), "resultats_%s_%s.csv", nom_algo, date);
