@@ -52,13 +52,13 @@ int main(int argc, char *argv[])
 {
     if (argc < 3) { afficher_aide(argv[0]); return 1; }
 
-    printf("debut main\n");
+    // printf("debut main\n");
 
     char *fichier = argv[1];
     const char *algo    = argv[2];
 
     int n;
-    printf("avant lireFichier\n");
+    // printf("avant lireFichier\n");
     processus_t* p = lireFichier(fichier, &n);
     etat_processus_t **gantt = allocMat(n, MAX_TEMPS);
     initMat(MAX_TEMPS, n, gantt);
