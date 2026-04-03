@@ -339,7 +339,8 @@ OS-Project/
 │   └── test2.txt       3 processus CPU (sans E/S)
 ├── doc/                Documentation Doxygen générée (make doc)
 ├── Makefile            Compilation + install + doc (wildcard *.c)
-└── README.md           Ce fichier
+├── Doxyfile            Fichier de configuration pour générer la documentation
+└── README.md           Ce fichier est un guide d'utilisation et d'installation
 ```
 
 ### Structures de données principales
